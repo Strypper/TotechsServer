@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Intranet.Entities.Entities
 {
@@ -11,5 +9,6 @@ namespace Intranet.Entities.Entities
         public int MainIcon { get; set; }
         public int? SecondaryIcon { get; set; }
         public decimal Percentage { get; set; }
+        public virtual ICollection<User> Pickers { get; set; } = new HashSet<User>();
     }
 }

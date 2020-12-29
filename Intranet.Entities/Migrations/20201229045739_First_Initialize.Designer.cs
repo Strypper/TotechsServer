@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intranet.Entities.Migrations
 {
     [DbContext(typeof(IntranetContext))]
-    [Migration("20201228040911_First-initialize")]
-    partial class Firstinitialize
+    [Migration("20201229045739_First_Initialize")]
+    partial class First_Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,18 +61,40 @@ namespace Intranet.Entities.Migrations
                     b.Property<bool>("Company")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("FoodId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePic")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FoodId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.Entities.User", b =>
+                {
+                    b.HasOne("Intranet.Entities.Entities.Food", null)
+                        .WithMany("Pickers")
+                        .HasForeignKey("FoodId");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.Entities.Food", b =>
+                {
+                    b.Navigation("Pickers");
                 });
 #pragma warning restore 612, 618
         }

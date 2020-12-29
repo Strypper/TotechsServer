@@ -59,6 +59,9 @@ namespace Intranet.Entities.Migrations
                     b.Property<bool>("Company")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("FoodId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
@@ -75,7 +78,21 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FoodId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.Entities.User", b =>
+                {
+                    b.HasOne("Intranet.Entities.Entities.Food", null)
+                        .WithMany("Pickers")
+                        .HasForeignKey("FoodId");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.Entities.Food", b =>
+                {
+                    b.Navigation("Pickers");
                 });
 #pragma warning restore 612, 618
         }

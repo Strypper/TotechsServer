@@ -1,4 +1,7 @@
-﻿namespace Intranet.DataObject
+﻿using System;
+using System.Collections.Generic;
+
+namespace Intranet.DataObject
 {
     public class FoodDTO : BaseDTO
     {
@@ -7,5 +10,6 @@
         public int MainIcon { get; set; }
         public int? SecondaryIcon { get; set; }
         public decimal Percentage { get; set; }
+        public ICollection<UserDTO> Pickers = Array.Empty<UserDTO>();
     }
 }

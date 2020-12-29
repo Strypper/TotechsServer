@@ -8,6 +8,7 @@ namespace Intranet.Entities.Database
         public IntranetContext(DbContextOptions<IntranetContext> options) : base(options) { }
         public DbSet<Food> Foods { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserFood> UserFoods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

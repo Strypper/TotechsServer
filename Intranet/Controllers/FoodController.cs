@@ -21,6 +21,7 @@ namespace Intranet.Controllers
             _foodRepository = foodRepository;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
             var foods = await _foodRepository.FindAll().ToListAsync(cancellationToken);
