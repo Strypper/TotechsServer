@@ -17,12 +17,14 @@ namespace Intranet.Controllers
         public IMapper _mapper;
         public IUserFoodRepository _userFoodRepository;
         public IUserRepository _userRepository;
+        public IFoodRepository _foodRepository;
 
-        public UserFoodController(IMapper mapper, IUserFoodRepository userFoodRepository, IUserRepository userRepository)
+        public UserFoodController(IMapper mapper, IUserFoodRepository userFoodRepository, IUserRepository userRepository, IFoodRepository foodRepository)
         {
             _mapper = mapper;
             _userFoodRepository = userFoodRepository;
             _userRepository = userRepository;
+            _foodRepository = foodRepository;
         }
 
         [HttpGet]
@@ -44,7 +46,9 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
             var userDTO = _mapper.Map<UserDTO>(user);
-            var userFood = new UserFoodDTO() { User = userDTO, Food = dto.Food};
+            var food = await _foodRepository.FindByIdAsync(dto.FoodId, cancellationToken);
+            var foodDTO = _mapper.Map<FoodDTO>(food);
+            var userFood = new UserFoodDTO() { User = userDTO, Food = foodDTO};
             _userFoodRepository.Create(_mapper.Map<UserFood>(userFood));
             await _userFoodRepository.SaveChangesAsync(cancellationToken);
             return CreatedAtAction(nameof(Get), new { userFood.Id }, _mapper.Map<UserFoodDTO>(userFood));

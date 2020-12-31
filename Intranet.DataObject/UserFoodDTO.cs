@@ -13,6 +13,6 @@ namespace Intranet.DataObject
     public class CreateUserFoodDTO
     {
         public int UserId { get; set; }
-        public FoodDTO Food { get; set; }
+        public int FoodId { get; set; }
     }
 }
