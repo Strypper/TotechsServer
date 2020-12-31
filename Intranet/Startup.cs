@@ -60,6 +60,8 @@ namespace Intranet
 
             app.UseRouting();
 
+            app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
