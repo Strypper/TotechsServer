@@ -2,6 +2,7 @@
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
+using Intranet.Repo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -15,11 +16,13 @@ namespace Intranet.Controllers
     {
         public IMapper _mapper;
         public IUserFoodRepository _userFoodRepository;
+        public IUserRepository _userRepository;
 
-        public UserFoodController(IMapper mapper, IUserFoodRepository userFoodRepository)
+        public UserFoodController(IMapper mapper, IUserFoodRepository userFoodRepository, IUserRepository userRepository)
         {
             _mapper = mapper;
             _userFoodRepository = userFoodRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -37,10 +40,12 @@ namespace Intranet.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserFoodDTO dto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Create(CreateUserFoodDTO dto, CancellationToken cancellationToken = default)
         {
-            var userFood = _mapper.Map<UserFood>(dto);
-            _userFoodRepository.Create(userFood);
+            var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+            var userDTO = _mapper.Map<UserDTO>(user);
+            var userFood = new UserFoodDTO() { User = userDTO, Food = dto.Food};
+            _userFoodRepository.Create(_mapper.Map<UserFood>(userFood));
             await _userFoodRepository.SaveChangesAsync(cancellationToken);
             return CreatedAtAction(nameof(Get), new { userFood.Id }, _mapper.Map<UserFoodDTO>(userFood));
         }

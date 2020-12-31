@@ -9,4 +9,10 @@ namespace Intranet.DataObject
         public UserDTO User { get; set; }
         public FoodDTO Food { get; set; }
     }
+
+    public class CreateUserFoodDTO
+    {
+        public int UserId { get; set; }
+        public FoodDTO Food { get; set; }
+    }
 }
