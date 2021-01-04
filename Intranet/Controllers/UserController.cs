@@ -36,6 +36,15 @@ namespace Intranet.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(UserDTO dto, CancellationToken cancellationToken = default)
+        {
+            var user = _mapper.Map<User>(dto);
+            _userRepository.Create(user);
+            await _userRepository.SaveChangesAsync(cancellationToken);
+            return CreatedAtAction(nameof(Get), new { user.Id }, _mapper.Map<UserDTO>(user));
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateUser(UserDTO dto, CancellationToken cancellationToken = default)
         {
