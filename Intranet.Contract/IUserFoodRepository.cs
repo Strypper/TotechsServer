@@ -1,8 +1,10 @@
 ﻿using Intranet.Entities.Entities;
+using System.Threading.Tasks;
 
 namespace Intranet.Contract
 {
     public interface IUserFoodRepository : IRepositoryBase<UserFood>
     {
+        Task<UserFood> FindByUserId(int userId);
     }
 }

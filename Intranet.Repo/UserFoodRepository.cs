@@ -1,6 +1,8 @@
 ﻿using Intranet.Contract;
 using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Intranet.Repo
 {
@@ -10,5 +12,8 @@ namespace Intranet.Repo
         {
 
         }
+
+        public async Task<UserFood> FindByUserId(int userId)
+            => await FindAll(uf => uf.User.Id == userId).FirstOrDefaultAsync();
     }
 }

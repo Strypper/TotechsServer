@@ -41,6 +41,14 @@ namespace Intranet.Controllers
             return Ok(_mapper.Map<UserFoodDTO>(userFood));
         }
 
+        public async Task<IActionResult> GetUserSelectedFood(int userId, CancellationToken cancellationToken = default)
+        {
+            var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
+            if (user is null) return NotFound();
+            var userSelectedFood = await _userFoodRepository.FindByUserId(userId);
+            return Ok(_mapper.Map<UserFoodDTO>(userSelectedFood));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserFoodDTO dto, CancellationToken cancellationToken = default)
         {
