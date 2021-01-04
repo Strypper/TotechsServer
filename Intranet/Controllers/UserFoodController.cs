@@ -52,7 +52,7 @@ namespace Intranet.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUserFoodDTO dto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Create(CreateUpdateUserFoodDTO dto, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
             if (user is null) return NotFound();
@@ -66,11 +66,16 @@ namespace Intranet.Controllers
             return CreatedAtAction(nameof(Get), new { userFood.Id }, _mapper.Map<UserFoodDTO>(userFood));
         }
         [HttpPut]
-        public async Task<IActionResult> Update(UserFoodDTO dto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Update(CreateUpdateUserFoodDTO dto, CancellationToken cancellationToken = default)
         {
-            var userFood = await _userFoodRepository.FindByIdAsync(dto.Id, cancellationToken);
-            if (userFood is null) return NotFound();
-            _mapper.Map(dto, userFood);
+            var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+            if (user is null) return NotFound();
+            var userDTO = _mapper.Map<UserDTO>(user);
+            var food = await _foodRepository.FindByIdAsync(dto.FoodId, cancellationToken);
+            if (food is null) return NotFound();
+            var foodDTO = _mapper.Map<FoodDTO>(food);
+            var userFood = new UserFoodDTO() { User = userDTO, Food = foodDTO };
+            _userFoodRepository.Update(_mapper.Map<UserFood>(userFood));
             await _userFoodRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
         }
