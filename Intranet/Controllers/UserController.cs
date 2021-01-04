@@ -31,9 +31,11 @@ namespace Intranet.Controllers
         } 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
         {
-            return Ok();
+            var user = await _userRepository.FindByIdAsync(id, cancellationToken);
+            if (user is null) return NotFound();
+            return Ok(_mapper.Map<UserFoodDTO>(user));
         }
 
         [HttpPost]
@@ -51,6 +53,16 @@ namespace Intranet.Controllers
             var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
             if (user is null) return NotFound();
             _mapper.Map<User>(user);
+            await _userRepository.SaveChangesAsync(cancellationToken);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
+        {
+            var user = await _userRepository.FindByIdAsync(id, cancellationToken);
+            if (user is null) return NotFound();
+            _userRepository.Delete(user);
             await _userRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
         }
