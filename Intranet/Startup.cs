@@ -35,6 +35,8 @@ namespace Intranet
             });
             services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IntranetContext")));
             services.AddTransient<IFoodRepository, FoodRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserFoodRepository, UserFoodRepository>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

@@ -48,7 +48,7 @@ namespace Intranet.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(UserDTO dto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Update(UserDTO dto, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
             if (user is null) return NotFound();
