@@ -30,7 +30,7 @@ namespace Intranet.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
-            var userFoods = await _userFoodRepository.FindAll().Include(f => f.Food).Include(u => u.User).ToListAsync(cancellationToken);
+            var userFoods = await _userFoodRepository.FindAll().ToListAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<UserFoodDTO>>(userFoods));
         }
 

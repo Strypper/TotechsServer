@@ -17,13 +17,13 @@ namespace Intranet.Repo
 
         }
 
-        //public override Task<UserFood> FindAll(Expression<Func<UserFood, bool>>? predicate = null)
-        //    => _dbSet.Where(predicate!).Include(f => f.Food).Include(u => u.User);
+        public override IQueryable<UserFood> FindAll(Expression<Func<UserFood, bool>>? predicate = null)
+         => (predicate == null ? _dbSet.Where(x => true) : _dbSet.Where(predicate)).Include(f => f.Food).Include(u => u.User);
 
         public override async Task<UserFood> FindByIdAsync(int userFood, CancellationToken cancellationToken = default)
-            => await FindAll(uf => uf.Id == userFood).Include(f => f.Food).Include(u => u.User).FirstOrDefaultAsync(cancellationToken);
+            => await FindAll(uf => uf.Id == userFood).FirstOrDefaultAsync(cancellationToken);
 
         public async Task<UserFood> FindByUserId(int userId, CancellationToken cancellationToken = default)
-            => await FindAll(uf => uf.User.Id == userId).Include(f => f.Food).Include(u => u.User).FirstOrDefaultAsync(cancellationToken);
+            => await FindAll(uf => uf.User.Id == userId).FirstOrDefaultAsync(cancellationToken);
     }
 }
