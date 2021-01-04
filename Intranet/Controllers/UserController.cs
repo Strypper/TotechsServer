@@ -35,7 +35,7 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(id, cancellationToken);
             if (user is null) return NotFound();
-            return Ok(_mapper.Map<UserFoodDTO>(user));
+            return Ok(_mapper.Map<UserDTO>(user));
         }
 
         [HttpPost]
