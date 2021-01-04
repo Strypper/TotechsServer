@@ -30,7 +30,7 @@ namespace Intranet.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
-            var userFoods = await _userFoodRepository.FindAll().ToListAsync(cancellationToken);
+            var userFoods = await _userFoodRepository.FindAll().Include(f => f.Food).Include(u => u.User).ToListAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<UserFoodDTO>>(userFoods));
         }
 
@@ -47,7 +47,7 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
             if (user is null) return NotFound();
-            var userSelectedFood = await _userFoodRepository.FindByUserId(userId);
+            var userSelectedFood = await _userFoodRepository.FindByUserId(userId, cancellationToken);
             return Ok(_mapper.Map<UserFoodDTO>(userSelectedFood));
         }
 
@@ -55,8 +55,10 @@ namespace Intranet.Controllers
         public async Task<IActionResult> Create(CreateUserFoodDTO dto, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+            if (user is null) return NotFound();
             var userDTO = _mapper.Map<UserDTO>(user);
             var food = await _foodRepository.FindByIdAsync(dto.FoodId, cancellationToken);
+            if (food is null) return NotFound();
             var foodDTO = _mapper.Map<FoodDTO>(food);
             var userFood = new UserFoodDTO() { User = userDTO, Food = foodDTO};
             _userFoodRepository.Create(_mapper.Map<UserFood>(userFood));

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intranet.Entities.Migrations
 {
     [DbContext(typeof(IntranetContext))]
-    [Migration("20210104063242_UserFoodTable")]
-    partial class UserFoodTable
+    [Migration("20210104091847_Initial_Migration")]
+    partial class Initial_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,9 +61,6 @@ namespace Intranet.Entities.Migrations
                     b.Property<bool>("Company")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("FoodId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
@@ -80,8 +77,6 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FoodId");
-
                     b.ToTable("Users");
                 });
 
@@ -92,10 +87,10 @@ namespace Intranet.Entities.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("FoodId")
+                    b.Property<int>("FoodId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -107,31 +102,23 @@ namespace Intranet.Entities.Migrations
                     b.ToTable("UserFoods");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.User", b =>
-                {
-                    b.HasOne("Intranet.Entities.Entities.Food", null)
-                        .WithMany("Pickers")
-                        .HasForeignKey("FoodId");
-                });
-
             modelBuilder.Entity("Intranet.Entities.Entities.UserFood", b =>
                 {
                     b.HasOne("Intranet.Entities.Entities.Food", "Food")
                         .WithMany()
-                        .HasForeignKey("FoodId");
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Intranet.Entities.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Food");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Intranet.Entities.Entities.Food", b =>
-                {
-                    b.Navigation("Pickers");
                 });
 #pragma warning restore 612, 618
         }

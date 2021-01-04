@@ -2,7 +2,7 @@
 
 namespace Intranet.Entities.Migrations
 {
-    public partial class First_Initialize : Migration
+    public partial class Initial_Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,33 +34,60 @@ namespace Intranet.Entities.Migrations
                     Company = table.Column<bool>(type: "bit", nullable: false),
                     Age = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<bool>(type: "bit", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FoodId = table.Column<int>(type: "int", nullable: true)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserFoods",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    FoodId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserFoods", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Foods_FoodId",
+                        name: "FK_UserFoods_Foods_FoodId",
                         column: x => x.FoodId,
                         principalTable: "Foods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserFoods_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_FoodId",
-                table: "Users",
+                name: "IX_UserFoods_FoodId",
+                table: "UserFoods",
                 column: "FoodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserFoods_UserId",
+                table: "UserFoods",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UserFoods");
 
             migrationBuilder.DropTable(
                 name: "Foods");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

@@ -22,6 +22,13 @@ namespace Intranet.Entities.Database
                 entity.Property(e => e.UserName).IsRequired(true);
                 entity.Property(e => e.Password).IsRequired(true);
             });
+
+            builder.Entity<UserFood>(entity =>
+            {
+                entity.ToTable("UserFoods");
+                entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
+                entity.HasOne(e => e.Food).WithMany().HasForeignKey(e => e.FoodId);
+            });
         }
     }
 }

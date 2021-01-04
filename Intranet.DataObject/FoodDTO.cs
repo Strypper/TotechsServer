@@ -10,6 +10,5 @@ namespace Intranet.DataObject
         public int MainIcon { get; set; }
         public int? SecondaryIcon { get; set; }
         public decimal Percentage { get; set; }
-        public ICollection<UserDTO> Pickers = Array.Empty<UserDTO>();
     }
 }

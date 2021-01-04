@@ -59,9 +59,6 @@ namespace Intranet.Entities.Migrations
                     b.Property<bool>("Company")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("FoodId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
@@ -77,8 +74,6 @@ namespace Intranet.Entities.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FoodId");
 
                     b.ToTable("Users");
                 });
@@ -105,13 +100,6 @@ namespace Intranet.Entities.Migrations
                     b.ToTable("UserFoods");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.User", b =>
-                {
-                    b.HasOne("Intranet.Entities.Entities.Food", null)
-                        .WithMany("Pickers")
-                        .HasForeignKey("FoodId");
-                });
-
             modelBuilder.Entity("Intranet.Entities.Entities.UserFood", b =>
                 {
                     b.HasOne("Intranet.Entities.Entities.Food", "Food")
@@ -129,11 +117,6 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("Food");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Intranet.Entities.Entities.Food", b =>
-                {
-                    b.Navigation("Pickers");
                 });
 #pragma warning restore 612, 618
         }
