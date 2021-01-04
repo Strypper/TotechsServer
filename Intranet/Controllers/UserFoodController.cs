@@ -33,6 +33,7 @@ namespace Intranet.Controllers
             var userFoods = await _userFoodRepository.FindAll().ToListAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<UserFoodDTO>>(userFoods));
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
         {
@@ -41,6 +42,7 @@ namespace Intranet.Controllers
             return Ok(_mapper.Map<UserFoodDTO>(userFood));
         }
 
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserSelectedFood(int userId, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
