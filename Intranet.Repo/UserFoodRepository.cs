@@ -18,7 +18,7 @@ namespace Intranet.Repo
         }
 
         public override IQueryable<UserFood> FindAll(Expression<Func<UserFood, bool>>? predicate = null)
-         => (predicate == null ? _dbSet.Where(x => true) : _dbSet.Where(predicate)).Include(f => f.Food).Include(u => u.User);
+            => (predicate == null ? _dbSet.Where(x => true) : _dbSet.Where(predicate)).Include(f => f.Food).Include(u => u.User);
 
         public override async Task<UserFood> FindByIdAsync(int userFood, CancellationToken cancellationToken = default)
             => await FindAll(uf => uf.Id == userFood).FirstOrDefaultAsync(cancellationToken);
