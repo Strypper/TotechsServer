@@ -38,6 +38,7 @@ namespace Intranet.Controllers
             return Ok(_mapper.Map<UserDTO>(user));
         }
 
+        [HttpPost]
         public async Task<IActionResult> Login(UserLogin loginInfo, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByUserName(loginInfo.UserName, cancellationToken);
