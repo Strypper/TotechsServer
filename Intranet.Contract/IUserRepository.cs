@@ -6,6 +6,6 @@ namespace Intranet.Contract
 {
     public interface IUserRepository : IRepositoryBase<User>
     {
-        Task<User> FindByUserName(string userName, CancellationToken cancellationToken = default)
+        Task<User> FindByUserName(string userName, CancellationToken cancellationToken = default);
     }
 }
