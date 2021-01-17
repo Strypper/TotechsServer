@@ -1,6 +1,7 @@
 ﻿using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,6 +13,16 @@ namespace Intranet.Hubs
         public ChatHub(IntranetContext ic)
         {
             _ic = ic;
+        }
+        public override Task OnConnectedAsync()
+        {
+            System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
+            return base.OnConnectedAsync();
+        }
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
+            return base.OnDisconnectedAsync(exception);
         }
         public async Task SendMessage(string mess, CancellationToken cancellationToken = default)
         {

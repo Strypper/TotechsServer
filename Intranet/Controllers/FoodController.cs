@@ -65,6 +65,7 @@ namespace Intranet.Controllers
         public async Task<IActionResult> DeleteAll(CancellationToken cancellationToken = default)
         {
             await _foodRepository.DeleteAll(cancellationToken);
+            await _foodRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
         }
     }
