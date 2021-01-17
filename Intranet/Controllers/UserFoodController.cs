@@ -56,13 +56,11 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
             if (user is null) return NotFound();
-            var userDTO = _mapper.Map<UserDTO>(user);
             var food = await _foodRepository.FindByIdAsync(dto.FoodId, cancellationToken);
             if (food is null) return NotFound();
-            var foodDTO = _mapper.Map<FoodDTO>(food);
-            var userFood = new UserFoodDTO() { User = userDTO, Food = foodDTO };
-            if (await _userFoodRepository.FindByUserId(user.Id, cancellationToken) != null) _userFoodRepository.Update(_mapper.Map<UserFood>(userFood));
-            else  _userFoodRepository.Create(_mapper.Map<UserFood>(userFood));
+            var userFood = new UserFood() { User = user, Food = food };
+            if (await _userFoodRepository.FindByUserId(user.Id, cancellationToken) != null) _userFoodRepository.Update(userFood);
+            else  _userFoodRepository.Create(userFood);
             await _userFoodRepository.SaveChangesAsync(cancellationToken);
             return CreatedAtAction(nameof(Get), new { userFood.Id }, _mapper.Map<UserFoodDTO>(userFood));
         }
