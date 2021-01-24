@@ -1,4 +1,5 @@
-﻿using Intranet.Entities.Database;
+﻿using Intranet.Contract;
+using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -9,10 +10,10 @@ namespace Intranet.Hubs
 {
     public class ChatHub : Hub
     {
-        private IntranetContext _ic;
-        public ChatHub(IntranetContext ic)
+        private IUserRepository _userRepository;
+        public ChatHub(IUserRepository userRepository)
         {
-            _ic = ic;
+            _userRepository = userRepository;
         }
         public override Task OnConnectedAsync()
         {
@@ -24,11 +25,21 @@ namespace Intranet.Hubs
             System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
         }
-        public async Task SendMessage(string mess, CancellationToken cancellationToken = default)
+
+        public async Task IdentifyUser(int userId)
         {
-            string userId = Context.User.FindFirst(c => c.Type == "UserId").Value;
-            var user = await _ic.FindAsync<User>(new object[] { userId }, cancellationToken);
-            await Clients.All.SendAsync("HubMessage", user.UserName, mess, cancellationToken);
+            CancellationToken token = new CancellationToken(default);
+            var user = await _userRepository.FindByIdAsync(userId, token);
+            System.Diagnostics.Debug.WriteLine(user.UserName);
+            await Clients.Caller.SendAsync("UserResult", user);
+        }
+
+        public async Task SendMessage(string mess, int userId)
+        {
+            CancellationToken token = new CancellationToken(default);
+            var user = await _userRepository.FindByIdAsync(userId, token);
+            System.Diagnostics.Debug.WriteLine(mess);
+            await Clients.All.SendAsync("ReceiveMessage", mess, user.UserName);
         }
     }
 }
