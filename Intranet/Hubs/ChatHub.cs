@@ -11,27 +11,35 @@ namespace Intranet.Hubs
     public class ChatHub : Hub
     {
         private IUserRepository _userRepository;
-        public ChatHub(IUserRepository userRepository)
+        private IGroupChatRepository _groupChatRepository;
+        private IChatMessageRepository _chatMessageRepository;
+
+        public ChatHub(IUserRepository userRepository, IGroupChatRepository groupChatRepository, IChatMessageRepository chatMessageRepository)
         {
             _userRepository = userRepository;
-        }
-        public override Task OnConnectedAsync()
-        {
-            System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
-            return base.OnConnectedAsync();
-        }
-        public override Task OnDisconnectedAsync(Exception exception)
-        {
-            System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
-            return base.OnDisconnectedAsync(exception);
+            _groupChatRepository = groupChatRepository;
+            _chatMessageRepository = chatMessageRepository;
         }
 
-        public async Task IdentifyUser(int userId)
+        public override async Task OnConnectedAsync()
+        {
+            System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
+            await Clients.Caller.SendAsync("");
+            await base.OnConnectedAsync();
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
+            await base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task JoinGroup(int groupId, int userId)
         {
             CancellationToken token = new CancellationToken(default);
             var user = await _userRepository.FindByIdAsync(userId, token);
-            System.Diagnostics.Debug.WriteLine(user.UserName);
-            await Clients.Caller.SendAsync("UserResult", user);
+            var group = await _groupChatRepository.FindByIdAsync(groupId, token);
+            await Groups.AddToGroupAsync(Context.ConnectionId , group.GroupName);
         }
 
         public async Task SendMessage(string mess, int userId)
