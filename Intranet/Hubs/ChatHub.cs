@@ -48,7 +48,7 @@ namespace Intranet.Hubs
             CancellationToken token = new CancellationToken(default);
             var user = await _userRepository.FindByIdAsync(userId, token);
             System.Diagnostics.Debug.WriteLine(mess);
-            await Clients.All.SendAsync("ReceiveMessage", mess, user.UserName);
+            await Clients.All.SendAsync("ReceiveMessage", mess, user);
         }
     }
 }
