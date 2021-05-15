@@ -24,7 +24,8 @@ namespace Intranet.Hubs
         public override async Task OnConnectedAsync()
         {
             System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
-            await Clients.Caller.SendAsync("");
+            await Clients.Caller.SendAsync($"Welcome {Context.ConnectionId}");
+            await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
             await base.OnConnectedAsync();
         }
 
