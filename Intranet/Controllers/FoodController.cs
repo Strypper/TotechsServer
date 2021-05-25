@@ -52,7 +52,7 @@ namespace Intranet.Controllers
                 _foodRepository.Create(food);
             }
             await _foodRepository.SaveChangesAsync(cancellationToken);
-            return Ok("Successfull added food list");
+            return Ok(_mapper.Map<IEnumerable<FoodDTO>>(foods));
         }
         [HttpPut]
         public async Task<IActionResult> Update(FoodDTO dto, CancellationToken cancellationToken = default)
