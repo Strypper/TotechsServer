@@ -55,9 +55,9 @@ namespace Intranet.Controllers
         public async Task<IActionResult> Create(CreateUpdateUserFoodDTO dto, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
-            if (user is null) return NotFound();
+            if (user is null || user.IsDisable == true) return NotFound();
             var food = await _foodRepository.FindByIdAsync(dto.FoodId, cancellationToken);
-            if (food is null) return NotFound();
+            if (food is null || food.IsUnavailable == true) return NotFound();
             var userFood = new UserFood() { User = user, Food = food };
             if (await _userFoodRepository.FindByUserId(user.Id, cancellationToken) != null)
             {

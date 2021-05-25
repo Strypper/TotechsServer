@@ -1,6 +1,4 @@
 ﻿using Intranet.Contract;
-using Intranet.Entities.Database;
-using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading;

@@ -12,6 +12,8 @@ namespace Intranet.Entities.Entities
         public bool Company { get; set; }
         public string? Age { get; set; }
         public bool? Gender { get; set; }
+        public bool IsDisable { get; set; }
+        public string Role { get; set; }
         public string Password { get; set; }
         public int? GroupChatId { get; set; }
 

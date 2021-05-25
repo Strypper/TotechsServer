@@ -42,7 +42,7 @@ namespace Intranet.Controllers
         public async Task<IActionResult> Login(UserLogin loginInfo, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByUserName(loginInfo.UserName, cancellationToken);
-            if (user is null) return NotFound();
+            if (user is null || user.IsDisable == true) return NotFound();
             if (loginInfo.Password != user.Password) return NotFound();
             return Ok(_mapper.Map<UserDTO>(user));
         }

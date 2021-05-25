@@ -43,6 +43,17 @@ namespace Intranet.Controllers
             await _foodRepository.SaveChangesAsync(cancellationToken);
             return CreatedAtAction(nameof(Get), new { food.Id }, _mapper.Map<FoodDTO>(food));
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateMultipleFood(IEnumerable<FoodDTO> dtos, CancellationToken cancellationToken = default)
+        {
+            var foods = _mapper.Map<IEnumerable<Food>>(dtos);
+            foreach (var food in foods)
+            {
+                _foodRepository.Create(food);
+            }
+            await _foodRepository.SaveChangesAsync(cancellationToken);
+            return NoContent();
+        }
         [HttpPut]
         public async Task<IActionResult> Update(FoodDTO dto, CancellationToken cancellationToken = default)
         {

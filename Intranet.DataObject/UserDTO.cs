@@ -13,6 +13,8 @@ namespace Intranet.DataObject
         public string? ProfilePic { get; set; }
         public bool? Company { get; set; }
         public string? Age { get; set; }
+        public bool IsDisable { get; set; }
+        public string Role { get; set; }
         public bool? Gender { get; set; }
         public string Password { get; set; }
     }
