@@ -15,10 +15,12 @@ namespace Intranet.Controllers
     {
         public IMapper _mapper;
         public IFoodRepository _foodRepository;
-        public FoodController(IMapper mapper, IFoodRepository foodRepository)
+        public IUserFoodRepository _userFoodRepository;
+        public FoodController(IMapper mapper, IFoodRepository foodRepository, IUserFoodRepository userFoodRepository)
         {
             _mapper = mapper;
             _foodRepository = foodRepository;
+            _userFoodRepository = userFoodRepository;
         }
 
         [HttpGet]
@@ -60,6 +62,18 @@ namespace Intranet.Controllers
             var food = await _foodRepository.FindByIdAsync(dto.Id, cancellationToken);
             if (food is null) return NotFound();
             _mapper.Map(dto, food);
+
+            //Remove all users choose this food if unavaible is toggled
+            if(dto.IsUnavailable == true)
+            {
+                var usersChooseThisFood = await _userFoodRepository.FindAll(uf => uf.FoodId == dto.Id).ToListAsync();
+                foreach (var userFood in usersChooseThisFood)
+                {
+                    _userFoodRepository.Delete(userFood);
+                }
+                await _userFoodRepository.SaveChangesAsync(cancellationToken);
+            }
+
             await _foodRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
         }
