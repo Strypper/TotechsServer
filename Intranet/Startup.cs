@@ -39,6 +39,7 @@ namespace Intranet
             services.AddTransient<IUserFoodRepository, UserFoodRepository>();
             services.AddTransient<IGroupChatRepository, GroupChatRepository>();
             services.AddTransient<IChatMessageRepository, ChatMessageRepository>();
+            services.AddTransient<ITeamRepository, TeamRepository>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
