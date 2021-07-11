@@ -24,33 +24,33 @@ namespace Intranet.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
-            var Teams = await _teamRepository.FindAll().ToListAsync(cancellationToken);
-            return Ok(_mapper.Map<IEnumerable<TeamDTO>>(Teams));
+            var teams = await _teamRepository.FindAll().ToListAsync(cancellationToken);
+            return Ok(_mapper.Map<IEnumerable<TeamDTO>>(teams));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
         {
-            var Team = await _teamRepository.FindByIdAsync(id, cancellationToken);
-            if (Team is null) return NotFound();
-            return Ok(_mapper.Map<TeamDTO>(Team));
+            var team = await _teamRepository.FindByIdAsync(id, cancellationToken);
+            if (team is null) return NotFound();
+            return Ok(_mapper.Map<TeamDTO>(team));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(TeamDTO dto, CancellationToken cancellationToken = default)
         {
-            var Team = _mapper.Map<Team>(dto);
-            _teamRepository.Create(Team);
+            var team = _mapper.Map<Team>(dto);
+            _teamRepository.Create(team);
             await _teamRepository.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction(nameof(Get), new { Team.Id }, _mapper.Map<TeamDTO>(Team));
+            return CreatedAtAction(nameof(Get), new { team.Id }, _mapper.Map<TeamDTO>(team));
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(TeamDTO dto, CancellationToken cancellationToken = default)
         {
-            var Team = await _teamRepository.FindByIdAsync(dto.Id, cancellationToken);
-            if (Team is null) return NotFound();
-            _mapper.Map(dto, Team);
+            var team = await _teamRepository.FindByIdAsync(dto.Id, cancellationToken);
+            if (team is null) return NotFound();
+            _mapper.Map(dto, team);
 
             await _teamRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
@@ -59,9 +59,9 @@ namespace Intranet.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
         {
-            var Team = await _teamRepository.FindByIdAsync(id, cancellationToken);
-            if (Team is null) return NotFound();
-            _teamRepository.Delete(Team);
+            var team = await _teamRepository.FindByIdAsync(id, cancellationToken);
+            if (team is null) return NotFound();
+            _teamRepository.Delete(team);
             await _teamRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
         }
