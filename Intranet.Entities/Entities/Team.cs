@@ -9,6 +9,5 @@ namespace Intranet.Entities.Entities
         public string? About { get; set; } = string.Empty;
         public bool Company { get; set; }
         public int TechLead { get; set; }
-        public ICollection<User> Members { get; set; } = new HashSet<User>();
     }
 }

@@ -20,6 +20,5 @@ namespace Intranet.Entities.Entities
         public int? GroupChatId { get; set; }
 
         public virtual GroupChat? GroupChat { get; set; }
-        public virtual ICollection<Team> Team { get; set; }
     }
 }

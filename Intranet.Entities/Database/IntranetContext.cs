@@ -33,6 +33,13 @@ namespace Intranet.Entities.Database
                 entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
                 entity.HasOne(e => e.Food).WithMany().HasForeignKey(e => e.FoodId);
             });
+
+            builder.Entity<UserTeam>(entity =>
+            {
+                entity.ToTable("UserTeams");
+                entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
+                entity.HasOne(e => e.Team).WithMany().HasForeignKey(e => e.TeamId);
+            });
         }
     }
 }
