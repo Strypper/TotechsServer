@@ -14,13 +14,12 @@ namespace Intranet.Entities.Entities
         public bool Company { get; set; }
         public string? Age { get; set; }
         public bool? Gender { get; set; }
-        public string? Team { get; set; } = String.Empty;
         public bool IsDisable { get; set; }
         public string Role { get; set; }
         public string Password { get; set; }
         public int? GroupChatId { get; set; }
 
         public virtual GroupChat? GroupChat { get; set; }
-        public virtual ICollection<Team> MyProperty { get; set; }
+        public virtual ICollection<Team> Team { get; set; }
     }
 }
