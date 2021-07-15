@@ -10,6 +10,5 @@ namespace Intranet.DataObject
         public string? About { get; set; } = String.Empty;
         public bool Company { get; set; }
         public int TechLead { get; set; }
-        public ICollection<UserDTO> Members { get; set; } = Array.Empty<UserDTO>();
     }
 }

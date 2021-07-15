@@ -40,6 +40,7 @@ namespace Intranet
             services.AddTransient<IGroupChatRepository, GroupChatRepository>();
             services.AddTransient<IChatMessageRepository, ChatMessageRepository>();
             services.AddTransient<ITeamRepository, TeamRepository>();
+            services.AddTransient<IUserTeamRepository, UserTeamRepository>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
