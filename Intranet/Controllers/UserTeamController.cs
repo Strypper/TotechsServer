@@ -45,7 +45,7 @@ namespace Intranet.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserSelectedFood(int userId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetTeamByUser(int userId, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
             if (user is null) return NotFound();
@@ -64,9 +64,10 @@ namespace Intranet.Controllers
             {
                 var existingUserTeam = await _userTeamRepository.FindAll(uf => uf.User.Id == dto.UserId).FirstOrDefaultAsync();
                 if (existingUserTeam.TeamId == dto.TeamId)
-                    return BadRequest();
+                    return BadRequest("This user and team are already created !!");
                 else _userTeamRepository.Create(userTeam);
             }
+            else _userTeamRepository.Create(userTeam);
             await _userTeamRepository.SaveChangesAsync(cancellationToken);
             return CreatedAtAction(nameof(Get), new { userTeam.Id }, _mapper.Map<UserTeamDTO>(userTeam));
         }
