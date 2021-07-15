@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Intranet.DataObject
 {
@@ -17,5 +13,11 @@ namespace Intranet.DataObject
     {
         public int UserId { get; set; }
         public int TeamId { get; set; }
+    }
+
+    public class CreateTeamWithMultipleUsers
+    {
+        public ICollection<UserDTO> Users { get; set; } = new HashSet<UserDTO>();
+        public TeamDTO Team { get; set; }
     }
 }
