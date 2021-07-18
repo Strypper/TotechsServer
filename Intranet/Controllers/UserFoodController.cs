@@ -19,7 +19,10 @@ namespace Intranet.Controllers
         public IUserRepository _userRepository;
         public IFoodRepository _foodRepository;
 
-        public UserFoodController(IMapper mapper, IUserFoodRepository userFoodRepository, IUserRepository userRepository, IFoodRepository foodRepository)
+        public UserFoodController(IMapper mapper, 
+                                  IUserFoodRepository userFoodRepository, 
+                                  IUserRepository userRepository, 
+                                  IFoodRepository foodRepository)
         {
             _mapper = mapper;
             _userFoodRepository = userFoodRepository;

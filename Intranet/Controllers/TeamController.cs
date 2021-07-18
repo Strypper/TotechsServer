@@ -6,6 +6,7 @@ using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,15 +18,18 @@ namespace Intranet.Controllers
     {
         public IMapper _mapper;
         public IUserTeamRepository _userTeamRepository;
+        public IUserRepository _userRepository;
         public ITeamRepository _teamRepository;
         public IntranetContext _intranetContext { get; set; }
         public TeamController(IMapper mapper,
                               IUserTeamRepository userTeamRepository,
+                              IUserRepository userRepository,
                               ITeamRepository teamRepository,
                               IntranetContext intranetContext)
         {
             _mapper = mapper;
             _userTeamRepository = userTeamRepository;
+            _userRepository = userRepository;
             _teamRepository = teamRepository;
             _intranetContext = intranetContext;
         }
@@ -35,6 +39,33 @@ namespace Intranet.Controllers
         {
             var teams = await _teamRepository.FindAll().ToListAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<TeamDTO>>(teams));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllTeamsWithMembers(CancellationToken cancellationToken = default)
+        {
+            var teams = await _teamRepository.FindAll().ToListAsync(cancellationToken);
+            var teamsDTO = _mapper.Map<IEnumerable<TeamDTO>>(teams);
+            var teamsWithUserDTO = new List<TeamWithMemberDTO>();
+            foreach (var teamDTO in teamsDTO)
+            {
+                var userTeamDTO = await _userTeamRepository
+                                        .FindAll(ut => ut.TeamId == teamDTO.Id)
+                                        .ToListAsync();
+                var members = userTeamDTO.Where(ut => ut.Team.Id == teamDTO.Id)
+                                         .Select(ut => ut.User);
+                var teamsWithMembers = new TeamWithMemberDTO()
+                {
+                    TeamName = teamDTO.TeamName,
+                    Clients = teamDTO.Clients,
+                    About = teamDTO.About,
+                    Company = teamDTO.Company,
+                    TechLead = teamDTO.TechLead,
+                    Members = _mapper.Map<IEnumerable<UserDTO>>(members)
+                };
+                teamsWithUserDTO.Add(teamsWithMembers);
+            }
+            return Ok(teamsWithUserDTO);
         }
 
         [HttpGet("{id}")]
@@ -58,18 +89,25 @@ namespace Intranet.Controllers
         public async Task<IActionResult> CreatTeamWithUsers(CreateTeamWithMultipleUsers dto, CancellationToken cancellationToken = default)
         {
             using var transaction = await _intranetContext.Database.BeginTransactionAsync(cancellationToken);
-            var existingTeam = await _teamRepository.FindByIdAsync(dto.Team.Id, cancellationToken);
+            var existingTeam = await _teamRepository.FindByIdAsync(dto.Id, cancellationToken);
             if (existingTeam == null)
             {
-                var team = _mapper.Map<Team>(dto.Team);
+                var team = new Team() 
+                {
+                    TeamName = dto.TeamName,
+                    Clients = dto.Clients,
+                    About = dto.About,
+                    Company = dto.Company,
+                    TechLead = dto.TechLead
+                };
                 _teamRepository.Create(team);
                 await _teamRepository.SaveChangesAsync(cancellationToken);
-                foreach (var user in dto.Users)
+                foreach (var user in dto.Members)
                 {
                     var userTeam = new UserTeam()
                     {
-                        Team = team,
-                        User = _mapper.Map<User>(user)
+                        TeamId = team.Id,
+                        UserId = user.Id
                     };
                     _userTeamRepository.Create(userTeam);
                     await _userTeamRepository.SaveChangesAsync(cancellationToken);

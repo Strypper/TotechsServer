@@ -15,9 +15,13 @@ namespace Intranet.DataObject
         public int TeamId { get; set; }
     }
 
-    public class CreateTeamWithMultipleUsers
+    public class CreateTeamWithMultipleUsers : BaseDTO
     {
-        public ICollection<UserDTO> Users { get; set; } = new HashSet<UserDTO>();
-        public TeamDTO Team { get; set; }
+        public ICollection<UserDTO> Members { get; set; } = new HashSet<UserDTO>();
+        public string TeamName { get; set; }
+        public string Clients { get; set; }
+        public string About { get; set; }
+        public bool Company { get; set; }
+        public int TechLead { get; set; }
     }
 }

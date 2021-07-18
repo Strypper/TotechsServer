@@ -11,4 +11,9 @@ namespace Intranet.DataObject
         public bool Company { get; set; }
         public int TechLead { get; set; }
     }
+
+    public class TeamWithMemberDTO : TeamDTO
+    {
+        public IEnumerable<UserDTO> Members { get; set; }
+    }
 }
