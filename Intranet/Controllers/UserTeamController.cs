@@ -49,8 +49,14 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
             if (user is null) return NotFound();
-            var userSelectedFood = await _userTeamRepository.FindByUserId(userId, cancellationToken);
-            return Ok(_mapper.Map<UserTeamDTO>(userSelectedFood));
+            var userTeams = await _userTeamRepository.FindAll(ut => ut.User == user).ToListAsync();
+
+            var teams = new List<Team>();
+            foreach (var userTeam in userTeams)
+            {
+                teams.Add(userTeam.Team);
+            }
+            return Ok(_mapper.Map<IEnumerable<TeamDTO>>(teams));
         }
 
         [HttpPost]
