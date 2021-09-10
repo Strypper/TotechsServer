@@ -56,6 +56,7 @@ namespace Intranet.Controllers
                                          .Select(ut => ut.User);
                 var teamsWithMembers = new TeamWithMemberDTO()
                 {
+                    Id = teamDTO.Id,
                     TeamName = teamDTO.TeamName,
                     Clients = teamDTO.Clients,
                     About = teamDTO.About,
