@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Intranet
 {
@@ -17,6 +19,7 @@ namespace Intranet
                 .ForMember(d => d.Id, o => o.Ignore());
 
             CreateMap<User, UserDTO>()
+                .ForMember(d => d.Skills, o => o.MapFrom(s => s.Skills == null ? null :         JsonConvert.DeserializeObject<List<SkillDTO>>(s.Skills)))
                 .ForMember(d => d.Password, o => o.Ignore());
 
             CreateMap<UserDTO, User>()
