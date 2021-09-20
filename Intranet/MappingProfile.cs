@@ -23,6 +23,7 @@ namespace Intranet
                 .ForMember(d => d.Password, o => o.Ignore());
 
             CreateMap<UserDTO, User>()
+                .ForMember(d => d.Skills, o => o.MapFrom(s => s.Skills == null ? null : JsonConvert.SerializeObject(s.Skills)))
                 .ForMember(d => d.Id, o => o.Ignore());
 
             CreateMap<UserFood, UserFoodDTO>()
