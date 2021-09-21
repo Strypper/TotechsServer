@@ -61,7 +61,8 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
             if (user is null) return NotFound();
-            _mapper.Map<User>(user);
+            dto.Password = user.Password;
+            _mapper.Map(dto, user);
             await _userRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
         }
