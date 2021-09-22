@@ -1,4 +1,6 @@
-﻿using Intranet.Contract;
+﻿using AutoMapper;
+using Intranet.Contract;
+using Intranet.DataObject;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading;
@@ -8,12 +10,14 @@ namespace Intranet.Hubs
 {
     public class ChatHub : Hub
     {
+        public IMapper _mapper;
         private IUserRepository _userRepository;
         private IGroupChatRepository _groupChatRepository;
         private IChatMessageRepository _chatMessageRepository;
 
-        public ChatHub(IUserRepository userRepository, IGroupChatRepository groupChatRepository, IChatMessageRepository chatMessageRepository)
+        public ChatHub(IMapper mapper, IUserRepository userRepository, IGroupChatRepository groupChatRepository, IChatMessageRepository chatMessageRepository)
         {
+            _mapper = mapper;
             _userRepository = userRepository;
             _groupChatRepository = groupChatRepository;
             _chatMessageRepository = chatMessageRepository;
@@ -46,7 +50,7 @@ namespace Intranet.Hubs
             CancellationToken token = new CancellationToken(default);
             var user = await _userRepository.FindByIdAsync(userId, token);
             System.Diagnostics.Debug.WriteLine(mess);
-            await Clients.All.SendAsync("ReceiveMessage", mess, user);
+            await Clients.All.SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(user));
         }
     }
 }
