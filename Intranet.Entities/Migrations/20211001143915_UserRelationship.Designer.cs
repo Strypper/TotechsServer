@@ -4,14 +4,16 @@ using Intranet.Entities.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Intranet.Entities.Migrations
 {
     [DbContext(typeof(IntranetContext))]
-    partial class IntranetContextModelSnapshot : ModelSnapshot
+    [Migration("20211001143915_UserRelationship")]
+    partial class UserRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,9 +177,6 @@ namespace Intranet.Entities.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Level")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Like")

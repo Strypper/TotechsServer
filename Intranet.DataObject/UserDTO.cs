@@ -17,9 +17,9 @@ namespace Intranet.DataObject
         public string? Bio { get; set; }
         public string? PhoneNumber { get; set; }
         public bool? Company { get; set; }
-        public string? Age { get; set; }
         public bool IsDisable { get; set; }
         public string? Role { get; set; }
+        public string? Level { get; set; }
         public bool? Gender { get; set; }
         public string Password { get; set; }
         public string? SpecialAward { get; set; }
@@ -27,6 +27,8 @@ namespace Intranet.DataObject
         public int? Friendly { get; set; }
         public int? Funny { get; set; }
         public int? Enthusiastic { get; set; }
+        public string? Relationship { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public ICollection<SkillDTO>? Skills { get; set; } = Array.Empty<SkillDTO>();
     }
 

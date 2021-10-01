@@ -18,10 +18,10 @@ namespace Intranet.Entities.Entities
         public string? Hobby { get; set; }
         public string SpecialAward { get; set; } = "No Award Yet";
         public bool Company { get; set; }
-        public string? Age { get; set; }
         public bool? Gender { get; set; }
         public bool IsDisable { get; set; }
         public string? Role { get; set; }
+        public string? Level { get; set; }
         public string Password { get; set; }
         public int? GroupChatId { get; set; }
         public int? Like { get; set; }
@@ -29,6 +29,8 @@ namespace Intranet.Entities.Entities
         public int? Funny { get; set; }
         public int? Enthusiastic { get; set; }
         public string? Skills { get; set; }
+        public string? Relationship { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public virtual GroupChat? GroupChat { get; set; }
     }
