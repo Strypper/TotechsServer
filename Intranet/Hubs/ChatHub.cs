@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Intranet.Contract;
 using Intranet.DataObject;
+using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,17 +13,23 @@ namespace Intranet.Hubs
 {
     public class ChatHub : Hub
     {
-        public IMapper _mapper;
+        private IMapper _mapper;
         private IUserRepository _userRepository;
         private IGroupChatRepository _groupChatRepository;
         private IChatMessageRepository _chatMessageRepository;
+        private IConversationRepository _conversationRepository;
 
-        public ChatHub(IMapper mapper, IUserRepository userRepository, IGroupChatRepository groupChatRepository, IChatMessageRepository chatMessageRepository)
+        public ChatHub(IMapper mapper, 
+                       IUserRepository userRepository, 
+                       IGroupChatRepository groupChatRepository, 
+                       IChatMessageRepository chatMessageRepository,
+                       IConversationRepository conversationRepository)
         {
-            _mapper = mapper;
-            _userRepository = userRepository;
-            _groupChatRepository = groupChatRepository;
-            _chatMessageRepository = chatMessageRepository;
+            _mapper                 = mapper;
+            _userRepository         = userRepository;
+            _groupChatRepository    = groupChatRepository;
+            _chatMessageRepository  = chatMessageRepository;
+            _conversationRepository = conversationRepository;
         }
 
         public override async Task OnConnectedAsync()
@@ -34,23 +43,65 @@ namespace Intranet.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
+
+            var user = await _userRepository.FindBySignalRConnectionId(Context.ConnectionId);
+            user.SignalRConnectionId = null;
+            _userRepository.Update(user);
+
             await base.OnDisconnectedAsync(exception);
         }
 
         public async Task JoinGroup(int groupId, int userId)
         {
             CancellationToken token = new CancellationToken(default);
-            var user = await _userRepository.FindByIdAsync(userId, token);
+            var user  = await _userRepository.FindByIdAsync(userId, token);
             var group = await _groupChatRepository.FindByIdAsync(groupId, token);
             await Groups.AddToGroupAsync(Context.ConnectionId , group.GroupName);
         }
 
-        public async Task SendMessage(string mess, int userId)
+        public async Task IdentifyUser(string connectionId, int userId)
         {
             CancellationToken token = new CancellationToken(default);
             var user = await _userRepository.FindByIdAsync(userId, token);
-            System.Diagnostics.Debug.WriteLine(mess);
-            await Clients.All.SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(user));
+
+            user.SignalRConnectionId = connectionId;
+            _userRepository.Update(user);
+
+            await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity", _mapper.Map<UserDTO>(user));
+        }
+
+        public async Task SendMessage(string mess, int conversationId)
+        {
+            CancellationToken cancellationToken = new CancellationToken(default);
+            var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
+            if(conversation != null){
+                var fromUser     = await _userRepository.FindByIdAsync(conversation.Users.FirstOrDefault().Id,cancellationToken);
+                var toUser       = await _userRepository.FindByIdAsync(conversation.Users.LastOrDefault().Id ,cancellationToken);
+                _chatMessageRepository.Create(new ChatMessage(){
+                    User           = fromUser,
+                    MessageContent = mess
+                });
+                if (toUser.SignalRConnectionId != null) await Clients.Client(toUser.SignalRConnectionId).SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
+            }
+            else{
+                // _conversationRepository.Create(new Conversation() 
+                // {
+                //     ChatMessages = new List<ChatMessage>()
+                //     {
+                //         new ChatMessage()
+                //         {
+                //             User           = fromUser,
+                //             MessageContent = mess
+                //         }
+                //     },
+                //     Users = new List<User>()
+                //     {
+                //         fromUser,
+                //         toUser
+                //     }    
+                // });
+                System.Diagnostics.Debug.WriteLine("The conversation does not exist");
+            }
         }
     }
 }

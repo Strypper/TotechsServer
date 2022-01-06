@@ -2,7 +2,6 @@
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
-using Intranet.Repo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -24,10 +23,10 @@ namespace Intranet.Controllers
                                   IUserRepository userRepository, 
                                   IFoodRepository foodRepository)
         {
-            _mapper = mapper;
+            _mapper             = mapper;
             _userFoodRepository = userFoodRepository;
-            _userRepository = userRepository;
-            _foodRepository = foodRepository;
+            _userRepository     = userRepository;
+            _foodRepository     = foodRepository;
         }
 
         [HttpGet]

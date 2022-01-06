@@ -14,6 +14,10 @@ namespace Intranet
                 .ReverseMap()
                 .ForMember(d => d.Id, o => o.Ignore());
 
+            CreateMap<Conversation, ConversationDTO>()
+                .ReverseMap()
+                .ForMember(d => d.Id, o => o.Ignore());
+
             CreateMap<Team, TeamDTO>()
                 .ReverseMap()
                 .ForMember(d => d.Id, o => o.Ignore());

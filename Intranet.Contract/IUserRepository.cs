@@ -10,5 +10,6 @@ namespace Intranet.Contract
     {
         Task<User> FindByUserIdWithoutCancellationToken(int id);
         Task<User> FindByUserName(string userName, CancellationToken cancellationToken = default);
+        Task<User> FindBySignalRConnectionId(string connectionId, CancellationToken cancellationToken = default);
     }
 }

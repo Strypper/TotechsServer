@@ -18,5 +18,8 @@ namespace Intranet.Repo
 
         public async Task<User> FindByUserName(string userName, CancellationToken cancellationToken = default)
             => await FindAll(u => u.UserName == userName).FirstOrDefaultAsync(cancellationToken);
+
+        public async Task<User> FindBySignalRConnectionId(string connectionId, CancellationToken cancellationToken = default)
+            => await FindAll(u => u.SignalRConnectionId == connectionId).FirstOrDefaultAsync(cancellationToken);
     }
 }

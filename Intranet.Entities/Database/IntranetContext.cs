@@ -9,7 +9,11 @@ namespace Intranet.Entities.Database
         public DbSet<Food> Foods { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Team> Teams { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<UserFood> UserFoods { get; set; }
+        public DbSet<UserTeam> UserTeams { get; set; }
+        public DbSet<UserConversation> UserConversations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -39,6 +43,13 @@ namespace Intranet.Entities.Database
                 entity.ToTable("UserTeams");
                 entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
                 entity.HasOne(e => e.Team).WithMany().HasForeignKey(e => e.TeamId);
+            });
+
+            builder.Entity<UserConversation>(entity =>
+            {
+                entity.ToTable("UserConversations");
+                entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
+                entity.HasOne(e => e.Conversation).WithMany().HasForeignKey(e => e.ConversationId);
             });
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Intranet.Entities.Entities
 {
@@ -31,7 +30,8 @@ namespace Intranet.Entities.Entities
         public string? Skills { get; set; }
         public string? Relationship { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public string? SignalRConnectionId { get; set; }
 
-        public virtual GroupChat? GroupChat { get; set; }
+        public virtual ICollection<Conversation> Conversations { get; set; } = new HashSet<Conversation>();
     }
 }

@@ -29,6 +29,8 @@ namespace Intranet.DataObject
         public int? Enthusiastic { get; set; }
         public string? Relationship { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public string? SignalRConnectionId { get; set; }
+
         public ICollection<SkillDTO>? Skills { get; set; } = Array.Empty<SkillDTO>();
     }
 

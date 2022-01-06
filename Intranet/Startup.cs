@@ -34,13 +34,15 @@ namespace Intranet
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Intranet", Version = "v1" });
             });
             services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IntranetContext")));
-            services.AddTransient<IFoodRepository, FoodRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IUserFoodRepository, UserFoodRepository>();
-            services.AddTransient<IGroupChatRepository, GroupChatRepository>();
-            services.AddTransient<IChatMessageRepository, ChatMessageRepository>();
-            services.AddTransient<ITeamRepository, TeamRepository>();
-            services.AddTransient<IUserTeamRepository, UserTeamRepository>();
+            services.AddTransient<IFoodRepository            , FoodRepository>();
+            services.AddTransient<IUserRepository            , UserRepository>();
+            services.AddTransient<IUserFoodRepository        , UserFoodRepository>();
+            services.AddTransient<IGroupChatRepository       , GroupChatRepository>();
+            services.AddTransient<IChatMessageRepository     , ChatMessageRepository>();
+            services.AddTransient<ITeamRepository            , TeamRepository>();
+            services.AddTransient<IUserTeamRepository        , UserTeamRepository>();
+            services.AddTransient<IConversationRepository    , ConversationRepository>();
+            services.AddTransient<IUserConversationRepository, UserConversationRepository>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
