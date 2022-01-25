@@ -22,7 +22,6 @@ namespace Intranet.Entities.Entities
         public string? Role { get; set; }
         public string? Level { get; set; }
         public string Password { get; set; }
-        public int? GroupChatId { get; set; }
         public int? Like { get; set; }
         public int? Friendly { get; set; }
         public int? Funny { get; set; }
@@ -31,7 +30,5 @@ namespace Intranet.Entities.Entities
         public string? Relationship { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? SignalRConnectionId { get; set; }
-
-        public virtual ICollection<Conversation> Conversations { get; set; } = new HashSet<Conversation>();
     }
 }

@@ -28,14 +28,18 @@ namespace Intranet.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
-            var conversations = await _conversationRepository.FindAll().ToListAsync(cancellationToken);
+            var conversations = await _conversationRepository.FindAll()
+                                                             .Include(conversation => conversation.ChatMessages)
+                                                             .Include(conversation => conversation.Users)
+                                                             .ToListAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<ConversationDTO>>(conversations));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
         {
-            var conversation = await _conversationRepository.FindByIdAsync(id, cancellationToken);
+            var conversation = await _conversationRepository
+                                    .FindByIdAsync(id, cancellationToken);
             if (conversation is null) return NotFound();
             return Ok(_mapper.Map<ConversationDTO>(conversation));
         }
@@ -50,9 +54,13 @@ namespace Intranet.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ConversationDTO dto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Create(CreateConversationDTO dto, CancellationToken cancellationToken = default)
         {
-            var conversation = _mapper.Map<Conversation>(dto);
+            var currentUser = await _userRepository.FindByIdAsync(dto.CurrentUserId, cancellationToken);
+            var targerUser  = await _userRepository.FindByIdAsync(dto.TargerUserId,  cancellationToken);
+
+
+            var conversation = new Conversation() { Users = new List<User>() { currentUser, targerUser } };
             _conversationRepository.Create(conversation);
             await _conversationRepository.SaveChangesAsync(cancellationToken);
             return CreatedAtAction(nameof(Get), new { conversation.Id }, _mapper.Map<ConversationDTO>(conversation));

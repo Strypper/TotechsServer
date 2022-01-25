@@ -75,8 +75,8 @@ namespace Intranet.Hubs
             CancellationToken cancellationToken = new CancellationToken(default);
             var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
             if(conversation != null){
-                var fromUser     = await _userRepository.FindByIdAsync(conversation.Users.FirstOrDefault().Id,cancellationToken);
-                var toUser       = await _userRepository.FindByIdAsync(conversation.Users.LastOrDefault().Id ,cancellationToken);
+                var fromUser     = conversation.Users.FirstOrDefault();
+                var toUser       = conversation.Users.LastOrDefault() ;
                 _chatMessageRepository.Create(new ChatMessage(){
                     User           = fromUser,
                     MessageContent = mess
@@ -84,22 +84,6 @@ namespace Intranet.Hubs
                 if (toUser.SignalRConnectionId != null) await Clients.Client(toUser.SignalRConnectionId).SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
             }
             else{
-                // _conversationRepository.Create(new Conversation() 
-                // {
-                //     ChatMessages = new List<ChatMessage>()
-                //     {
-                //         new ChatMessage()
-                //         {
-                //             User           = fromUser,
-                //             MessageContent = mess
-                //         }
-                //     },
-                //     Users = new List<User>()
-                //     {
-                //         fromUser,
-                //         toUser
-                //     }    
-                // });
                 System.Diagnostics.Debug.WriteLine("The conversation does not exist");
             }
         }

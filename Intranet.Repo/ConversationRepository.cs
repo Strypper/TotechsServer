@@ -4,6 +4,7 @@ using Intranet.Entities.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Intranet.Repo
@@ -11,6 +12,13 @@ namespace Intranet.Repo
     public class ConversationRepository : BaseRepository<Conversation>, IConversationRepository
     {
         public ConversationRepository(IntranetContext ic) : base(ic) { }
+
+        //public override async Task<Conversation> FindByIdAsync(int id, CancellationToken cancellationToken)
+        //    => await FindAll()
+        //            .Include(conversation => conversation.ChatMessages)
+        //                .Take(10)
+        //            .Include(conversation => conversation.Users)
+        //            .FirstOrDefaultAsync(cancellationToken);
 
         //public async Task<Conversation> FindConversationAsync(List<User> users)
         //{
