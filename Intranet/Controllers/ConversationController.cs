@@ -5,6 +5,7 @@ using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,6 +31,7 @@ namespace Intranet.Controllers
         {
             var conversations = await _conversationRepository.FindAll()
                                                              .Include(conversation => conversation.ChatMessages)
+                                                                .Take(10)
                                                              .Include(conversation => conversation.Users)
                                                              .ToListAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<ConversationDTO>>(conversations));
@@ -38,8 +40,7 @@ namespace Intranet.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
         {
-            var conversation = await _conversationRepository
-                                    .FindByIdAsync(id, cancellationToken);
+            var conversation = await _conversationRepository.FindByIdAsync(id, cancellationToken);
             if (conversation is null) return NotFound();
             return Ok(_mapper.Map<ConversationDTO>(conversation));
         }
@@ -49,8 +50,11 @@ namespace Intranet.Controllers
         {
             var user          = await _userRepository.FindByIdAsync(id, cancellationToken);
             var conversations = await _conversationRepository.FindAll(c => c.Users.Contains(user))
+                                                              .Include(conversation => conversation.ChatMessages)
+                                                                .Take(10)
+                                                             .Include(conversation => conversation.Users)
                                                              .ToListAsync(cancellationToken);
-            return Ok();
+            return Ok(_mapper.Map<IEnumerable<ConversationDTO>>(conversations));
         }
 
         [HttpPost]

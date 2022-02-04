@@ -13,12 +13,12 @@ namespace Intranet.Repo
     {
         public ConversationRepository(IntranetContext ic) : base(ic) { }
 
-        //public override async Task<Conversation> FindByIdAsync(int id, CancellationToken cancellationToken)
-        //    => await FindAll()
-        //            .Include(conversation => conversation.ChatMessages)
-        //                .Take(10)
-        //            .Include(conversation => conversation.Users)
-        //            .FirstOrDefaultAsync(cancellationToken);
+        public override async Task<Conversation> FindByIdAsync(int id, CancellationToken cancellationToken)
+            => await FindAll()
+                    .Include(conversation => conversation.ChatMessages)
+                        .Take(10)
+                    .Include(conversation => conversation.Users)
+                    .FirstOrDefaultAsync(cancellationToken);
 
         //public async Task<Conversation> FindConversationAsync(List<User> users)
         //{

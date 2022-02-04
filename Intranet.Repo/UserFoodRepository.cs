@@ -12,10 +12,7 @@ namespace Intranet.Repo
 {
     public class UserFoodRepository : BaseRepository<UserFood>, IUserFoodRepository
     {
-        public UserFoodRepository(IntranetContext ic) : base(ic)
-        {
-
-        }
+        public UserFoodRepository(IntranetContext ic) : base(ic) { }
 
         public override IQueryable<UserFood> FindAll(Expression<Func<UserFood, bool>>? predicate = null)
             => (predicate == null ? _dbSet.Where(x => true) : _dbSet.Where(predicate)).Include(f => f.Food).Include(u => u.User);
