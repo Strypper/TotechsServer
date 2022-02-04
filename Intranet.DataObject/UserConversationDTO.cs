@@ -13,7 +13,7 @@ namespace Intranet.DataObject
     }
     public class CreateUpdateUserConversationDTO
     {
-        public int UserId { get; set; }
-        public int ConversationId { get; set; }
+        public int CurrentUserId { get; set; }
+        public int TargetUserId { get; set; }
     }
 }
