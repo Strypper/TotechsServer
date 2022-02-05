@@ -12,7 +12,7 @@ namespace Intranet.Entities.Entities
 
         public bool IsMute { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         //conversation.ChatMessages.First();
     }
 }

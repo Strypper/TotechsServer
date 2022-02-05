@@ -73,7 +73,11 @@ namespace Intranet.Controllers
             if (currentUserConversations.Intersect(targetUserConversations).Any() == false)
             {
                 using var intranetTransaction = await _intranetContext.Database.BeginTransactionAsync();
-                var newConversation = new Conversation() { Users = new List<User>() { currentUser, targetUser } };
+                var newConversation = new Conversation() { 
+                                                           Users = new List<User>() { currentUser, targetUser }, 
+                                                           LastInteractionTime = System.DateTime.Now,
+                                                           ChatMessages = new List<ChatMessage>()
+                                                         };
                 _conversationRepository.Create(newConversation);
                 await _conversationRepository.SaveChangesAsync(cancellationToken);
                 var currentUserConversation = new UserConversation()
