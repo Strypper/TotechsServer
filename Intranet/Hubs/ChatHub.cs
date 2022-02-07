@@ -70,17 +70,23 @@ namespace Intranet.Hubs
             await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity", _mapper.Map<UserDTO>(user));
         }
 
-        public async Task SendMessage(string mess, int conversationId)
+        public async Task SendMessage(string mess, 
+                                      int conversationId, 
+                                      int fromUserId, 
+                                      int toUserId)
         {
             CancellationToken cancellationToken = new CancellationToken(default);
             var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
             if(conversation != null){
-                var fromUser     = conversation.Users.FirstOrDefault();
-                var toUser       = conversation.Users.LastOrDefault() ;
+                var fromUser     = await _userRepository.FindByIdAsync(fromUserId, cancellationToken);
+                var toUser       = await _userRepository.FindByIdAsync(toUserId, cancellationToken);
                 _chatMessageRepository.Create(new ChatMessage(){
                     User           = fromUser,
                     MessageContent = mess
                 });
+                conversation.LastMessageContent = mess;
+                conversation.LastInteractionTime = DateTime.UtcNow;
+                _conversationRepository.Update(conversation);
                 if (toUser.SignalRConnectionId != null) await Clients.Client(toUser.SignalRConnectionId).SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
             }
             else{

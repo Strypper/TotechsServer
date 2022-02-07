@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intranet.Entities.Migrations
 {
     [DbContext(typeof(IntranetContext))]
-    [Migration("20220205114642_Reinit_UserConversation_Table")]
-    partial class Reinit_UserConversation_Table
+    [Migration("20220205150742_Initial_Migration")]
+    partial class Initial_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -140,9 +140,6 @@ namespace Intranet.Entities.Migrations
                     b.Property<bool>("Company")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ConversationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
@@ -215,8 +212,6 @@ namespace Intranet.Entities.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConversationId");
 
                     b.ToTable("Users");
                 });
@@ -306,13 +301,6 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.User", b =>
-                {
-                    b.HasOne("Intranet.Entities.Entities.Conversation", null)
-                        .WithMany("Users")
-                        .HasForeignKey("ConversationId");
-                });
-
             modelBuilder.Entity("Intranet.Entities.Entities.UserConversation", b =>
                 {
                     b.HasOne("Intranet.Entities.Entities.Conversation", "Conversation")
@@ -373,8 +361,6 @@ namespace Intranet.Entities.Migrations
             modelBuilder.Entity("Intranet.Entities.Entities.Conversation", b =>
                 {
                     b.Navigation("ChatMessages");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

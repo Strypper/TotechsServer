@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Intranet.Entities.Entities
+﻿namespace Intranet.Entities.Entities
 {
     public class UserFood : BaseEntity
     {

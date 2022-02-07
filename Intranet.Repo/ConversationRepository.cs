@@ -17,7 +17,6 @@ namespace Intranet.Repo
             => await FindAll()
                     .Include(conversation => conversation.ChatMessages)
                         .Take(10)
-                    .Include(conversation => conversation.Users)
                     .FirstOrDefaultAsync(cancellationToken);
 
         //public async Task<Conversation> FindConversationAsync(List<User> users)
