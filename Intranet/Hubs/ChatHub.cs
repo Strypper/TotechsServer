@@ -45,8 +45,11 @@ namespace Intranet.Hubs
             System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
 
             var user = await _userRepository.FindBySignalRConnectionId(Context.ConnectionId);
-            user.SignalRConnectionId = null;
-            _userRepository.Update(user);
+            if (user != null)
+            {
+                user.SignalRConnectionId = null;
+                _userRepository.Update(user);
+            }
 
             await base.OnDisconnectedAsync(exception);
         }

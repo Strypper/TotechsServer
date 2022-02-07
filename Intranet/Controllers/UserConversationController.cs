@@ -54,7 +54,7 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
             if (user is null) return NotFound();
-            var userConversations = await _userConversationRepository.FindByUserId(userId, cancellationToken);
+            var userConversations = await _userConversationRepository.FindAll(uc => uc.UserId == userId).ToListAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<UserConversationDTO>>(userConversations));
         }
 

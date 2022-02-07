@@ -46,7 +46,7 @@ namespace Intranet.Controllers
             return Ok(_mapper.Map<ConversationDTO>(conversation));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetByUserIdDirectMode(int userId, CancellationToken cancellationToken)
         {
             var currentUser       = await _userRepository.FindByIdAsync(userId, cancellationToken);
