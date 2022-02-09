@@ -85,11 +85,15 @@ namespace Intranet.Hubs
                 var toUser       = await _userRepository.FindByIdAsync(toUserId, cancellationToken);
                 _chatMessageRepository.Create(new ChatMessage(){
                     User           = fromUser,
-                    MessageContent = mess
+                    MessageContent = mess,
+                    SentTime       = DateTime.UtcNow,
+                    Conversation   = conversation
                 });
                 conversation.LastMessageContent = mess;
                 conversation.LastInteractionTime = DateTime.UtcNow;
                 _conversationRepository.Update(conversation);
+                await _chatMessageRepository.SaveChangesAsync(cancellationToken);
+                await _conversationRepository.SaveChangesAsync(cancellationToken);
                 if (toUser.SignalRConnectionId != null) await Clients.Client(toUser.SignalRConnectionId).SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
             }
             else{
