@@ -68,10 +68,11 @@ namespace Intranet.Controllers
                 var targetUser = await _userRepository.FindByIdAsync(targetUserId, cancellationToken);
                 var conversationDirectModeDTO = new ConversationDirectModeDTO()
                 {
-                    ChatMessages = _mapper.Map<ICollection<ChatMessageDTO>>(conversation.ChatMessages),
-                    DateCreated = conversation.DateCreated,
+                    Id                  = conversation.Id,
+                    ChatMessages        = _mapper.Map<ICollection<ChatMessageDTO>>(conversation.ChatMessages),
+                    DateCreated         = conversation.DateCreated,
                     LastInteractionTime = conversation.LastInteractionTime,
-                    LastMessageContent = conversation.LastMessageContent,
+                    LastMessageContent  = conversation.LastMessageContent,
                     Users = new List<UserDTO>() { _mapper.Map<UserDTO>(currentUser), _mapper.Map<UserDTO>(targetUser) }
                 };
                 conversationDirectModeDTOList.Add(conversationDirectModeDTO);
