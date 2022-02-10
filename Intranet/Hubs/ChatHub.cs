@@ -35,7 +35,7 @@ namespace Intranet.Hubs
         public override async Task OnConnectedAsync()
         {
             System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
-            await Clients.Caller.SendAsync($"Welcome {Context.ConnectionId}");
+            await Clients.Caller.SendAsync("IdentifyUser", Context.ConnectionId);
             await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
             await base.OnConnectedAsync();
         }
@@ -43,12 +43,13 @@ namespace Intranet.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
-
+            CancellationToken cancellationToken = new CancellationToken(default);
             var user = await _userRepository.FindBySignalRConnectionId(Context.ConnectionId);
             if (user != null)
             {
                 user.SignalRConnectionId = null;
                 _userRepository.Update(user);
+                await _userRepository.SaveChangesAsync(cancellationToken);
             }
 
             await base.OnDisconnectedAsync(exception);
@@ -64,12 +65,12 @@ namespace Intranet.Hubs
 
         public async Task IdentifyUser(string connectionId, int userId)
         {
-            CancellationToken token = new CancellationToken(default);
-            var user = await _userRepository.FindByIdAsync(userId, token);
+            CancellationToken cancellationToken = new CancellationToken(default);
+            var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
 
             user.SignalRConnectionId = connectionId;
             _userRepository.Update(user);
-
+            await _userRepository.SaveChangesAsync(cancellationToken);
             await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity", _mapper.Map<UserDTO>(user));
         }
 
