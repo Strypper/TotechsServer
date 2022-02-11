@@ -95,7 +95,12 @@ namespace Intranet.Hubs
                 _conversationRepository.Update(conversation);
                 await _chatMessageRepository.SaveChangesAsync(cancellationToken);
                 await _conversationRepository.SaveChangesAsync(cancellationToken);
-                if (toUser.SignalRConnectionId != null) await Clients.Client(toUser.SignalRConnectionId).SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
+                if (toUser.SignalRConnectionId != null)
+                {
+                    await Clients.Client(toUser.SignalRConnectionId).SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
+                }
+
+                await Clients.Caller.SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
             }
             else{
                 System.Diagnostics.Debug.WriteLine("The conversation does not exist");
