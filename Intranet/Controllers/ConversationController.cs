@@ -56,6 +56,7 @@ namespace Intranet.Controllers
             var conversationIds   = userConverastions.Select(userConverastions => userConverastions.ConversationId);
             var conversations     = await _conversationRepository.FindAll(c => conversationIds.Contains(c.Id))
                                                                  .Include(conversation => conversation.ChatMessages)
+                                                                 .ThenInclude(chatmessage => chatmessage.User)
                                                                     .Take(10)
                                                                  .ToListAsync(cancellationToken);
             var conversationDirectModeDTOList = new List<ConversationDirectModeDTO>();
