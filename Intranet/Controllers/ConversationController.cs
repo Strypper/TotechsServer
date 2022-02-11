@@ -69,7 +69,7 @@ namespace Intranet.Controllers
                 var conversationDirectModeDTO = new ConversationDirectModeDTO()
                 {
                     Id                  = conversation.Id,
-                    ChatMessages        = _mapper.Map<ICollection<ChatMessageDTO>>(conversation.ChatMessages),
+                    ChatMessages        = conversation.ChatMessages.Select(chatMessage => _mapper.Map<ChatMessageDTO>(chatMessage)).ToList(),
                     DateCreated         = conversation.DateCreated,
                     LastInteractionTime = conversation.LastInteractionTime,
                     LastMessageContent  = conversation.LastMessageContent,
