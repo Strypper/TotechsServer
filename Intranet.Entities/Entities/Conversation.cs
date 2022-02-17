@@ -9,5 +9,6 @@ namespace Intranet.Entities.Entities
         public DateTime                 DateCreated         { get; set; } = DateTime.UtcNow;
         public DateTime                 LastInteractionTime { get; set; }
         public string                   LastMessageContent  { get; set; } = String.Empty;
+
     }
 }

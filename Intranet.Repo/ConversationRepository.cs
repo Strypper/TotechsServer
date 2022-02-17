@@ -14,7 +14,7 @@ namespace Intranet.Repo
         public ConversationRepository(IntranetContext ic) : base(ic) { }
 
         public override async Task<Conversation> FindByIdAsync(int id, CancellationToken cancellationToken)
-            => await FindAll()
+            => await FindAll(conversaion => conversaion.Id == id)
                     .Include(conversation => conversation.ChatMessages)
                         .Take(10)
                     .FirstOrDefaultAsync(cancellationToken);

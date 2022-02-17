@@ -30,5 +30,6 @@ namespace Intranet.Entities.Entities
         public string? Relationship { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? SignalRConnectionId { get; set; }
+
     }
 }
