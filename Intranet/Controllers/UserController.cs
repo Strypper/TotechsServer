@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Intranet.Contract;
 using Intranet.DataObject;
+using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +16,25 @@ namespace Intranet.Controllers
     [Route("/api/[controller]/[action]")]
     public class UserController : BaseController
     {
-        private IMapper _mapper;
-        private IUserRepository _userRepository;
-        public UserController(IMapper mapper, IUserRepository userRepository)
+        private IMapper                     _mapper;
+        private IntranetContext             _intranetContext;
+        private IUserRepository             _userRepository;
+        private IChatMessageRepository      _chatMessageRepository;
+        private IConversationRepository     _conversationRepository;
+        private IUserConversationRepository _userConversationRepository;
+        public UserController(IMapper                     mapper,
+                              IntranetContext             intranetContext,
+                              IUserRepository             userRepository,
+                              IChatMessageRepository      chatMessageRepository,
+                              IConversationRepository     conversationRepository,
+                              IUserConversationRepository userConversationRepository)
         {
-            _mapper = mapper;
-            _userRepository = userRepository;
+            _mapper                     = mapper;
+            _intranetContext            = intranetContext; 
+            _userRepository             = userRepository;
+            _chatMessageRepository      = chatMessageRepository;
+            _conversationRepository     = conversationRepository;
+            _userConversationRepository = userConversationRepository;
         }
 
         [HttpGet]
@@ -72,8 +86,33 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(id, cancellationToken);
             if (user is null) return NotFound();
+            using var intranetTransaction = await _intranetContext.Database.BeginTransactionAsync();
+            foreach (var chatMessage in _chatMessageRepository.FindAll(cm => cm.User.Id == user.Id))
+            {
+                _chatMessageRepository.Delete(chatMessage);
+            }
+
+            var conversationIdToDelete = new List<int>();
+            foreach (var userConversation in _userConversationRepository.FindAll(uc => uc.UserId == user.Id))
+            {
+                conversationIdToDelete.Add(userConversation.ConversationId);
+            }
+
+            foreach (var conversationId in conversationIdToDelete)
+            {
+                var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
+                _conversationRepository.Delete(conversation);
+            }
+            foreach (var conversationId in conversationIdToDelete)
+            {
+                var userConversation = await _userConversationRepository
+                                                .FindAll(uc => uc.ConversationId == conversationId)
+                                                .FirstOrDefaultAsync(cancellationToken);
+                _userConversationRepository.Delete(userConversation);
+            }
             _userRepository.Delete(user);
             await _userRepository.SaveChangesAsync(cancellationToken);
+            await _intranetContext.Database.CommitTransactionAsync(cancellationToken);
             return NoContent();
         }
     }

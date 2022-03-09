@@ -94,12 +94,21 @@ namespace Intranet.Controllers
                 _userConversationRepository.Create(targerUserConversation);
                 await _userConversationRepository.SaveChangesAsync(cancellationToken);
                 await _intranetContext.Database.CommitTransactionAsync(cancellationToken);
-                return Ok(newConversation);
+                var directConversation = _mapper.Map<ConversationDirectModeDTO>(newConversation);
+                directConversation.Users.Add(_mapper.Map<UserDTO>(currentUser));
+                directConversation.Users.Add(_mapper.Map<UserDTO>(targetUser));
+                return Ok(directConversation);
             }
             else
             {
                 //If the conversation do exist send the existing conversation-id
-                return Ok(currentUserConversations.Intersect(targetUserConversations).First());
+                var existingConversationId     = currentUserConversations.Intersect(targetUserConversations).First();
+                var existingConversation       = await _conversationRepository.FindByIdAsync(existingConversationId, cancellationToken);
+                var existingDirectConversation = _mapper.Map<ConversationDirectModeDTO>(existingConversation);
+                existingDirectConversation.Id = existingConversationId;
+                existingDirectConversation.Users.Add(_mapper.Map<UserDTO>(currentUser));
+                existingDirectConversation.Users.Add(_mapper.Map<UserDTO>(targetUser));
+                return Ok(existingDirectConversation);
             }
         }
         //[HttpPut]

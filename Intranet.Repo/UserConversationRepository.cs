@@ -17,5 +17,8 @@ namespace Intranet.Repo
 
         public async Task<IEnumerable<UserConversation>> FindByUserId(int userId, CancellationToken cancellationToken = default)
             => await FindAll(uc => uc.User.Id == userId).ToListAsync(cancellationToken);
+
+        public async Task<IEnumerable<UserConversation>> FindByConversationId(int conversationId, CancellationToken cancellationToken = default)
+    => await FindAll(uc => uc.Conversation.Id == conversationId).ToListAsync(cancellationToken);
     }
 }
