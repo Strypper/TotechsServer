@@ -26,7 +26,7 @@ namespace Intranet
                 .ReverseMap()
                 .ForMember(d => d.Id, o => o.Ignore());
 
-            CreateMap<Team, TeamDTO>()
+            CreateMap<Project, ProjectDTO>()
                 .ReverseMap()
                 .ForMember(d => d.Id, o => o.Ignore());
 
@@ -42,7 +42,7 @@ namespace Intranet
                 .ReverseMap()
                 .ForMember(d => d.Id, o => o.Ignore());
 
-            CreateMap<UserTeam, UserTeamDTO>()
+            CreateMap<UserProject, UserProjectDTO>()
                 .ReverseMap()
                 .ForMember(d => d.Id, o => o.Ignore());
         }

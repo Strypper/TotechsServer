@@ -2,7 +2,7 @@
 
 namespace Intranet.Contract
 {
-    public interface ITeamRepository : IRepositoryBase<Team>
+    public interface IProjectRepository : IRepositoryBase<Project>
     {
     }
 }

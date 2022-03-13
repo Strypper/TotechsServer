@@ -41,8 +41,8 @@ namespace Intranet
             services.AddTransient<IUserFoodRepository        , UserFoodRepository>();
             services.AddTransient<IGroupChatRepository       , GroupChatRepository>();
             services.AddTransient<IChatMessageRepository     , ChatMessageRepository>();
-            services.AddTransient<ITeamRepository            , TeamRepository>();
-            services.AddTransient<IUserTeamRepository        , UserTeamRepository>();
+            services.AddTransient<IProjectRepository         , ProjectRepository>();
+            services.AddTransient<IUserProjectRepository     , UserProjectRepository>();
             services.AddTransient<IConversationRepository    , ConversationRepository>();
             services.AddTransient<IUserConversationRepository, UserConversationRepository>();
 
