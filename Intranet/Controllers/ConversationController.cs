@@ -2,6 +2,7 @@ using AutoMapper;
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Intranet.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Policy = "LOLPermission")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
             var conversations = await _conversationRepository.FindAll()

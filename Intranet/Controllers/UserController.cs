@@ -5,9 +5,7 @@ using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -59,6 +57,10 @@ namespace Intranet.Controllers
             if (user is null || user.IsDisable == true) return NotFound();
             if (loginInfo.Password != user.Password) return NotFound();
             return Ok(_mapper.Map<UserDTO>(user));
+
+
+            //var jwtConfig = new JwtTokenConfig();
+            //return Ok(await GenerateToken(user, jwtConfig,DateTime.Now.AddMinutes(5)));
         }
 
         [HttpPost]
@@ -79,6 +81,19 @@ namespace Intranet.Controllers
             _mapper.Map(dto, user);
             await _userRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePassword(UserDTO dto, CancellationToken cancellationToken = default)
+        {
+            if(string.IsNullOrEmpty(dto.Password))
+            {
+                var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
+                if (user is null) return NotFound();
+                _mapper.Map(dto, user);
+                await _userRepository.SaveChangesAsync(cancellationToken);
+                return NoContent();
+            } else { return NotFound(); }
         }
 
         [HttpDelete("{id}")]
@@ -115,5 +130,29 @@ namespace Intranet.Controllers
             await _intranetContext.Database.CommitTransactionAsync(cancellationToken);
             return NoContent();
         }
+
+        //private async Task<string> GenerateToken(User user, JwtTokenConfig jwtTokenConfig, DateTime expires)
+        //{
+        //    var handler = new JwtSecurityTokenHandler();
+
+        //    var claims = new Claim[]
+        //    {
+        //        new Claim(ClaimTypes.Name, "Viet")
+        //    };
+
+        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("54653216554114442313244544"));
+        //    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha384);
+
+        //    var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+        //    {
+        //        Subject            = new ClaimsIdentity(claims),
+        //        Issuer             = "Bruh1",
+        //        Audience           = "Bruh",
+        //        SigningCredentials = creds,
+        //        Expires            = expires
+        //    });
+
+        //    return handler.WriteToken(securityToken);
+        //}
     }
 }

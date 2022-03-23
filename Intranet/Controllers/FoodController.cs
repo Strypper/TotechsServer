@@ -2,6 +2,7 @@
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace Intranet.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
             var foods = await _foodRepository.FindAll().ToListAsync(cancellationToken);
