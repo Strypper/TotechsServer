@@ -53,10 +53,10 @@ namespace Intranet.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateApprove(ContributionDTO dto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> UpdateApprove(int contributionId, CancellationToken cancellationToken = default)
         {
-            var contribution = await _contributionRepository.FindByIdAsync(dto.Id, cancellationToken);
-            contribution.IsApproved = dto.IsApproved;
+            var contribution = await _contributionRepository.FindByIdAsync(contributionId, cancellationToken);
+            contribution.IsApproved = true;
             await _contributionRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
         }
