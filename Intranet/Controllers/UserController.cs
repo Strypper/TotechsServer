@@ -86,7 +86,7 @@ namespace Intranet.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdatePassword(UserDTO dto, CancellationToken cancellationToken = default)
         {
-            if(string.IsNullOrEmpty(dto.Password))
+            if(!string.IsNullOrEmpty(dto.Password))
             {
                 var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
                 if (user is null) return NotFound();
