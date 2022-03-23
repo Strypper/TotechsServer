@@ -6,14 +6,15 @@ namespace Intranet.Entities.Database
     public class IntranetContext : DbContext
     {
         public IntranetContext(DbContextOptions<IntranetContext> options) : base(options) { }
-        public DbSet<Food> Foods { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<Conversation> Conversations { get; set; }
-        public DbSet<ChatMessage> ChatMessages { get; set; }
-        public DbSet<UserFood> UserFoods { get; set; }
-        public DbSet<UserProject> UserProjects { get; set; }
+        public DbSet<Food>             Foods             { get; set; }
+        public DbSet<User>             Users             { get; set; }
+        public DbSet<Project>          Projects          { get; set; }
+        public DbSet<Conversation>     Conversations     { get; set; }
+        public DbSet<ChatMessage>      ChatMessages      { get; set; }
+        public DbSet<UserFood>         UserFoods         { get; set; }
+        public DbSet<UserProject>      UserProjects      { get; set; }
         public DbSet<UserConversation> UserConversations { get; set; }
+        public DbSet<Contribution>     Contributions     { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -2,7 +2,6 @@
 using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

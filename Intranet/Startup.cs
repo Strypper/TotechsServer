@@ -103,6 +103,7 @@ namespace Intranet
             services.AddTransient<IProjectRepository         , ProjectRepository>();
             services.AddTransient<IUserProjectRepository     , UserProjectRepository>();
             services.AddTransient<IConversationRepository    , ConversationRepository>();
+            services.AddTransient<IContributionRepository    , ContributionRepository>();
             services.AddTransient<IUserConversationRepository, UserConversationRepository>();
 
 
