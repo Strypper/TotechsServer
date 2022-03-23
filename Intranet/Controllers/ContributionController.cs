@@ -14,10 +14,14 @@ namespace Intranet.Controllers
     public class ContributionController : BaseController
     {
         public IMapper                 _mapper;
+        public IUserRepository         _userRepository;
         public IContributionRepository _contributionRepository;
-        public ContributionController(IMapper mapper, IContributionRepository contributionRepository)
+        public ContributionController(IMapper mapper,
+                                      IUserRepository userRepository, 
+                                      IContributionRepository contributionRepository)
         {
             _mapper                 = mapper;
+            _userRepository         = userRepository;
             _contributionRepository = contributionRepository;
         }
 
@@ -39,6 +43,8 @@ namespace Intranet.Controllers
         public async Task<IActionResult> Create(ContributionDTO dto, CancellationToken cancellationToken = default)
         {
             var contribution = _mapper.Map<Contribution>(dto);
+            var user = await _userRepository.FindByIdAsync(contribution.Contributor.Id, cancellationToken);
+            contribution.Contributor = user;
             _contributionRepository.Create(contribution);
             await _contributionRepository.SaveChangesAsync(cancellationToken);
             return CreatedAtAction(nameof(Get), new { contribution.Id }, _mapper.Map<ContributionDTO>(contribution));
