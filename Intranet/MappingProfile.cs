@@ -34,7 +34,7 @@ namespace Intranet
                 .ForMember(d => d.Id, o => o.Ignore());
 
             CreateMap<User, UserDTO>()
-                .ForMember(d => d.Skills, o => o.MapFrom(s => s.Skills == null ? null :         JsonConvert.DeserializeObject<List<SkillDTO>>(s.Skills)))
+                .ForMember(d => d.Skills, o => o.MapFrom(s => s.Skills == null ? null : JsonConvert.DeserializeObject<List<SkillDTO>>(s.Skills)))
                 .ForMember(d => d.Password, o => o.Ignore());
 
             CreateMap<UserDTO, User>()

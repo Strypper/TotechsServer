@@ -8,6 +8,7 @@ namespace Intranet.Entities.Entities
         public decimal     Amount      { get; set; }
         public DateTime    DonateOn    { get; set; }
         public PaymentType PaymentType { get; set; }
+        public bool        IsApproved { get; set; }
     }
 
     public enum PaymentType
