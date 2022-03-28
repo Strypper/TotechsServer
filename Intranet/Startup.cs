@@ -32,8 +32,7 @@ namespace Intranet
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers().AddJsonOptions(x =>
-                            x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            services.AddControllers();
             services.AddSignalR();
             services.AddSwaggerGen(c =>
             {
@@ -122,6 +121,7 @@ namespace Intranet
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             }
 
             app.UseSwagger();
@@ -132,7 +132,6 @@ namespace Intranet
             app.UseRouting();
             //app.UseAuthentication();
             //app.UseAuthorization();
-            app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 
             app.UseEndpoints(endpoints =>
