@@ -14,6 +14,7 @@ namespace Intranet.DataObject
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }
         public string? ProfilePic { get; set; }
+        public string? CardPic { get; set; } 
         public string? Bio { get; set; }
         public string? PhoneNumber { get; set; }
         public bool? Company { get; set; }
