@@ -11,27 +11,21 @@ namespace Intranet
         public MappingProfile()
         {
             CreateMap<Food, FoodDTO>()
-                .ReverseMap()
-                .ForMember(d => d.Id, o => o.Ignore());
+                .ReverseMap();
 
             CreateMap<Conversation, ConversationDTO>()
-                .ReverseMap()
-                .ForMember(d => d.Id, o => o.Ignore());
+                .ReverseMap();
 
             CreateMap<Contribution, ContributionDTO>()
-                .ReverseMap()
-                .ForMember(d => d.Id, o => o.Ignore());
+                .ReverseMap();
 
-            CreateMap<Conversation, ConversationDirectModeDTO>()
-                .ForMember(d => d.Id, o => o.Ignore());
+            CreateMap<Conversation, ConversationDirectModeDTO>();
 
             CreateMap<ChatMessage, ChatMessageDTO>()
-                .ReverseMap()
-                .ForMember(d => d.Id, o => o.Ignore());
+                .ReverseMap();
 
             CreateMap<Project, ProjectDTO>()
-                .ReverseMap()
-                .ForMember(d => d.Id, o => o.Ignore());
+                .ReverseMap();
 
             CreateMap<User, UserDTO>()
                 .ForMember(d => d.Skills, o => o.MapFrom(s => s.Skills == null ? null : JsonConvert.DeserializeObject<List<SkillDTO>>(s.Skills)))
@@ -41,12 +35,10 @@ namespace Intranet
                 .ForMember(d => d.Skills, o => o.MapFrom(s => s.Skills == null ? null : JsonConvert.SerializeObject(s.Skills)));
 
             CreateMap<UserFood, UserFoodDTO>()
-                .ReverseMap()
-                .ForMember(d => d.Id, o => o.Ignore());
+                .ReverseMap();
 
             CreateMap<UserProject, UserProjectDTO>()
-                .ReverseMap()
-                .ForMember(d => d.Id, o => o.Ignore());
+                .ReverseMap();
         }
     }
 }
