@@ -74,9 +74,10 @@ namespace Intranet.Controllers
                 {
                     chatMessageList.Add(new ChatMessageDTO()
                     {
-                        Id = chatMessage.Id,
-                        User = _mapper.Map<UserDTO>(chatMessage.User),
+                        Id             = chatMessage.Id,
+                        User           = _mapper.Map<UserDTO>(chatMessage.User),
                         MessageContent = chatMessage.MessageContent,
+                        SentTime       = chatMessage.SentTime
                     });
                 }
 

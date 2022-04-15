@@ -90,7 +90,7 @@ namespace Intranet.Hubs
                     SentTime       = DateTime.UtcNow,
                     Conversation   = conversation
                 });
-                conversation.LastMessageContent = mess;
+                conversation.LastMessageContent  = mess;
                 conversation.LastInteractionTime = DateTime.UtcNow;
                 _conversationRepository.Update(conversation);
                 await _chatMessageRepository.SaveChangesAsync(cancellationToken);
