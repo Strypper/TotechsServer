@@ -83,7 +83,6 @@ namespace Intranet.Hubs
             StaticUserList.SignalROnlineUsersConnectionString.Add(connectionId);
             await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity",
                                                          _mapper.Map<UserDTO>(user));
-            await Clients.All.SendAsync("UserLogIn", connectionId);
         }
 
         //public async Task OnlineUsersListChange()
