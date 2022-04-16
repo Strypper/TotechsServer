@@ -44,6 +44,7 @@ namespace Intranet.Hubs
             });
             await Clients.Caller.SendAsync("IdentifyUser", Context.ConnectionId, allOnlineUsers);
             await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
+            await Clients.All.SendAsync("UserLogIn", Context.ConnectionId);
             await base.OnConnectedAsync();
         }
 
