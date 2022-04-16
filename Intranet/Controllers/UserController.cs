@@ -50,6 +50,17 @@ namespace Intranet.Controllers
             return Ok(_mapper.Map<UserDTO>(user));
         }
 
+        [HttpGet("{singalRConnectionStringId}")]
+        public async Task<IActionResult> GetUserBySingalRConnectionStringId(string singalRConnectionStringId, CancellationToken cancellationToken = default)
+        {
+            if (!string.IsNullOrEmpty(singalRConnectionStringId) && !string.IsNullOrWhiteSpace(singalRConnectionStringId))
+            {
+                var user = await _userRepository.FindBySignalRConnectionId(singalRConnectionStringId);
+                return Ok(_mapper.Map<UserDTO>(user));
+
+            }else return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(UserLogin loginInfo, CancellationToken cancellationToken = default)
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Intranet.Constants;
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
@@ -35,7 +36,13 @@ namespace Intranet.Hubs
         public override async Task OnConnectedAsync()
         {
             System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
-            await Clients.Caller.SendAsync("IdentifyUser", Context.ConnectionId);
+            var allOnlineUsers = new List<User>();
+            StaticUserList.SignalROnlineUsersConnectionString.ForEach( async (connectionString) =>
+            {
+                var user = await _userRepository.FindBySignalRConnectionId(connectionString);
+                allOnlineUsers.Add(user);
+            });
+            await Clients.Caller.SendAsync("IdentifyUser", Context.ConnectionId, allOnlineUsers);
             await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
             await base.OnConnectedAsync();
         }
@@ -50,6 +57,7 @@ namespace Intranet.Hubs
                 user.SignalRConnectionId = null;
                 _userRepository.Update(user);
                 await _userRepository.SaveChangesAsync(cancellationToken);
+                await Clients.All.SendAsync("UserLogOut", Context.ConnectionId);
             }
 
             await base.OnDisconnectedAsync(exception);
@@ -63,7 +71,7 @@ namespace Intranet.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId , group.GroupName);
         }
 
-        public async Task IdentifyUser(string connectionId, int userId)
+        public async Task ChatHubUserIndentity(string connectionId, int userId)
         {
             CancellationToken cancellationToken = new CancellationToken(default);
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
@@ -71,8 +79,16 @@ namespace Intranet.Hubs
             user.SignalRConnectionId = connectionId;
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync(cancellationToken);
-            await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity", _mapper.Map<UserDTO>(user));
+            StaticUserList.SignalROnlineUsersConnectionString.Add(connectionId);
+            await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity",
+                                                         _mapper.Map<UserDTO>(user));
+            await Clients.All.SendAsync("UserLogIn", connectionId);
         }
+
+        //public async Task OnlineUsersListChange()
+        //{
+        //    await Clients.All.SendAsync("UsersListChange", StaticUserList.SignalROnlineUsers);
+        //}
 
         public async Task SendMessage(string mess, 
                                       int conversationId, 
