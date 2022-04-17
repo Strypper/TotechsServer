@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Intranet.Constants;
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Database;
@@ -60,13 +59,6 @@ namespace Intranet.Controllers
                 return Ok(_mapper.Map<UserDTO>(user));
 
             }else return NotFound();
-        }
-
-        [HttpDelete]
-        public IActionResult CleanSignalRUsersList()
-        {
-            StaticUserList.SignalROnlineUsersConnectionString.Clear();
-            return NoContent();
         }
 
         [HttpPost]

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Intranet.Constants;
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
@@ -36,12 +35,9 @@ namespace Intranet.Hubs
         public override async Task OnConnectedAsync()
         {
             System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
-            var allOnlineUsers = new List<User>();
-            StaticUserList.SignalROnlineUsersConnectionString.ForEach( async (connectionString) =>
-            {
-                var user = await _userRepository.FindBySignalRConnectionId(connectionString);
-                allOnlineUsers.Add(user);
-            });
+            var allOnlineUsers = _userRepository
+                                        .FindAll(user => user.SignalRConnectionId != null)
+                                        .ToList();
             await Clients.Caller.SendAsync("IdentifyUser", Context.ConnectionId, allOnlineUsers);
             await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
             await base.OnConnectedAsync();
@@ -49,7 +45,6 @@ namespace Intranet.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
             CancellationToken cancellationToken = new CancellationToken(default);
             var user = await _userRepository.FindBySignalRConnectionId(Context.ConnectionId);
             if (user != null)
@@ -78,7 +73,6 @@ namespace Intranet.Hubs
             user.SignalRConnectionId = connectionId;
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync(cancellationToken);
-            StaticUserList.SignalROnlineUsersConnectionString.Add(connectionId);
             await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity",
                                                          _mapper.Map<UserDTO>(user));
             await Clients.All.SendAsync("UserLogIn", _mapper.Map<UserDTO>(user));

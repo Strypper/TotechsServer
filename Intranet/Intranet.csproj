@@ -30,4 +30,8 @@
     <ProjectReference Include="..\Intranet.Repo\Intranet.Repo.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Constants\" />
+  </ItemGroup>
+
 </Project>
