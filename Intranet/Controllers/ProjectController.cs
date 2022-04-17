@@ -57,11 +57,16 @@ namespace Intranet.Controllers
                 var projectsWithMembers = new ProjectWithMemberDTO()
                 {
                     Id = projectDTO.Id,
-                    ProjectName = projectDTO.ProjectName,
-                    Clients = projectDTO.Clients,
-                    About = projectDTO.About,
-                    TechLead = projectDTO.TechLead,
-                    Members = _mapper.Map<IEnumerable<UserDTO>>(members)
+                    ProjectName        = projectDTO.ProjectName,
+                    Clients            = projectDTO.Clients,
+                    About              = projectDTO.About,
+                    TechLead           = projectDTO.TechLead,
+                    ProjectLogo        = projectDTO.ProjectLogo,
+                    ProjectBackground  = projectDTO.ProjectBackground,
+                    MicrosoftStoreLink = projectDTO.MicrosoftStoreLink,
+                    StartTime          = projectDTO.StartTime,
+                    Deadline           = projectDTO.Deadline,
+                    Members            = _mapper.Map<IEnumerable<UserDTO>>(members)
                 };
                 projectsWithUserDTO.Add(projectsWithMembers);
             }
