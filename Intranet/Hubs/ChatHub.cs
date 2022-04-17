@@ -44,7 +44,6 @@ namespace Intranet.Hubs
             });
             await Clients.Caller.SendAsync("IdentifyUser", Context.ConnectionId, allOnlineUsers);
             await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
-            await Clients.All.SendAsync("UserLogIn", Context.ConnectionId);
             await base.OnConnectedAsync();
         }
 
@@ -76,13 +75,13 @@ namespace Intranet.Hubs
         {
             CancellationToken cancellationToken = new CancellationToken(default);
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
-
             user.SignalRConnectionId = connectionId;
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync(cancellationToken);
             StaticUserList.SignalROnlineUsersConnectionString.Add(connectionId);
             await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity",
                                                          _mapper.Map<UserDTO>(user));
+            await Clients.All.SendAsync("UserLogIn", _mapper.Map<UserDTO>(user));
         }
 
         //public async Task OnlineUsersListChange()
