@@ -38,8 +38,8 @@ namespace Intranet.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
-            var foods = await _userRepository.FindAll().ToListAsync(cancellationToken);
-            return Ok(_mapper.Map<IEnumerable<UserDTO>>(foods));
+            var users = await _userRepository.FindAll().ToListAsync(cancellationToken);
+            return Ok(_mapper.Map<IEnumerable<UserDTO>>(users));
         } 
 
         [HttpGet("{id}")]

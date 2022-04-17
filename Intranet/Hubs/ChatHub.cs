@@ -38,7 +38,7 @@ namespace Intranet.Hubs
             var allOnlineUsers = _userRepository
                                         .FindAll(user => user.SignalRConnectionId != null)
                                         .ToList();
-            await Clients.Caller.SendAsync("IdentifyUser", Context.ConnectionId, allOnlineUsers);
+            await Clients.Caller.SendAsync("IdentifyUser", Context.ConnectionId, _mapper.Map<IEnumerable<UserDTO>>(allOnlineUsers));
             await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
             await base.OnConnectedAsync();
         }
