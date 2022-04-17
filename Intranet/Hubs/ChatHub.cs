@@ -93,11 +93,17 @@ namespace Intranet.Hubs
             if(conversation != null){
                 var fromUser     = await _userRepository.FindByIdAsync(fromUserId, cancellationToken);
                 var toUser       = await _userRepository.FindByIdAsync(toUserId, cancellationToken);
+
+                //VietNam Time
+                var VietNamZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                var dt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
+                var DateTimeInVietNamLocal = TimeZoneInfo.ConvertTime(dt, TimeZoneInfo.Utc, VietNamZone);
+
                 _chatMessageRepository.Create(new ChatMessage(){
                     User           = fromUser,
                     MessageContent = mess,
-                    SentTime       = DateTime.UtcNow,
-                    Conversation   = conversation
+                    Conversation   = conversation,
+                    SentTime       = DateTimeInVietNamLocal
                 });
                 conversation.LastMessageContent  = mess;
                 conversation.LastInteractionTime = DateTime.UtcNow;
