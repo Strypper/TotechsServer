@@ -84,6 +84,7 @@ namespace Intranet.Hubs
         //}
 
         public async Task SendMessage(string mess, 
+                                      DateTime sentTime,     
                                       int conversationId, 
                                       int fromUserId, 
                                       int toUserId)
@@ -95,15 +96,15 @@ namespace Intranet.Hubs
                 var toUser       = await _userRepository.FindByIdAsync(toUserId, cancellationToken);
 
                 //VietNam Time
-                var VietNamZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
-                var dt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
-                var DateTimeInVietNamLocal = TimeZoneInfo.ConvertTime(dt, TimeZoneInfo.Utc, VietNamZone);
+                //var VietNamZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                //var dt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
+                //var DateTimeInVietNamLocal = TimeZoneInfo.ConvertTime(dt, TimeZoneInfo.Utc, VietNamZone);
 
                 _chatMessageRepository.Create(new ChatMessage(){
                     User           = fromUser,
                     MessageContent = mess,
                     Conversation   = conversation,
-                    SentTime       = DateTimeInVietNamLocal
+                    SentTime       = sentTime
                 });
                 conversation.LastMessageContent  = mess;
                 conversation.LastInteractionTime = DateTime.UtcNow;
@@ -112,10 +113,10 @@ namespace Intranet.Hubs
                 await _conversationRepository.SaveChangesAsync(cancellationToken);
                 if (toUser.SignalRConnectionId != null)
                 {
-                    await Clients.Client(toUser.SignalRConnectionId).SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
+                    await Clients.Client(toUser.SignalRConnectionId).SendAsync("ReceiveMessage", mess, sentTime, _mapper.Map<UserDTO>(fromUser));
                 }
 
-                await Clients.Caller.SendAsync("ReceiveMessage", mess, _mapper.Map<UserDTO>(fromUser));
+                await Clients.Caller.SendAsync("ReceiveMessage", mess, sentTime, _mapper.Map<UserDTO>(fromUser));
             }
             else{
                 System.Diagnostics.Debug.WriteLine("The conversation does not exist");
