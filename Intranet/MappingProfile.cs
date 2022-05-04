@@ -27,6 +27,21 @@ namespace Intranet
             CreateMap<Project, ProjectDTO>()
                 .ReverseMap();
 
+            CreateMap<MeetingSchedule, MeetingScheduleDTO>()
+                .ReverseMap();
+
+            CreateMap<MeetingInfo, MeetingInfoDTO>()
+                .ReverseMap();
+
+            CreateMap<Attendance, AttendanceDTO>()
+                .ReverseMap();
+
+            CreateMap<TodoTask, TodoTaskDTO>()
+                .ReverseMap();
+
+            CreateMap<ImportanceLevel, ImportanceLevelDTO>()
+                .ReverseMap();
+
             CreateMap<User, UserDTO>()
                 .ForMember(d => d.Skills, o => o.MapFrom(s => s.Skills == null ? null : JsonConvert.DeserializeObject<List<SkillDTO>>(s.Skills)))
                 .ForMember(d => d.Password, o => o.Ignore());

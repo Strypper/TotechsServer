@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toast>
+	<visual baseUri="Assets/Apps/Weather/">
+		<binding template="ToastGeneric">
+			<text>Today will be sunny with a high of 63 and a low of 42.</text>
+
+			<group>
+				<subgroup hint-weight="1">
+					<text hint-align="center">Mon</text>
+					<image src="Mostly Cloudy.png" hint-removeMargin="true"/>
+					<text hint-align="center">63°</text>
+					<text hint-style="captionsubtle" hint-align="center">42°</text>
+				</subgroup>
+				<subgroup hint-weight="1">
+					<text hint-align="center">Tue</text>
+					<image src="Cloudy.png" hint-removeMargin="true"/>
+					<text hint-align="center">57°</text>
+					<text hint-style="captionsubtle" hint-align="center">38°</text>
+				</subgroup>
+				<subgroup hint-weight="1">
+					<text hint-align="center">Wed</text>
+					<image src="Sunny.png" hint-removeMargin="true"/>
+					<text hint-align="center">59°</text>
+					<text hint-style="captionsubtle" hint-align="center">43°</text>
+				</subgroup>
+				<subgroup hint-weight="1">
+					<text hint-align="center">Thu</text>
+					<image src="Sunny.png" hint-removeMargin="true"/>
+					<text hint-align="center">62°</text>
+					<text hint-style="captionsubtle" hint-align="center">42°</text>
+				</subgroup>
+				<subgroup hint-weight="1">
+					<text hint-align="center">Fri</text>
+					<image src="Sunny.png" hint-removeMargin="true"/>
+					<text hint-align="center">71°</text>
+					<text hint-style="captionsubtle" hint-align="center">66°</text>
+				</subgroup>
+			</group>
+		</binding>
+	</visual>
+
+</toast>

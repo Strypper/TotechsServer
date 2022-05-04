@@ -48,8 +48,8 @@ namespace Intranet.Controllers
             return Ok(_mapper.Map<ConversationDTO>(conversation));
         }
 
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetByUserIdDirectMode(int userId, CancellationToken cancellationToken)
+        [HttpGet("{userId}/{pageIndex}")]
+        public async Task<IActionResult> GetByUserIdDirectMode(int userId, int pageIndex, CancellationToken cancellationToken)
         {
             var currentUser       = await _userRepository.FindByIdAsync(userId, cancellationToken);
             var userConverastions = await _userConversationRepository.FindAll(uc => uc.UserId == userId)
@@ -59,7 +59,8 @@ namespace Intranet.Controllers
             var conversations     = await _conversationRepository.FindAll(c => conversationIds.Contains(c.Id))
                                                                  .Include(conversation => conversation.ChatMessages)
                                                                  .ThenInclude(chatmessage => chatmessage.User)
-                                                                    .Take(10)
+                                                                    .Skip(pageIndex * 10).Take(10)
+                                                                 .OrderByDescending(conversation => conversation.LastInteractionTime)
                                                                  .ToListAsync(cancellationToken);
             var conversationDirectModeDTOList = new List<ConversationDirectModeDTO>();
             foreach (var conversation in conversations)

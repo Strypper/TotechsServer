@@ -56,7 +56,7 @@ namespace Intranet.Controllers
                                          .Select(ut => ut.User);
                 var projectsWithMembers = new ProjectWithMemberDTO()
                 {
-                    Id = projectDTO.Id,
+                    Id                 = projectDTO.Id,
                     ProjectName        = projectDTO.ProjectName,
                     Clients            = projectDTO.Clients,
                     About              = projectDTO.About,

@@ -1,13 +1,20 @@
 ﻿using AutoMapper;
+using Intranet.Constants;
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
-using Microsoft.AspNetCore.Authorization;
+using Intranet.Helpers;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.NotificationHubs;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Intranet.Controllers
 {
@@ -17,11 +24,18 @@ namespace Intranet.Controllers
         public IMapper _mapper;
         public IFoodRepository _foodRepository;
         public IUserFoodRepository _userFoodRepository;
-        public FoodController(IMapper mapper, IFoodRepository foodRepository, IUserFoodRepository userFoodRepository)
+        public IWebHostEnvironment _webHostEnvironment;
+        private NotificationHubClient _hub;
+        public FoodController(IMapper mapper, 
+                              IFoodRepository foodRepository, 
+                              IUserFoodRepository userFoodRepository,
+                              IWebHostEnvironment webHostEnvironment)
         {
+            _hub = Notifications.Instance.Hub;
             _mapper = mapper;
             _foodRepository = foodRepository;
             _userFoodRepository = userFoodRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -58,6 +72,7 @@ namespace Intranet.Controllers
             await _foodRepository.SaveChangesAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<FoodDTO>>(foods));
         }
+
         [HttpPut]
         public async Task<IActionResult> Update(FoodDTO dto, CancellationToken cancellationToken = default)
         {

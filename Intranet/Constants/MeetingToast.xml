@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toast>
+	<visual>
+		<binding template="ToastGeneric">
+			<image placement="hero" src="https://intranetblobstorages.blob.core.windows.net/appassets/ConsolesBackground.png"/>
+			<text hint-maxLines="1">LET'S PARTY</text>
+			<text>Rally up this saturday and we will learn and chill</text>
+			<image src="https://intranetblobstorages.blob.core.windows.net/appassets/Sector 7.png"/>
+			<group>
+				<subgroup>
+					<text hint-style="body">
+						SECTOR 7
+					</text>
+					<text hint-style="captionSubtle">
+						Open: 8:00AM
+					</text>
+				</subgroup>
+				<subgroup hint-textStacking="bottom">
+					<text hint-style="captionSubtle" 
+						  hint-wrap="true" 
+						  hint-align="right">
+							289 Nam Kỳ Khởi Nghĩa, Phường Võ Thị Sáu, Quận 3
+					</text>
+				</subgroup>
+			</group>
+		</binding>
+	</visual>
+
+	<actions>
+		<action
+          content="I'm in 🤘"
+          arguments="action=attendPartys&amp;userId=92187"/>
+		<action
+          content="Map 📍"
+          arguments="bingmaps:?q=289A Đường Nam Kỳ Khởi Nghĩa, Phường Bảy, Ho Chi Minh City 72415, Vietnam"
+          activationType="protocol"/>
+		<action
+		  activationType="system"
+		  arguments="dismiss"
+		  content="I'm busy ✋"/>
+	</actions>
+</toast>

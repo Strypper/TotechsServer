@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tile>
+  <visual branding="name">
+
+    <binding template="TileMedium">
+      <text hint-style="caption">8:00 AM, Saturday</text>
+      <text hint-style="captionSubtle" hint-wrap="true">289 Nam Kỳ Khởi Nghĩa, Phường 7, Quận 3</text>
+      <image src="https://intranetblobstorages.blob.core.windows.net/appassets/TotechsBackground.png" placement="background"/>
+    </binding>
+
+    <binding template="TileWide">
+      <group>
+        <subgroup hint-weight="33">
+          <image src="https://intranetblobstorages.blob.core.windows.net/appassets/TotechsLogo.png" />
+        </subgroup>
+        <subgroup>
+          <text hint-style="caption">TEAM MEETING</text>
+          <text hint-style="captionSubtle">8:00 AM, Saturday</text>
+          <text hint-style="captionSubtle" hint-wrap="true">289 Nam Kỳ Khởi Nghĩa, Phường 7, Quận 3</text>
+        </subgroup>
+      </group>      <image src="https://intranetblobstorages.blob.core.windows.net/appassets/TotechsBackground.png" placement="background"/>
+    </binding>
+
+    <binding template="TileLarge">
+      <image src="https://intranetblobstorages.blob.core.windows.net/appassets/ConsolesBackground.png" placement="peek"/>
+      <group>
+        <subgroup hint-weight="33">
+          <image src="https://intranetblobstorages.blob.core.windows.net/appassets/TotechsLogo.png" />
+        </subgroup>
+        <subgroup>
+          <text hint-style="caption">8:00 AM, Saturday</text>
+          <text hint-style="captionSubtle" hint-wrap="true" hint-maxLines="3">289 Nam Kỳ Khởi Nghĩa, Phường 7, Quận 3</text>
+        </subgroup>
+      </group>
+
+      <image src="https://intranetblobstorages.blob.core.windows.net/appassets/Sector 7.png"/>
+      <image src="https://intranetblobstorages.blob.core.windows.net/appassets/TotechsBackground.png" placement="background"/>
+      
+    </binding>
+
+  </visual>
+</tile>
+

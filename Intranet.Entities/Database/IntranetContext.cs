@@ -15,6 +15,10 @@ namespace Intranet.Entities.Database
         public DbSet<UserProject>      UserProjects      { get; set; }
         public DbSet<UserConversation> UserConversations { get; set; }
         public DbSet<Contribution>     Contributions     { get; set; }
+        public DbSet<MeetingSchedule>  MeetingSchedules  { get; set; }
+        public DbSet<MeetingInfo>      MeetingInfos      { get; set; }
+        public DbSet<Attendance>       Attendances       { get; set; }
+        public DbSet<TodoTask>         TodoTasks         { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

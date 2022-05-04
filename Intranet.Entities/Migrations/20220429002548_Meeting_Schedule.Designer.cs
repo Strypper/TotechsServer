@@ -4,14 +4,16 @@ using Intranet.Entities.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Intranet.Entities.Migrations
 {
     [DbContext(typeof(IntranetContext))]
-    partial class IntranetContextModelSnapshot : ModelSnapshot
+    [Migration("20220429002548_Meeting_Schedule")]
+    partial class Meeting_Schedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,14 +200,9 @@ namespace Intranet.Entities.Migrations
                     b.Property<int?>("MeetingInfoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PlannerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MeetingInfoId");
-
-                    b.HasIndex("PlannerId");
 
                     b.ToTable("MeetingSchedules");
                 });
@@ -505,13 +502,7 @@ namespace Intranet.Entities.Migrations
                         .WithMany()
                         .HasForeignKey("MeetingInfoId");
 
-                    b.HasOne("Intranet.Entities.Entities.User", "Planner")
-                        .WithMany()
-                        .HasForeignKey("PlannerId");
-
                     b.Navigation("MeetingInfo");
-
-                    b.Navigation("Planner");
                 });
 
             modelBuilder.Entity("Intranet.Entities.Entities.TodoTask", b =>
