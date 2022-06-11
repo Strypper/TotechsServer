@@ -14,7 +14,7 @@ namespace Intranet.Entities.Entities
         public string?  MicrosoftStoreLink { get; set; } = string.Empty;
         public string?  GooglePlayLink     { get; set; } = string.Empty;
         public string?  AppStoreLink       { get; set; } = string.Empty;
-
+        
 
         public DateTime  StartTime    { get; set; }
         public DateTime? Deadline     { get; set; }
