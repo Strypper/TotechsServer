@@ -23,6 +23,12 @@ namespace Intranet.Entities.Entities
         public string? Title { get; set; } = string.Empty;
 
         public Priority Priority { get; set; }
+
+        public ICollection<MediaAssest>? MediaAssests { get; set; } = new HashSet<MediaAssest>();
+
+        public ICollection<SubFeature> SubFeatures { get; set; } = new HashSet<SubFeature>();
+
+
     }
 
     public enum FeatureStatus { }

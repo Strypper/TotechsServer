@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.Entities.Entities
 {
-    public class FeatureTask : BaseEntity
+    public class ProjectTask : BaseEntity
     {
         public string? Title { get; set; } = string.Empty;
 
@@ -19,10 +19,6 @@ namespace Intranet.Entities.Entities
         public DateTime? Deadline { get; set; } = DateTime.MaxValue;
 
         public Priority Priority { get; set; }
-
-        public virtual SubFeature? SubFeature { get; set; } = null;
-
-        public int? SubFeatureId { get; set; } = null;
     }
 
     public enum FeatureTaskStatus { }
