@@ -33,7 +33,6 @@ namespace Intranet.Entities.Database
                 entity.Property(e => e.FirstName).IsRequired(false);
                 entity.Property(e => e.MiddleName).IsRequired(false);
                 entity.Property(e => e.LastName).IsRequired(false);
-                entity.Property(e => e.Password).IsRequired(true);
             });
 
             builder.Entity<UserFood>(entity =>

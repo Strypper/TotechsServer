@@ -3,14 +3,17 @@ using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Intranet.Controllers
 {
+    [Authorize(Policy = "IntranetPermission")]
     [Route("/api/[controller]/[action]")]
     public class UserController : BaseController
     {
@@ -66,7 +69,6 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByUserName(loginInfo.UserName, cancellationToken);
             if (user is null || user.IsDisable == true) return NotFound();
-            if (loginInfo.Password != user.Password) return NotFound();
             return Ok(_mapper.Map<UserDTO>(user));
 
 
@@ -88,7 +90,6 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
             if (user is null) return NotFound();
-            dto.Password = user.Password;
             _mapper.Map(dto, user);
             await _userRepository.SaveChangesAsync(cancellationToken);
             return NoContent();

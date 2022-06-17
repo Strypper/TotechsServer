@@ -7,8 +7,8 @@ namespace Intranet.DataObject
     {
         public DateTime                   MeetingDate  { get; set; }
         public DateTime                   EndTime      { get; set; }
-        public UserDTO                    Planner      { get; set; }
-        public MeetingInfoDTO             MeetingInfo  { get; set; }
+        public UserDTO?                   Planner      { get; set; }
+        public MeetingInfoDTO?            MeetingInfo  { get; set; }
         public ICollection<TodoTaskDTO>   MustDoneTask { get; set; } = new HashSet<TodoTaskDTO>();
         public ICollection<AttendanceDTO> Attendances  { get; set; } = new HashSet<AttendanceDTO>();
     }

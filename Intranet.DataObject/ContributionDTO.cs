@@ -4,11 +4,11 @@ namespace Intranet.DataObject
 {
     public class ContributionDTO : BaseDTO
     {
-        public UserDTO        Contributor { get; set; }
-        public decimal        Amount      { get; set; }
-        public DateTime       DonateOn    { get; set; }
-        public PaymentTypeDTO PaymentType { get; set; }
-        public bool           IsApproved  { get; set; }
+        public UserDTO?        Contributor { get; set; }
+        public decimal         Amount      { get; set; }
+        public DateTime        DonateOn    { get; set; }
+        public PaymentTypeDTO  PaymentType { get; set; }
+        public bool            IsApproved  { get; set; }
     }
 
     public enum PaymentTypeDTO

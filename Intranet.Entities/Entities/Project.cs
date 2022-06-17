@@ -4,7 +4,7 @@ namespace Intranet.Entities.Entities
 {
     public class Project : BaseEntity
     {
-        public string   ProjectName        { get; set; }
+        public string   ProjectName        { get; set; } = string.Empty;
         public string?  ProjectLogo        { get; set; } = string.Empty;
         public string?  ProjectBackground  { get; set; } = string.Empty;
         public string?  Clients            { get; set; } = string.Empty;
