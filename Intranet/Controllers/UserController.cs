@@ -95,18 +95,18 @@ namespace Intranet.Controllers
             return NoContent();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdatePassword(UserDTO dto, CancellationToken cancellationToken = default)
-        {
-            if(!string.IsNullOrEmpty(dto.Password))
-            {
-                var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
-                if (user is null) return NotFound();
-                _mapper.Map(dto, user);
-                await _userRepository.SaveChangesAsync(cancellationToken);
-                return NoContent();
-            } else { return NotFound(); }
-        }
+        //[HttpPut]
+        //public async Task<IActionResult> UpdatePassword(UserDTO dto, CancellationToken cancellationToken = default)
+        //{
+        //    if(!string.IsNullOrEmpty(dto.Password))
+        //    {
+        //        var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
+        //        if (user is null) return NotFound();
+        //        _mapper.Map(dto, user);
+        //        await _userRepository.SaveChangesAsync(cancellationToken);
+        //        return NoContent();
+        //    } else { return NotFound(); }
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
