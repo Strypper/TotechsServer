@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.Controllers
 {
-    [Authorize(Policy = "IntranetPermission")]
+    //[Authorize(Policy = "IntranetPermission")]
     [Route("/api/[controller]/[action]")]
     public class UserController : BaseController
     {
