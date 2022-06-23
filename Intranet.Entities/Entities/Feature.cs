@@ -24,7 +24,7 @@ namespace Intranet.Entities.Entities
 
         public Priority Priority { get; set; }
 
-        public ICollection<MediaAssest>? MediaAssests { get; set; } = new HashSet<MediaAssest>();
+        public ICollection<MediaAssets>? MediaAssests { get; set; } = new HashSet<MediaAssets>();
 
         public ICollection<SubFeature> SubFeatures { get; set; } = new HashSet<SubFeature>();
 

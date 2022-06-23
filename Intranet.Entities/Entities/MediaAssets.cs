@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.Entities.Entities
 {
-    public class MediaAssest : BaseEntity
+    public class MediaAssets : BaseEntity
     {
         public string? Title { get; set; } = string.Empty;
 

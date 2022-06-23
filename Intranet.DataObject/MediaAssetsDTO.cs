@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.DataObject
 {
-    public class MediaAssestDTO : BaseDTO
+    public class MediaAssetsDTO : BaseDTO
     {
         public string? Title { get; set; } = string.Empty;
 
@@ -16,7 +16,7 @@ namespace Intranet.DataObject
         public MediaAssestType MediaAssestType { get; set; }
     }
 
-    public class CreateMediaAssestDTO
+    public class CreateMediaAssetsDTO
     {
         public string? Title { get; set; } = string.Empty;
 
