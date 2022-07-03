@@ -69,7 +69,7 @@ namespace Intranet.Controllers
         {
             if (!string.IsNullOrEmpty(guid) && !string.IsNullOrWhiteSpace(guid))
             {
-                var user = await _userRepository.FindByGuid(guid);
+                var user = await _userRepository.FindByGuid(guid, cancellationToken);
                 return Ok(_mapper.Map<UserDTO>(user));
 
             }
