@@ -5,6 +5,7 @@ namespace Intranet.Entities.Entities
 {
     public class User : BaseEntity
     {
+        public string    Guid                { get; set; }
         public string    UserName            { get; set; }
         public string?   ProfilePic          { get; set; } = String.Empty;
         public string?   CardPic             { get; set; } = String.Empty;

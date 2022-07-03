@@ -16,9 +16,9 @@ namespace Intranet.DataObject
         public string? GooglePlayLink     { get; set; } = string.Empty;
         public string? AppStoreLink       { get; set; } = string.Empty;
 
-        public DateTime StartTime { get; set; }
+        public DateTime  StartTime { get; set; }
         public DateTime? Deadline { get; set; }
-        public int     TechLead   { get; set; }
+        public int       TechLead   { get; set; }
     }
 
     public class ProjectWithMemberDTO : ProjectDTO
