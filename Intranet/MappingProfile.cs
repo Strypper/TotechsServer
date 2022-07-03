@@ -53,6 +53,18 @@ namespace Intranet
 
             CreateMap<UserProject, UserProjectDTO>()
                 .ReverseMap();
+
+            CreateMap<Feature, FeatureDTO>()
+                .ReverseMap();
+
+            CreateMap<SubFeature, SubFeatureDTO>()
+                .ReverseMap();
+
+            CreateMap<ProjectTask, ProjectTaskDTO>()
+                .ReverseMap();
+
+            CreateMap<MediaAssets, MediaAssetsDTO>()
+                .ReverseMap();
         }
     }
 }
