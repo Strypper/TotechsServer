@@ -64,6 +64,18 @@ namespace Intranet.Controllers
             }else return NotFound();
         }
 
+        [HttpGet("{guid}")]
+        public async Task<IActionResult> GetUserByGuid(string guid, CancellationToken cancellationToken = default)
+        {
+            if (!string.IsNullOrEmpty(guid) && !string.IsNullOrWhiteSpace(guid))
+            {
+                var user = await _userRepository.FindByGuid(guid);
+                return Ok(_mapper.Map<UserDTO>(user));
+
+            }
+            else return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(UserLogin loginInfo, CancellationToken cancellationToken = default)
         {
