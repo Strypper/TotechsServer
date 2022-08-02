@@ -5,16 +5,19 @@ using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
 using Intranet.Services.IServices;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Intranet.Controllers
 {
+    //[Authorize(Policy = "IntranetPermission")]
     [Route("/api/[controller]/[action]")]
     public class UserController : BaseController
     {
@@ -68,12 +71,23 @@ namespace Intranet.Controllers
             }else return NotFound();
         }
 
+        [HttpGet("{guid}")]
+        public async Task<IActionResult> GetUserByGuid(string guid, CancellationToken cancellationToken = default)
+        {
+            if (!string.IsNullOrEmpty(guid) && !string.IsNullOrWhiteSpace(guid))
+            {
+                var user = await _userRepository.FindByGuid(guid, cancellationToken);
+                return Ok(_mapper.Map<UserDTO>(user));
+
+            }
+            else return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(UserLogin loginInfo, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByUserName(loginInfo.UserName, cancellationToken);
             if (user is null || user.IsDisable == true) return NotFound();
-            if (loginInfo.Password != user.Password) return NotFound();
             return Ok(_mapper.Map<UserDTO>(user));
 
 
@@ -123,24 +137,23 @@ namespace Intranet.Controllers
         {
             var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
             if (user is null) return NotFound();
-            dto.Password = user.Password;
             _mapper.Map(dto, user);
             await _userRepository.SaveChangesAsync(cancellationToken);
             return NoContent();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdatePassword(UserDTO dto, CancellationToken cancellationToken = default)
-        {
-            if(!string.IsNullOrEmpty(dto.Password))
-            {
-                var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
-                if (user is null) return NotFound();
-                _mapper.Map(dto, user);
-                await _userRepository.SaveChangesAsync(cancellationToken);
-                return NoContent();
-            } else { return NotFound(); }
-        }
+        //[HttpPut]
+        //public async Task<IActionResult> UpdatePassword(UserDTO dto, CancellationToken cancellationToken = default)
+        //{
+        //    if(!string.IsNullOrEmpty(dto.Password))
+        //    {
+        //        var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
+        //        if (user is null) return NotFound();
+        //        _mapper.Map(dto, user);
+        //        await _userRepository.SaveChangesAsync(cancellationToken);
+        //        return NoContent();
+        //    } else { return NotFound(); }
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken = default)

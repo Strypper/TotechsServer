@@ -21,5 +21,8 @@ namespace Intranet.Repo
 
         public async Task<User> FindBySignalRConnectionId(string connectionId, CancellationToken cancellationToken = default)
             => await FindAll(u => u.SignalRConnectionId == connectionId).FirstOrDefaultAsync(cancellationToken);
+
+        public async Task<User> FindByGuid(string guid, CancellationToken cancellationToken = default)
+            => await FindAll(u => u.Guid == guid).FirstOrDefaultAsync(cancellationToken);
     }
 }

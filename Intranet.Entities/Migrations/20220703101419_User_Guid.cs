@@ -1,22 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Intranet.Entities.Migrations
 {
-    public partial class User_CardPic : Migration
+    /// <inheritdoc />
+    public partial class User_Guid : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "CardPic",
+                name: "Guid",
                 table: "Users",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: false,
+                defaultValue: "");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "CardPic",
+                name: "Guid",
                 table: "Users");
         }
     }

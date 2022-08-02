@@ -13,9 +13,9 @@ namespace Intranet.DataObject
 
     public class CreateConversationDTO
     {
-        public string MessageContent { get; set; }
-        public int    CurrentUserId { get; set; }
-        public int    TargerUserId { get; set; }
+        public string? MessageContent { get; set; }
+        public int     CurrentUserId { get; set; }
+        public int     TargerUserId { get; set; }
     }
 
     public class ConversationDirectModeDTO : ConversationDTO

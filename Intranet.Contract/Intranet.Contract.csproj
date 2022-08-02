@@ -1,18 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+	<TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="IRepositoryBase.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Include="IRepositoryBase.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Intranet.Entities\Intranet.Entities.csproj" />

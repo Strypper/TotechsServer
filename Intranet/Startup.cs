@@ -40,7 +40,7 @@ namespace Intranet
                 var config = provider.GetRequiredService<IOptionsMonitor<AzureStorageConfig>>().CurrentValue;
                 return new StorageSharedKeyCredential(config.AccountName, config.AccountKey);
             });
-
+            services.Configure<JwtTokenConfig>(Configuration.GetSection("JwtTokenConfig"));
 
             services.AddControllers();
             services.AddSignalR();
@@ -69,41 +69,33 @@ namespace Intranet
               });
             });
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //.AddJwtBearer(options =>
-            //{
-            //    options.RequireHttpsMetadata = false;
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = true,
-            //        ValidateAudience = false,
-            //        ValidateLifetime = false,
-            //        ValidIssuer = "Bruh1",
-            //        ValidAudience = "Bruh",
-            //        ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("54653216554114442313244544")),
-            //        ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha384 },
-            //    };
-            //    //options.Events = new JwtBearerEvents()
-            //    //{
-            //    //    OnMessageReceived = (context) =>
-            //    //    {
-            //    //        return System.Threading.Tasks.Task.CompletedTask;
-            //    //    }
-            //    //};
-            //});
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                    ValidIssuer = Configuration["JwtTokenConfig:Issuer"],
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtTokenConfig:Key"])),
+                    ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 },
+                };
+            });
 
-            //services.AddAuthorization(config =>
-            //{
-            //    config.AddPolicy("LOLPermission", policy =>
-            //    {
-            //        policy.RequireClaim("unique_name", "Tan");
-            //        });
-
-            //});
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy("IntranetBasicAccessPolicy", policy =>
+                {
+                    policy.RequireClaim("IntranetPermission", "true");
+                });
+            });
 
 
             services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IntranetContext")));
+
             services.AddTransient<IFoodRepository            , FoodRepository>();
             services.AddTransient<IUserRepository            , UserRepository>();
             services.AddTransient<IUserFoodRepository        , UserFoodRepository>();
@@ -140,8 +132,8 @@ namespace Intranet
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
 
             app.UseEndpoints(endpoints =>
