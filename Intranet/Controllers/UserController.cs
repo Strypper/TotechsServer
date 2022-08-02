@@ -95,7 +95,11 @@ namespace Intranet.Controllers
         {
             if (_mediaService.IsImage(avatar))
             {
-                await _userRepository.FindByIdAsync(1, cancellationToken);
+                var user = await _userRepository.FindByIdAsync(id, cancellationToken);
+                if(user is null)
+                {
+                    return NotFound($"No User With Id {id} Found!");
+                }
                 using (Stream stream = avatar.OpenReadStream())
                 {
                     Tuple<bool, string> result = await _mediaService.UploadAvatarToStorage(stream, avatar.FileName);
@@ -103,6 +107,9 @@ namespace Intranet.Controllers
                     var stringUrl = result.Item2;
                     if (isUploaded && !string.IsNullOrEmpty(stringUrl))
                     {
+                        user.ProfilePic = stringUrl;
+                        await _userRepository.SaveChangesAsync(cancellationToken);
+
                         return Ok(stringUrl);
                     }
                     else return BadRequest("Look like the image couldnt upload to the storage");
