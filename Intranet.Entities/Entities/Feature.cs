@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.Entities.Entities
 {
-    public class Feature : BaseEntity
+    public class Feature : BaseEntity<int>
     {
         public string? Icon { get; set; } = string.Empty;
 

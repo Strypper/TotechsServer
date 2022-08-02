@@ -49,10 +49,10 @@ namespace Intranet.Controllers
         }
 
         [HttpGet("{userId}/{pageIndex}")]
-        public async Task<IActionResult> GetByUserIdDirectMode(int userId, int pageIndex, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetByUserIdDirectMode(string userId, int pageIndex, CancellationToken cancellationToken)
         {
             var currentUser       = await _userRepository.FindByIdAsync(userId, cancellationToken);
-            var userConverastions = await _userConversationRepository.FindAll(uc => uc.UserId == userId)
+            var userConverastions = await _userConversationRepository.FindAll(uc => uc.UserId.Equals(userId))
                                                                      .ToListAsync(cancellationToken);
             //Find all the conversationId based on the userConversations
             var conversationIds   = userConverastions.Select(userConverastions => userConverastions.ConversationId);

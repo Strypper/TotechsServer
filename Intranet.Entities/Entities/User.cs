@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.Entities.Entities
 {
-    public class User : BaseEntity
+    public class User : BaseEntity<string>
     {
         public string    UserName            { get; set; }
         public string?   Country             { get; set; }

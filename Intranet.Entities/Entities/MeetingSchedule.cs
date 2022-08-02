@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.Entities.Entities
 {
-        public class MeetingSchedule : BaseEntity
+        public class MeetingSchedule : BaseEntity<int>
     {
         public DateTime                MeetingDate  { get; set; }
         public DateTime                EndTime      { get; set; }

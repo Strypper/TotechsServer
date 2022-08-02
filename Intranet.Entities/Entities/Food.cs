@@ -2,7 +2,7 @@
 
 namespace Intranet.Entities.Entities
 {
-    public class Food : BaseEntity
+    public class Food : BaseEntity<int>
     {
         public string FoodName { get; set; }
         public string FoodEnglishName { get; set; }

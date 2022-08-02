@@ -45,7 +45,7 @@ namespace Intranet.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserSelectedFood(int userId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetUserSelectedFood(string userId, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
             if (user is null) return NotFound();
@@ -63,7 +63,7 @@ namespace Intranet.Controllers
             var userFood = new UserFood() { User = user, Food = food };
             if (await _userFoodRepository.FindByUserId(user.Id, cancellationToken) != null)
             {
-                var existingUserFood = await _userFoodRepository.FindAll(uf => uf.User.Id == dto.UserId).FirstOrDefaultAsync();
+                var existingUserFood = await _userFoodRepository.FindAll(uf => uf.User.Id.Equals(dto.UserId)).FirstOrDefaultAsync();
                 existingUserFood.FoodId = dto.FoodId;
                 _userFoodRepository.Update(existingUserFood);
             }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.Repo
 {
-    public abstract class BaseRepository<T> : IRepositoryBase<T> where T : BaseEntity
+    public abstract class BaseRepository<T> : IRepositoryBase<T> where T : class
     {
         protected readonly IntranetContext RepositoryContext;
         protected readonly DbSet<T> _dbSet;
@@ -26,6 +26,13 @@ namespace Intranet.Repo
             => _dbSet.WhereIf(predicate != null, predicate!);
 
         public virtual async Task<T> FindByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var item = await RepositoryContext.FindAsync<T>(new object[] { id }, cancellationToken);
+            return item;
+        }
+
+
+        public virtual async Task<T> FindByIdAsync(string id, CancellationToken cancellationToken)
         {
             var item = await RepositoryContext.FindAsync<T>(new object[] { id }, cancellationToken);
             return item;
@@ -46,5 +53,6 @@ namespace Intranet.Repo
 
         public Task SaveChangesAsync(CancellationToken cancellationToken)
             => RepositoryContext.SaveChangesAsync(cancellationToken);
+
     }
 }

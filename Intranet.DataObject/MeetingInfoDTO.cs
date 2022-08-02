@@ -1,6 +1,6 @@
 namespace Intranet.DataObject
 {
-    public class MeetingInfoDTO : BaseDTO
+    public class MeetingInfoDTO : BaseDTO<int>
     {
         public string             Description     { get; set; }
         public string             Location        { get; set; }

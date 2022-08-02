@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Intranet.DataObject
 {
-    public class UserFoodDTO : BaseDTO
+    public class UserFoodDTO : BaseDTO<int>
     {
         public UserDTO User { get; set; }
         public FoodDTO Food { get; set; }
@@ -12,7 +12,7 @@ namespace Intranet.DataObject
 
     public class CreateUpdateUserFoodDTO
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int FoodId { get; set; }
     }
 }

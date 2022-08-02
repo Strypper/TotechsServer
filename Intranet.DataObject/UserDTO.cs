@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Intranet.DataObject
 {
-    public class UserDTO : BaseDTO
+    public class UserDTO : BaseDTO<string>
     {
         public string UserName { get; set; }
         public string? Country { get; set; }

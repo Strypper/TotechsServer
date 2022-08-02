@@ -3,7 +3,7 @@
 namespace Intranet.DataObject
 {
 
-    public class UserProjectDTO : BaseDTO
+    public class UserProjectDTO : BaseDTO<int>
     {
         public UserDTO    User    { get; set; }
         public ProjectDTO Project { get; set; }
@@ -11,11 +11,11 @@ namespace Intranet.DataObject
 
     public class CreateUpdateUserProjectDTO
     {
-        public int UserId    { get; set; }
+        public string UserId    { get; set; }
         public int ProjectId { get; set; }
     }
 
-    public class CreateProjectWithMultipleUsers : BaseDTO
+    public class CreateProjectWithMultipleUsers : BaseDTO<int>
     {
         public ICollection<UserDTO> Members     { get; set; } = new HashSet<UserDTO>();
         public string               ProjectName { get; set; }

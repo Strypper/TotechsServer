@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.DataObject
 {
-    public class FoodDTO : BaseDTO
+    public class FoodDTO : BaseDTO<int>
     {
         public string FoodName { get; set; }
         public string FoodEnglishName { get; set; }

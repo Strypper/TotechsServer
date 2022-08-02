@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.DataObject
 {
-    public class ProjectTaskDTO : BaseDTO
+    public class ProjectTaskDTO : BaseDTO<int>
     {
         public string? Title { get; set; } = string.Empty;
 

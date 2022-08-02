@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.DataObject
 {
-    public class MediaAssetsDTO : BaseDTO
+    public class MediaAssetsDTO : BaseDTO<int>
     {
         public string? Title { get; set; } = string.Empty;
 

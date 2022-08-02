@@ -2,7 +2,7 @@ using System;
 
 namespace Intranet.Entities.Entities
 {
-    public class Attendance : BaseEntity
+    public class Attendance : BaseEntity<int>
     {
         public DateTime Attend           { get; set; }
         public DateTime Leave            { get; set; }

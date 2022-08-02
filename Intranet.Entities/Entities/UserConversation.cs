@@ -2,12 +2,12 @@
 
 namespace Intranet.Entities.Entities
 {
-    public class UserConversation : BaseEntity
+    public class UserConversation : BaseEntity<int>
     {
         public int ConversationId { get; set; }
         public virtual Conversation Conversation { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public virtual User User { get; set; }
 
         public bool IsMute { get; set; }
