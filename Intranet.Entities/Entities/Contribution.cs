@@ -2,7 +2,7 @@
 
 namespace Intranet.Entities.Entities
 {
-    public class Contribution : BaseEntity
+    public class Contribution : BaseEntity<int>
     {
         public User        Contributor { get; set; }
         public decimal     Amount      { get; set; }

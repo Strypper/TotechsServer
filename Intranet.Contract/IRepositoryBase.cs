@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace Intranet.Contract
 {
-    public interface IRepositoryBase<T> where T : BaseEntity
+    public interface IRepositoryBase<T> where T : class
     {
         IQueryable<T> FindAll(Expression<Func<T, bool>>? predicate = null);
 
-        Task<T> FindByIdAsync(int id, CancellationToken cancelationToken);
+        Task<T> FindByIdAsync(int id, CancellationToken cancellationToken);
+
+        Task<T> FindByIdAsync(string id, CancellationToken cancellationToken);
 
         void Create(T entity);
 
@@ -19,6 +21,6 @@ namespace Intranet.Contract
 
         void Delete(T entity);
 
-        Task SaveChangesAsync(CancellationToken cancelationToken);
+        Task SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Intranet.Entities.Entities
 {
-    public class Project : BaseEntity
+    public class Project : BaseEntity<int>
     {
         public string   ProjectName        { get; set; } = string.Empty;
         public string?  ProjectLogo        { get; set; } = string.Empty;

@@ -2,9 +2,9 @@
 
 namespace Intranet.Entities
 {
-    public class BaseEntity
+    public class BaseEntity<T>
     {
         [Key]
-        public int Id { get; set; }
+        public T Id { get; set; }
     }
 }

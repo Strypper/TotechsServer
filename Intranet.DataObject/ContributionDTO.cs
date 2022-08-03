@@ -2,7 +2,7 @@
 
 namespace Intranet.DataObject
 {
-    public class ContributionDTO : BaseDTO
+    public class ContributionDTO : BaseDTO<int>
     {
         public UserDTO?        Contributor { get; set; }
         public decimal         Amount      { get; set; }

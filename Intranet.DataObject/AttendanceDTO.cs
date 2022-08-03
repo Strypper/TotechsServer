@@ -2,7 +2,7 @@ using System;
 
 namespace Intranet.DataObject
 {
-    public class AttendanceDTO : BaseDTO
+    public class AttendanceDTO : BaseDTO<int>
     {
         public DateTime Attend           { get; set; }
         public DateTime Leave            { get; set; }

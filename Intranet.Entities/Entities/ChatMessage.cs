@@ -2,7 +2,7 @@
 
 namespace Intranet.Entities.Entities
 {
-    public class ChatMessage : BaseEntity
+    public class ChatMessage : BaseEntity<int>
     {
         public User User { get; set; }
         public string MessageContent { get; set; }

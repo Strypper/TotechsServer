@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.DataObject
 {
-    public class SubFeatureDTO : BaseDTO
+    public class SubFeatureDTO : BaseDTO<int>
     {
         public string? Icon { get; set; } = string.Empty;
     }

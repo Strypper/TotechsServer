@@ -6,6 +6,6 @@ namespace Intranet.Contract
 {
     public interface IUserProjectRepository : IRepositoryBase<UserProject>
     {
-        Task<UserProject> FindByUserId(int userId, CancellationToken cancellationToken);
+        Task<UserProject> FindByUserId(string userId, CancellationToken cancellationToken);
     }
 }

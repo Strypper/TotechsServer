@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.DataObject
 {
-    public class ConversationDTO : BaseDTO
+    public class ConversationDTO : BaseDTO<int>
     {
         public ICollection<ChatMessageDTO> ChatMessages        { get; set; } = new HashSet<ChatMessageDTO>();
         public DateTime                    DateCreated         { get; set; } = DateTime.UtcNow;

@@ -2,7 +2,7 @@ using System;
 
 namespace Intranet.Entities.Entities
 {
-    public class TodoTask : BaseEntity
+    public class TodoTask : BaseEntity<int>
     {
         public DateTime   DateCreated  { get; set; }
         public string     Title        { get; set; }

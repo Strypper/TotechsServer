@@ -2,7 +2,7 @@ using System;
 
 namespace Intranet.DataObject
 {
-    public class TodoTaskDTO : BaseDTO
+    public class TodoTaskDTO : BaseDTO<int>
     {
         public DateTime      DateCreated  { get; set; }
         public string        Title        { get; set; }

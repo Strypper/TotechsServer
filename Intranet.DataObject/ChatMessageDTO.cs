@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.DataObject
 {
-    public class ChatMessageDTO : BaseDTO
+    public class ChatMessageDTO : BaseDTO<int>
     {
         public UserDTO?         User           { get; set; }
         public string ?         MessageContent { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.Entities.Entities
 {
-    public class Conversation : BaseEntity
+    public class Conversation : BaseEntity<int>
     {
         public ICollection<ChatMessage> ChatMessages        { get; set; } = new HashSet<ChatMessage>();
         public DateTime                 DateCreated         { get; set; } = DateTime.UtcNow;

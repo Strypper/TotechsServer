@@ -1,6 +1,6 @@
 namespace Intranet.Entities.Entities
 {
-    public class MeetingInfo : BaseEntity
+    public class MeetingInfo : BaseEntity<int>
     {
         public string          Description     { get; set; }
         public string          Location        { get; set; }

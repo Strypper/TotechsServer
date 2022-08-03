@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.DataObject
 {
-    public class MeetingScheduleDTO : BaseDTO
+    public class MeetingScheduleDTO : BaseDTO<int>
     {
         public DateTime                   MeetingDate  { get; set; }
         public DateTime                   EndTime      { get; set; }

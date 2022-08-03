@@ -3,10 +3,14 @@ using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
+using Intranet.Services.IServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,12 +22,14 @@ namespace Intranet.Controllers
     public class UserController : BaseController
     {
         private IMapper                     _mapper;
+        private IMediaService               _mediaService;
         private IntranetContext             _intranetContext;
         private IUserRepository             _userRepository;
         private IChatMessageRepository      _chatMessageRepository;
         private IConversationRepository     _conversationRepository;
         private IUserConversationRepository _userConversationRepository;
         public UserController(IMapper                     mapper,
+                              IMediaService               mediaService,
                               IntranetContext             intranetContext,
                               IUserRepository             userRepository,
                               IChatMessageRepository      chatMessageRepository,
@@ -31,6 +37,7 @@ namespace Intranet.Controllers
                               IUserConversationRepository userConversationRepository)
         {
             _mapper                     = mapper;
+            _mediaService               = mediaService;
             _intranetContext            = intranetContext; 
             _userRepository             = userRepository;
             _chatMessageRepository      = chatMessageRepository;
@@ -97,6 +104,34 @@ namespace Intranet.Controllers
             return CreatedAtAction(nameof(Get), new { user.Id }, _mapper.Map<UserDTO>(user));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadAvatar(string id, IFormFile avatar, CancellationToken cancellationToken = default)
+        {
+            if (_mediaService.IsImage(avatar))
+            {
+                var user = await _userRepository.FindByIdAsync(id, cancellationToken);
+                if(user is null)
+                {
+                    return NotFound($"No User With Id {id} Found!");
+                }
+                using (Stream stream = avatar.OpenReadStream())
+                {
+                    Tuple<bool, string> result = await _mediaService.UploadAvatarToStorage(stream, avatar.FileName);
+                    var isUploaded = result.Item1;
+                    var stringUrl = result.Item2;
+                    if (isUploaded && !string.IsNullOrEmpty(stringUrl))
+                    {
+                        user.ProfilePic = stringUrl;
+                        await _userRepository.SaveChangesAsync(cancellationToken);
+
+                        return Ok(stringUrl);
+                    }
+                    else return BadRequest("Look like the image couldnt upload to the storage");
+                }
+            }
+            else return new UnsupportedMediaTypeResult();
+        }
+
         [HttpPut]
         public async Task<IActionResult> Update(UserDTO dto, CancellationToken cancellationToken = default)
         {
@@ -121,7 +156,7 @@ namespace Intranet.Controllers
         //}
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(id, cancellationToken);
             if (user is null) return NotFound();

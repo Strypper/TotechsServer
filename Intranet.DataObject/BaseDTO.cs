@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Intranet.DataObject
 {
-    public class BaseDTO
+    public class BaseDTO<T>
     {
-        public int Id { get; set; }
+        public T Id { get; set; }
     }
 }

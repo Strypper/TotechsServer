@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.Entities.Entities
 {
-    public class GroupChat : BaseEntity
+    public class GroupChat : BaseEntity<int>
     {
         public string GroupName { get; set; }
         public string GroupImage { get; set; }

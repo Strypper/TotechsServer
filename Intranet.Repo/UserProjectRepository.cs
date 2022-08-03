@@ -22,8 +22,8 @@ namespace Intranet.Repo
         public override async Task<UserProject> FindByIdAsync(int userTeam, CancellationToken cancellationToken = default)
             => await FindAll(uf => uf.Id == userTeam).FirstOrDefaultAsync(cancellationToken);
 
-        public async Task<UserProject> FindByUserId(int userId, CancellationToken cancellationToken = default)
-            => await FindAll(uf => uf.User.Id == userId).FirstOrDefaultAsync(cancellationToken);
+        public async Task<UserProject> FindByUserId(string userId, CancellationToken cancellationToken = default)
+            => await FindAll(uf => uf.User.Id.Equals(userId)).FirstOrDefaultAsync(cancellationToken);
 
     }
 }

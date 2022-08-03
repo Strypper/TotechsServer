@@ -1,4 +1,5 @@
 using AutoMapper;
+using Azure.Storage;
 using Intranet.AppSettings;
 using Intranet.Authorization.Handlers;
 using Intranet.Contract;
@@ -14,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -32,6 +34,12 @@ namespace Intranet
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
+            services.AddSingleton((provider) =>
+            {
+                var config = provider.GetRequiredService<IOptionsMonitor<AzureStorageConfig>>().CurrentValue;
+                return new StorageSharedKeyCredential(config.AccountName, config.AccountKey);
+            });
             services.Configure<JwtTokenConfig>(Configuration.GetSection("JwtTokenConfig"));
 
             services.AddControllers();

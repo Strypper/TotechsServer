@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.DataObject
 {
-    public class ProjectDTO : BaseDTO
+    public class ProjectDTO : BaseDTO<int>
     {
         public string  ProjectName        { get; set; } = "UnTitle";
         public string? ProjectLogo        { get; set; } = string.Empty;
