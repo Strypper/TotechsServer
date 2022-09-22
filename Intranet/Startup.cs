@@ -34,7 +34,7 @@ namespace Intranet
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig"));
+            services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorageConfig")!);
             services.AddSingleton((provider) =>
             {
                 var config = provider.GetRequiredService<IOptionsMonitor<AzureStorageConfig>>().CurrentValue;
@@ -80,7 +80,7 @@ namespace Intranet
                     ValidateLifetime = false,
                     ValidIssuer = Configuration["JwtTokenConfig:Issuer"],
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtTokenConfig:Key"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtTokenConfig:Key"]!)),
                     ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 },
                 };
             });
@@ -94,7 +94,7 @@ namespace Intranet
             });
 
 
-            services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IntranetContext")));
+            services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IntranetContext")!));
 
             services.AddTransient<IFoodRepository            , FoodRepository>();
             services.AddTransient<IUserRepository            , UserRepository>();
