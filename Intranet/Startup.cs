@@ -107,6 +107,11 @@ namespace Intranet
             services.AddTransient<IContributionRepository    , ContributionRepository>();
             services.AddTransient<IUserConversationRepository, UserConversationRepository>();
 
+            services.AddTransient<ISkillRepository, ISkillRepository>();
+            services.AddTransient<IExpertiseRepository, ExpertiseRepository>();
+            services.AddTransient<IInterestRepository, InterestRepository>();
+            services.AddTransient<ICertificationRepository, CertificationRepository>();
+
 
 
             var mapperConfig = new MapperConfiguration(mc =>
