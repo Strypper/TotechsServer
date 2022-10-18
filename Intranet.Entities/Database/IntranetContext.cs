@@ -8,6 +8,10 @@ namespace Intranet.Entities.Database
         public IntranetContext(DbContextOptions<IntranetContext> options) : base(options) { }
         public DbSet<Food>             Foods             { get; set; }
         public DbSet<User>             Users             { get; set; }
+        public DbSet<Interest>         Interests         { get; set; }
+        public DbSet<Skill>            Skills            { get; set; }
+        public DbSet<Expertise>        Expertises        { get; set; }
+        public DbSet<Certification>    Certifications    { get; set; }
         public DbSet<Project>          Projects          { get; set; }
         public DbSet<Conversation>     Conversations     { get; set; }
         public DbSet<ChatMessage>      ChatMessages      { get; set; }
@@ -51,6 +55,30 @@ namespace Intranet.Entities.Database
                 entity.ToTable("UserConversations");
                 entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
                 entity.HasOne(e => e.Conversation).WithMany().HasForeignKey(e => e.ConversationId);
+            });
+            builder.Entity<UserExpertise>(entity =>
+            {
+                entity.ToTable("UserExpertises");
+                entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
+                entity.HasOne(e => e.Expertise).WithMany().HasForeignKey(e => e.ExpertiseId);
+            });
+            builder.Entity<UserCertification>(entity =>
+            {
+                entity.ToTable("UserCertifications");
+                entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
+                entity.HasOne(e => e.Certification).WithMany().HasForeignKey(e => e.CerificationId);
+            }); 
+            builder.Entity<UserSkill>(entity =>
+            {
+                entity.ToTable("UserSkills");
+                entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.Skill).WithMany().HasForeignKey(e => e.SkillId).OnDelete(DeleteBehavior.Cascade);
+            });
+            builder.Entity<SkillExpertise>(entity =>
+            {
+                entity.ToTable("UserSkills");
+                entity.HasOne(e => e.Expertise).WithMany().HasForeignKey(e => e.ExpertiseId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.Skill).WithMany().HasForeignKey(e => e.SkillId).OnDelete(DeleteBehavior.Cascade);
             });
         }
     }
