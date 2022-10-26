@@ -22,7 +22,7 @@ namespace Intranet.DataObject
         public string? Relationship { get; set; }
         public string? SignalRConnectionId { get; set; }
 
-        public ICollection<SkillDTO>? Skills { get; set; } = Array.Empty<SkillDTO>();
+        // public ICollection<SkillDTO>? Skills { get; set; } = Array.Empty<SkillDTO>();
     }
 
     public class UserLogin

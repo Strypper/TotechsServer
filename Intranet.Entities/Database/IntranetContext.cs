@@ -76,7 +76,7 @@ namespace Intranet.Entities.Database
             });
             builder.Entity<SkillExpertise>(entity =>
             {
-                entity.ToTable("UserSkills");
+                entity.ToTable("SkillExpertises");
                 entity.HasOne(e => e.Expertise).WithMany().HasForeignKey(e => e.ExpertiseId).OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(e => e.Skill).WithMany().HasForeignKey(e => e.SkillId).OnDelete(DeleteBehavior.Cascade);
             });

@@ -94,7 +94,7 @@ namespace Intranet
             });
 
 
-            services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IntranetContext")!));
+            services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")!));
 
             services.AddTransient<IFoodRepository            , FoodRepository>();
             services.AddTransient<IUserRepository            , UserRepository>();
@@ -106,11 +106,10 @@ namespace Intranet
             services.AddTransient<IConversationRepository    , ConversationRepository>();
             services.AddTransient<IContributionRepository    , ContributionRepository>();
             services.AddTransient<IUserConversationRepository, UserConversationRepository>();
-
-            services.AddTransient<ISkillRepository, ISkillRepository>();
-            services.AddTransient<IExpertiseRepository, ExpertiseRepository>();
-            services.AddTransient<IInterestRepository, InterestRepository>();
-            services.AddTransient<ICertificationRepository, CertificationRepository>();
+            services.AddTransient<ISkillRepository           , SkillRepository>();
+            services.AddTransient<IExpertiseRepository       , ExpertiseRepository>();
+            services.AddTransient<IInterestRepository        , InterestRepository>();
+            services.AddTransient<ICertificationRepository   , CertificationRepository>();
 
 
 

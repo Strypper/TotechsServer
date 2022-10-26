@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Intranet.Entities.Entities
 {
-    public class UserSkill
+    public class UserSkill : BaseEntity<int>
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int SkillId { get; set; }
         public string? Confirmation { get; set; }
         public virtual User User { get; set; }
