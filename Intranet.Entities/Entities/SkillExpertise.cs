@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Intranet.Entities.Entities
 {
-    public class SkillExpertise : BaseEntity<int>
+    public class SkillExpertise
     {
         public int SkillId { get; set; }
         public int ExpertiseId { get; set; }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Intranet.Entities.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstInitial : Migration
+    public partial class FirstInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -172,18 +172,14 @@ namespace Intranet.Entities.Migrations
                 name: "SkillExpertises",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     SkillId = table.Column<int>(type: "int", nullable: false),
                     ExpertiseId = table.Column<int>(type: "int", nullable: false),
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Value = table.Column<int>(type: "int", nullable: false),
-                    ExpertiseId1 = table.Column<int>(type: "int", nullable: true),
-                    SkillId1 = table.Column<int>(type: "int", nullable: true)
+                    Value = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SkillExpertises", x => x.Id);
+                    table.PrimaryKey("PK_SkillExpertises", x => new { x.SkillId, x.ExpertiseId });
                     table.ForeignKey(
                         name: "FK_SkillExpertises_Expertises_ExpertiseId",
                         column: x => x.ExpertiseId,
@@ -191,21 +187,11 @@ namespace Intranet.Entities.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SkillExpertises_Expertises_ExpertiseId1",
-                        column: x => x.ExpertiseId1,
-                        principalTable: "Expertises",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_SkillExpertises_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SkillExpertises_Skills_SkillId1",
-                        column: x => x.SkillId1,
-                        principalTable: "Skills",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -312,41 +298,27 @@ namespace Intranet.Entities.Migrations
                 name: "UserCertifications",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CertificationId = table.Column<int>(type: "int", nullable: false),
                     CertificationUniqueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VerificationUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IssueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CerificationId = table.Column<int>(type: "int", nullable: false),
-                    CertificationId1 = table.Column<int>(type: "int", nullable: true),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    IssueDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserCertifications", x => x.Id);
+                    table.PrimaryKey("PK_UserCertifications", x => new { x.UserId, x.CertificationId });
                     table.ForeignKey(
-                        name: "FK_UserCertifications_Certifications_CerificationId",
-                        column: x => x.CerificationId,
+                        name: "FK_UserCertifications_Certifications_CertificationId",
+                        column: x => x.CertificationId,
                         principalTable: "Certifications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserCertifications_Certifications_CertificationId1",
-                        column: x => x.CertificationId1,
-                        principalTable: "Certifications",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_UserCertifications_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserCertifications_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -381,17 +353,13 @@ namespace Intranet.Entities.Migrations
                 name: "UserExpertises",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     ExpertiseId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Exp = table.Column<byte>(type: "tinyint", nullable: false),
-                    ExpertiseId1 = table.Column<int>(type: "int", nullable: true),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Exp = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserExpertises", x => x.Id);
+                    table.PrimaryKey("PK_UserExpertises", x => new { x.UserId, x.ExpertiseId });
                     table.ForeignKey(
                         name: "FK_UserExpertises_Expertises_ExpertiseId",
                         column: x => x.ExpertiseId,
@@ -399,21 +367,11 @@ namespace Intranet.Entities.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserExpertises_Expertises_ExpertiseId1",
-                        column: x => x.ExpertiseId1,
-                        principalTable: "Expertises",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_UserExpertises_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserExpertises_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -472,18 +430,14 @@ namespace Intranet.Entities.Migrations
                 name: "UserSkills",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SkillId = table.Column<int>(type: "int", nullable: false),
                     Confirmation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Level = table.Column<int>(type: "int", nullable: false),
-                    SkillId1 = table.Column<int>(type: "int", nullable: true),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Level = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserSkills", x => x.Id);
+                    table.PrimaryKey("PK_UserSkills", x => new { x.SkillId, x.UserId });
                     table.ForeignKey(
                         name: "FK_UserSkills_Skills_SkillId",
                         column: x => x.SkillId,
@@ -491,21 +445,11 @@ namespace Intranet.Entities.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserSkills_Skills_SkillId1",
-                        column: x => x.SkillId1,
-                        principalTable: "Skills",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_UserSkills_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserSkills_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -611,21 +555,6 @@ namespace Intranet.Entities.Migrations
                 column: "ExpertiseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SkillExpertises_ExpertiseId1",
-                table: "SkillExpertises",
-                column: "ExpertiseId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SkillExpertises_SkillId",
-                table: "SkillExpertises",
-                column: "SkillId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SkillExpertises_SkillId1",
-                table: "SkillExpertises",
-                column: "SkillId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TodoTasks_AuthorId",
                 table: "TodoTasks",
                 column: "AuthorId");
@@ -636,24 +565,9 @@ namespace Intranet.Entities.Migrations
                 column: "MeetingScheduleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserCertifications_CerificationId",
+                name: "IX_UserCertifications_CertificationId",
                 table: "UserCertifications",
-                column: "CerificationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserCertifications_CertificationId1",
-                table: "UserCertifications",
-                column: "CertificationId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserCertifications_UserId",
-                table: "UserCertifications",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserCertifications_UserId1",
-                table: "UserCertifications",
-                column: "UserId1");
+                column: "CertificationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserConversations_ConversationId",
@@ -669,21 +583,6 @@ namespace Intranet.Entities.Migrations
                 name: "IX_UserExpertises_ExpertiseId",
                 table: "UserExpertises",
                 column: "ExpertiseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserExpertises_ExpertiseId1",
-                table: "UserExpertises",
-                column: "ExpertiseId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserExpertises_UserId",
-                table: "UserExpertises",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserExpertises_UserId1",
-                table: "UserExpertises",
-                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserFoods_FoodId",
@@ -706,24 +605,9 @@ namespace Intranet.Entities.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserSkills_SkillId",
-                table: "UserSkills",
-                column: "SkillId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserSkills_SkillId1",
-                table: "UserSkills",
-                column: "SkillId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserSkills_UserId",
                 table: "UserSkills",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserSkills_UserId1",
-                table: "UserSkills",
-                column: "UserId1");
         }
 
         /// <inheritdoc />

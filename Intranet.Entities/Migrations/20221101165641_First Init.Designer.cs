@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intranet.Entities.Migrations
 {
     [DbContext(typeof(IntranetContext))]
-    [Migration("20221019112312_First Initial")]
-    partial class FirstInitial
+    [Migration("20221101165641_First Init")]
+    partial class FirstInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -399,39 +399,21 @@ namespace Intranet.Entities.Migrations
 
             modelBuilder.Entity("Intranet.Entities.Entities.SkillExpertise", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("SkillId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Details")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ExpertiseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ExpertiseId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SkillId1")
-                        .HasColumnType("int");
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Value")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("SkillId", "ExpertiseId");
 
                     b.HasIndex("ExpertiseId");
-
-                    b.HasIndex("ExpertiseId1");
-
-                    b.HasIndex("SkillId");
-
-                    b.HasIndex("SkillId1");
 
                     b.ToTable("SkillExpertises", (string)null);
                 });
@@ -525,16 +507,10 @@ namespace Intranet.Entities.Migrations
 
             modelBuilder.Entity("Intranet.Entities.Entities.UserCertification", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CerificationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CertificationId1")
+                    b.Property<int>("CertificationId")
                         .HasColumnType("int");
 
                     b.Property<string>("CertificationUniqueId")
@@ -544,26 +520,13 @@ namespace Intranet.Entities.Migrations
                     b.Property<DateTime>("IssueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("VerificationUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "CertificationId");
 
-                    b.HasIndex("CerificationId");
-
-                    b.HasIndex("CertificationId1");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
+                    b.HasIndex("CertificationId");
 
                     b.ToTable("UserCertifications", (string)null);
                 });
@@ -600,37 +563,18 @@ namespace Intranet.Entities.Migrations
 
             modelBuilder.Entity("Intranet.Entities.Entities.UserExpertise", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<byte>("Exp")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ExpertiseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ExpertiseId1")
-                        .HasColumnType("int");
+                    b.Property<byte>("Exp")
+                        .HasColumnType("tinyint");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "ExpertiseId");
 
                     b.HasIndex("ExpertiseId");
-
-                    b.HasIndex("ExpertiseId1");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("UserExpertises", (string)null);
                 });
@@ -685,11 +629,11 @@ namespace Intranet.Entities.Migrations
 
             modelBuilder.Entity("Intranet.Entities.Entities.UserSkill", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("SkillId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Confirmation")
                         .HasColumnType("nvarchar(max)");
@@ -697,28 +641,9 @@ namespace Intranet.Entities.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SkillId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SkillId");
-
-                    b.HasIndex("SkillId1");
+                    b.HasKey("SkillId", "UserId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("UserSkills", (string)null);
                 });
@@ -797,24 +722,16 @@ namespace Intranet.Entities.Migrations
             modelBuilder.Entity("Intranet.Entities.Entities.SkillExpertise", b =>
                 {
                     b.HasOne("Intranet.Entities.Entities.Expertise", "Expertise")
-                        .WithMany()
+                        .WithMany("SkillExpertises")
                         .HasForeignKey("ExpertiseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Intranet.Entities.Entities.Expertise", null)
-                        .WithMany("SkillExpertises")
-                        .HasForeignKey("ExpertiseId1");
-
                     b.HasOne("Intranet.Entities.Entities.Skill", "Skill")
-                        .WithMany()
+                        .WithMany("SkillExpertises")
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Intranet.Entities.Entities.Skill", null)
-                        .WithMany("SkillExpertises")
-                        .HasForeignKey("SkillId1");
 
                     b.Navigation("Expertise");
 
@@ -837,24 +754,16 @@ namespace Intranet.Entities.Migrations
             modelBuilder.Entity("Intranet.Entities.Entities.UserCertification", b =>
                 {
                     b.HasOne("Intranet.Entities.Entities.Certification", "Certification")
-                        .WithMany()
-                        .HasForeignKey("CerificationId")
+                        .WithMany("UserCertifications")
+                        .HasForeignKey("CertificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Intranet.Entities.Entities.Certification", null)
-                        .WithMany("UserCertifications")
-                        .HasForeignKey("CertificationId1");
-
                     b.HasOne("Intranet.Entities.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("UserCertifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Intranet.Entities.Entities.User", null)
-                        .WithMany("UserCertifications")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("Certification");
 
@@ -883,24 +792,16 @@ namespace Intranet.Entities.Migrations
             modelBuilder.Entity("Intranet.Entities.Entities.UserExpertise", b =>
                 {
                     b.HasOne("Intranet.Entities.Entities.Expertise", "Expertise")
-                        .WithMany()
+                        .WithMany("UserExpertises")
                         .HasForeignKey("ExpertiseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Intranet.Entities.Entities.Expertise", null)
-                        .WithMany("UserExpertises")
-                        .HasForeignKey("ExpertiseId1");
-
                     b.HasOne("Intranet.Entities.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("UserExpertises")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Intranet.Entities.Entities.User", null)
-                        .WithMany("UserExpertises")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("Expertise");
 
@@ -948,24 +849,16 @@ namespace Intranet.Entities.Migrations
             modelBuilder.Entity("Intranet.Entities.Entities.UserSkill", b =>
                 {
                     b.HasOne("Intranet.Entities.Entities.Skill", "Skill")
-                        .WithMany()
+                        .WithMany("UserSkills")
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Intranet.Entities.Entities.Skill", null)
-                        .WithMany("UserSkills")
-                        .HasForeignKey("SkillId1");
-
                     b.HasOne("Intranet.Entities.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("UserSkills")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Intranet.Entities.Entities.User", null)
-                        .WithMany("UserSkills")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("Skill");
 

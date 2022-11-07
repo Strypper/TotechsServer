@@ -49,7 +49,10 @@ namespace Intranet.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SkillDTO dto, CancellationToken cancellationToken = default)
         {
+            if (dto is null) return BadRequest($"{nameof(dto)} was null");
+
             var skill = _mapper.Map<Skill>(dto);
+            skill.SkillExpertises = new List<SkillExpertise>();
             foreach(var se in dto.SkillExpertises)
             {
                 var expertise = await _expertiseRepository.FindByIdAsync(se.ExpertiseId, cancellationToken);
@@ -66,9 +69,12 @@ namespace Intranet.Controllers
             return CreatedAtAction(nameof(Get), new { skill.Id }, _mapper.Map<SkillDTO>(skill));
         }
 
+
         [HttpPut]
         public async Task<IActionResult> Update(SkillDTO dto, CancellationToken cancellationToken = default)
         {
+            if (dto is null) return BadRequest($"{nameof(dto)} was null");
+
             var skill = await _skillRepository.FindByIdAsync(dto.Id, cancellationToken);
             await _skillRepository.SaveChangesAsync(cancellationToken);
             return NoContent();

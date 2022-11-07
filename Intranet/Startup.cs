@@ -1,14 +1,11 @@
 using AutoMapper;
 using Azure.Storage;
 using Intranet.AppSettings;
-using Intranet.Authorization.Handlers;
 using Intranet.Contract;
 using Intranet.Entities.Database;
-using Intranet.Entities.Entities;
 using Intranet.Hubs;
 using Intranet.Repo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +16,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Intranet
 {

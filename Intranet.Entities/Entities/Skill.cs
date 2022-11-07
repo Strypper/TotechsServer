@@ -9,8 +9,8 @@ namespace Intranet.Entities.Entities
         public double SkillValue { get; set; } = 0;
         public string? MoreDetail { get; set; }
 
-        public ICollection<UserSkill> UserSkills { get; set; } = new HashSet<UserSkill>();
-        public ICollection<SkillExpertise> SkillExpertises { get; set; } = new HashSet<SkillExpertise>();
+        public ICollection<UserSkill>? UserSkills { get; set; } = new HashSet<UserSkill>();
+        public ICollection<SkillExpertise>? SkillExpertises { get; set; } = new HashSet<SkillExpertise>();
 
     }
 }
