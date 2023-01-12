@@ -2,6 +2,7 @@
 using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -14,19 +15,22 @@ namespace Intranet.Controllers
     [Route("/api/[controller]/[action]")]
     public class SkillController : BaseController
     {
-        public IMapper                 _mapper;
-        public IUserRepository         _userRepository;
-        public ISkillRepository _skillRepository;
-        public IExpertiseRepository _expertiseRepository;
+        private IMapper                 _mapper;
+        private IUserRepository         _userRepository;
+        private ISkillRepository _skillRepository;
+        private IExpertiseRepository _expertiseRepository;
+        private UserManager<User> _userManager;
         public SkillController(IMapper mapper,
                                       IUserRepository userRepository,
                                       ISkillRepository skillRepository,
-                                      IExpertiseRepository expertiseRepository)
+                                      IExpertiseRepository expertiseRepository,
+                                      UserManager<User> userManager)
         {
             _mapper                 = mapper;
             _userRepository         = userRepository;
             _skillRepository = skillRepository;
             _expertiseRepository = expertiseRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -44,6 +48,17 @@ namespace Intranet.Controllers
                                                             .FirstOrDefaultAsync(cancellationToken);
             if (skill is null) return NotFound();
             return Ok(_mapper.Map<SkillDTO>(skill));
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetByUserId(string userId, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user is null) return NotFound($"No User With Id {userId} Found!");
+
+            var expertises = await _expertiseRepository.FindAll().Where(x => x.UserExpertises.Select(y => userId.Equals(y.UserId)).Any()).ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<Expertise>>(expertises));
         }
 
         [HttpPost]

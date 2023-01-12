@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace Intranet.Controllers
 {
@@ -16,11 +18,13 @@ namespace Intranet.Controllers
     {
         public IMapper _mapper;
         public IExpertiseRepository _expertiseRepository;
+        public UserManager<User> _userManager;
 
-        public ExpertiseController(IMapper mapper, IExpertiseRepository expertiseRepository)
+        public ExpertiseController(IMapper mapper, IExpertiseRepository expertiseRepository, UserManager<User> userManager) 
         {
             _mapper = mapper;
             _expertiseRepository = expertiseRepository;
+            _userManager = userManager;
         }
 
 
@@ -39,6 +43,17 @@ namespace Intranet.Controllers
                                                             .FirstOrDefaultAsync(cancellationToken);
             if (expertise is null) return NotFound();
             return Ok(_mapper.Map<ExpertiseDTO>(expertise));
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetByUserId(string userId, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user is null) return NotFound($"No User With Id {userId} Found!");
+
+            var expertises = await _expertiseRepository.FindAll().Where(x => x.UserExpertises.Select(y => userId.Equals(y.UserId)).Any()).ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<Expertise>>(expertises));
         }
 
 
