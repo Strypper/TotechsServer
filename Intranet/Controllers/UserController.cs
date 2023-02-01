@@ -14,6 +14,8 @@ using System.IO;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace Intranet.Controllers
 {
@@ -22,14 +24,14 @@ namespace Intranet.Controllers
     public class UserController : BaseController
     {
         private IMapper                     _mapper;
-        private IMediaService               _mediaService;
+        //private IMediaService               _mediaService;
         private IntranetContext             _intranetContext;
         private IUserRepository             _userRepository;
         private IChatMessageRepository      _chatMessageRepository;
         private IConversationRepository     _conversationRepository;
         private IUserConversationRepository _userConversationRepository;
         public UserController(IMapper                     mapper,
-                              IMediaService               mediaService,
+                              //IMediaService               mediaService,
                               IntranetContext             intranetContext,
                               IUserRepository             userRepository,
                               IChatMessageRepository      chatMessageRepository,
@@ -37,7 +39,7 @@ namespace Intranet.Controllers
                               IUserConversationRepository userConversationRepository)
         {
             _mapper                     = mapper;
-            _mediaService               = mediaService;
+            //_mediaService               = mediaService;
             _intranetContext            = intranetContext; 
             _userRepository             = userRepository;
             _chatMessageRepository      = chatMessageRepository;
@@ -86,6 +88,16 @@ namespace Intranet.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLogin loginInfo, CancellationToken cancellationToken = default)
         {
+            // Cast to ClaimsIdentity.
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            // Gets list of claims.
+            IEnumerable<Claim> claim = identity.Claims;
+
+            var types = claim.Select(x => x.Type).ToList();
+            var values = claim.Select(x => x.Value).ToList();
+            var guid = values.ElementAt(types.IndexOf("Guid"));
+
             var user = await _userRepository.FindByUserName(loginInfo.UserName, cancellationToken);
             if (user is null || user.IsDisable == true) return NotFound();
             return Ok(_mapper.Map<UserDTO>(user));
@@ -107,29 +119,29 @@ namespace Intranet.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadAvatar(string id, IFormFile avatar, CancellationToken cancellationToken = default)
         {
-            if (_mediaService.IsImage(avatar))
-            {
-                var user = await _userRepository.FindByIdAsync(id, cancellationToken);
-                if(user is null)
-                {
-                    return NotFound($"No User With Id {id} Found!");
-                }
-                using (Stream stream = avatar.OpenReadStream())
-                {
-                    Tuple<bool, string> result = await _mediaService.UploadAvatarToStorage(stream, avatar.FileName);
-                    var isUploaded = result.Item1;
-                    var stringUrl = result.Item2;
-                    if (isUploaded && !string.IsNullOrEmpty(stringUrl))
-                    {
-                        user.ProfilePic = stringUrl;
-                        await _userRepository.SaveChangesAsync(cancellationToken);
+            //if (_mediaService.IsImage(avatar))
+            //{
+            //    var user = await _userRepository.FindByIdAsync(id, cancellationToken);
+            //    if(user is null)
+            //    {
+            //        return NotFound($"No User With Id {id} Found!");
+            //    }
+            //    using (Stream stream = avatar.OpenReadStream())
+            //    {
+            //        Tuple<bool, string> result = await _mediaService.UploadAvatarToStorage(stream, avatar.FileName);
+            //        var isUploaded = result.Item1;
+            //        var stringUrl = result.Item2;
+            //        if (isUploaded && !string.IsNullOrEmpty(stringUrl))
+            //        {
+            //            user.ProfilePic = stringUrl;
+            //            await _userRepository.SaveChangesAsync(cancellationToken);
 
-                        return Ok(stringUrl);
-                    }
-                    else return BadRequest("Look like the image couldnt upload to the storage");
-                }
-            }
-            else return new UnsupportedMediaTypeResult();
+            //            return Ok(stringUrl);
+            //        }
+            //        else return BadRequest("Look like the image couldnt upload to the storage");
+            //    }
+            //}
+            return new UnsupportedMediaTypeResult();
         }
 
         [HttpPut]
