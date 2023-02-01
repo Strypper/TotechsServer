@@ -140,6 +140,7 @@ namespace Intranet
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapHub<MAUIslandHub>("/mauislandhub");
             });
         }
     }
