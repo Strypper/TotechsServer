@@ -4,6 +4,7 @@ using Intranet;
 using Intranet.AppSettings;
 using Intranet.Contract;
 using Intranet.Entities.Database;
+using Intranet.Hubs;
 using Intranet.Repo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -124,6 +125,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints => endpoints.MapControllers());
+app.UseEndpoints(endpoints => {
+endpoints.MapControllers();
+endpoints.MapHub<MAUIslandHub>("/mauislandhub");
+} );
 
 app.Run();

@@ -12,15 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intranet.Entities.Migrations
 {
     [DbContext(typeof(IntranetContext))]
-    [Migration("20220703101419_User_Guid")]
-    partial class User_Guid
+    [Migration("20230214202733_Initial")]
+    partial class Initial
     {
-        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-preview.5.22302.2")
+                .HasAnnotation("ProductVersion", "6.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);

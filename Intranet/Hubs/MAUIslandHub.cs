@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Intranet.Contract;
+using Intranet.DataObject;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading;
@@ -8,46 +10,44 @@ namespace Intranet.Hubs;
 
 public class MAUIslandHub : Hub
 {
-    //private IMapper _mapper;
-    //private IUserRepository _userRepository;
-    //private IGroupChatRepository _groupChatRepository;
-    //private IChatMessageRepository _chatMessageRepository;
-    //private IConversationRepository _conversationRepository;
+    private IMapper _mapper;
+    private IUserRepository _userRepository;
 
-    public MAUIslandHub(//IMapper mapper
-                       //IUserRepository userRepository,
-                       //IGroupChatRepository groupChatRepository,
-                       //IChatMessageRepository chatMessageRepository,
-                       //IConversationRepository conversationRepository)
+    public MAUIslandHub(
+                        IMapper mapper,
+                        IUserRepository userRepository
                        )
     {
-        //_mapper = mapper;
-        //_userRepository = userRepository;
-        //_groupChatRepository = groupChatRepository;
-        //_chatMessageRepository = chatMessageRepository;
-        //_conversationRepository = conversationRepository;
+        _mapper = mapper;
+        _userRepository = userRepository;
     }
 
     public override async Task OnConnectedAsync()
     {
-        System.Diagnostics.Debug.WriteLine(Context.ConnectionId);
-        //var allOnlineUsers = _userRepository
-        //                            .FindAll(user => user.SignalRConnectionId != null)
-        //                            .ToList();
-        
         await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
         await base.OnConnectedAsync();
     }
 
-    //public override async Task OnDisconnectedAsync(Exception exception)
-    //{
-    //    await base.OnDisconnectedAsync(exception);
-    //}
+    public override async Task OnDisconnectedAsync(Exception exception)
+    {
+        await base.OnDisconnectedAsync(exception);
+    }
 
-    public async Task SendMessage(string mess)
+    public async Task IdentifyUser(string connectionId, int userId)
     {
         CancellationToken cancellationToken = new CancellationToken(default);
-        await Clients.All.SendAsync("ReceiveMessage", mess);
-        await Clients.Caller.SendAsync("ReceiveMessage", mess);
+        var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
+        user.SignalRConnectionId = connectionId;
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync(cancellationToken);
+        await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity",
+                                                     _mapper.Map<UserDTO>(user));
+        await Clients.All.SendAsync("UserLogIn", _mapper.Map<UserDTO>(user));
+    }
+
+    public async Task SendMessage(string message, string authorName, string avatarUrl)
+    {
+        CancellationToken cancellationToken = new CancellationToken(default);
+        await Clients.All.SendAsync("ReceiveMessage", message, authorName, avatarUrl, DateTime.Now);
     }
 }

@@ -3,19 +3,14 @@ using Intranet.Contract;
 using Intranet.DataObject;
 using Intranet.Entities.Database;
 using Intranet.Entities.Entities;
-using Intranet.Services.IServices;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using System.Linq;
 
 namespace Intranet.Controllers
 {
@@ -23,27 +18,27 @@ namespace Intranet.Controllers
     [Route("/api/[controller]/[action]")]
     public class UserController : BaseController
     {
-        private IMapper                     _mapper;
+        private IMapper _mapper;
         //private IMediaService               _mediaService;
-        private IntranetContext             _intranetContext;
-        private IUserRepository             _userRepository;
-        private IChatMessageRepository      _chatMessageRepository;
-        private IConversationRepository     _conversationRepository;
+        private IntranetContext _intranetContext;
+        private IUserRepository _userRepository;
+        private IChatMessageRepository _chatMessageRepository;
+        private IConversationRepository _conversationRepository;
         private IUserConversationRepository _userConversationRepository;
-        public UserController(IMapper                     mapper,
+        public UserController(IMapper mapper,
                               //IMediaService               mediaService,
-                              IntranetContext             intranetContext,
-                              IUserRepository             userRepository,
-                              IChatMessageRepository      chatMessageRepository,
-                              IConversationRepository     conversationRepository,
+                              IntranetContext intranetContext,
+                              IUserRepository userRepository,
+                              IChatMessageRepository chatMessageRepository,
+                              IConversationRepository conversationRepository,
                               IUserConversationRepository userConversationRepository)
         {
-            _mapper                     = mapper;
+            _mapper = mapper;
             //_mediaService               = mediaService;
-            _intranetContext            = intranetContext; 
-            _userRepository             = userRepository;
-            _chatMessageRepository      = chatMessageRepository;
-            _conversationRepository     = conversationRepository;
+            _intranetContext = intranetContext;
+            _userRepository = userRepository;
+            _chatMessageRepository = chatMessageRepository;
+            _conversationRepository = conversationRepository;
             _userConversationRepository = userConversationRepository;
         }
 
@@ -52,7 +47,7 @@ namespace Intranet.Controllers
         {
             var users = await _userRepository.FindAll().ToListAsync(cancellationToken);
             return Ok(_mapper.Map<IEnumerable<UserDTO>>(users));
-        } 
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
@@ -70,7 +65,8 @@ namespace Intranet.Controllers
                 var user = await _userRepository.FindBySignalRConnectionId(singalRConnectionStringId);
                 return Ok(_mapper.Map<UserDTO>(user));
 
-            }else return NotFound();
+            }
+            else return NotFound();
         }
 
         [HttpGet("{guid}")]
