@@ -1,5 +1,5 @@
 ﻿using Intranet.Contract;
-using Intranet.Entities.Database;
+using Intranet.Entities;
 using Intranet.Entities.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,7 +20,7 @@ namespace Intranet.Repo
         public override async Task<UserFood> FindByIdAsync(int userFood, CancellationToken cancellationToken = default)
             => await FindAll(uf => uf.Id == userFood).FirstOrDefaultAsync(cancellationToken);
 
-        public async Task<UserFood> FindByUserId(int userId, CancellationToken cancellationToken = default)
+        public async Task<UserFood> FindByUserId(string userId, CancellationToken cancellationToken = default)
             => await FindAll(uf => uf.User.Id.Equals(userId)).FirstOrDefaultAsync(cancellationToken);
     }
 }

@@ -3,11 +3,12 @@ using Azure.Storage;
 using Intranet;
 using Intranet.AppSettings;
 using Intranet.Contract;
-using Intranet.Entities.Database;
+using Intranet.Entities;
 using Intranet.Hubs;
 using Intranet.Repo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -82,6 +83,22 @@ builder.Services.AddAuthorization(config =>
 
 builder.Services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IntranetContext")!));
 
+builder.Services.AddIdentity<User, Role>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 1;
+
+    options.User.RequireUniqueEmail = true; //default false
+                                            //options.SignIn.RequireConfirmedEmail = true;
+})
+                    .AddEntityFrameworkStores<IntranetContext>()
+                    .AddUserManager<UserManager>()
+                    .AddDefaultTokenProviders();
+
+
 builder.Services.AddTransient<IFoodRepository, FoodRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserFoodRepository, UserFoodRepository>();
@@ -125,9 +142,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints => {
-endpoints.MapControllers();
-endpoints.MapHub<MAUIslandHub>("/mauislandhub");
-} );
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<MAUIslandHub>("/mauislandhub");
+});
 
 app.Run();

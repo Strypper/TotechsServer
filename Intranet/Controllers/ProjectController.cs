@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Intranet.Contract;
 using Intranet.DataObject;
-using Intranet.Entities.Database;
+using Intranet.Entities;
 using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,22 +15,22 @@ namespace Intranet.Controllers
     [Route("/api/[controller]/[action]")]
     public class ProjectController : BaseController
     {
-        public IMapper                _mapper;
+        public IMapper _mapper;
         public IUserProjectRepository _userProjectRepository;
-        public IUserRepository        _userRepository;
-        public IProjectRepository     _projectRepository;
+        public IUserRepository _userRepository;
+        public IProjectRepository _projectRepository;
         public IntranetContext _intranetContext { get; set; }
-        public ProjectController(IMapper                 mapper,
+        public ProjectController(IMapper mapper,
                                   IUserProjectRepository userProjectRepository,
-                                  IUserRepository        userRepository,
-                                  IProjectRepository     projectRepository,
-                                  IntranetContext        intranetContext)
+                                  IUserRepository userRepository,
+                                  IProjectRepository projectRepository,
+                                  IntranetContext intranetContext)
         {
-            _mapper                = mapper;
+            _mapper = mapper;
             _userProjectRepository = userProjectRepository;
-            _userRepository        = userRepository;
-            _projectRepository     = projectRepository;
-            _intranetContext       = intranetContext;
+            _userRepository = userRepository;
+            _projectRepository = projectRepository;
+            _intranetContext = intranetContext;
         }
 
         [HttpGet]
@@ -56,17 +55,17 @@ namespace Intranet.Controllers
                                          .Select(ut => ut.User);
                 var projectsWithMembers = new ProjectWithMemberDTO()
                 {
-                    Id                 = projectDTO.Id,
-                    ProjectName        = projectDTO.ProjectName,
-                    Clients            = projectDTO.Clients,
-                    About              = projectDTO.About,
-                    TechLead           = projectDTO.TechLead,
-                    ProjectLogo        = projectDTO.ProjectLogo,
-                    ProjectBackground  = projectDTO.ProjectBackground,
+                    Id = projectDTO.Id,
+                    ProjectName = projectDTO.ProjectName,
+                    Clients = projectDTO.Clients,
+                    About = projectDTO.About,
+                    TechLead = projectDTO.TechLead,
+                    ProjectLogo = projectDTO.ProjectLogo,
+                    ProjectBackground = projectDTO.ProjectBackground,
                     MicrosoftStoreLink = projectDTO.MicrosoftStoreLink,
-                    StartTime          = projectDTO.StartTime,
-                    Deadline           = projectDTO.Deadline,
-                    Members            = _mapper.Map<IEnumerable<UserDTO>>(members)
+                    StartTime = projectDTO.StartTime,
+                    Deadline = projectDTO.Deadline,
+                    Members = _mapper.Map<IEnumerable<UserDTO>>(members)
                 };
                 projectsWithUserDTO.Add(projectsWithMembers);
             }
@@ -97,12 +96,12 @@ namespace Intranet.Controllers
             var existingProject = await _projectRepository.FindByIdAsync(dto.Id, cancellationToken);
             if (existingProject == null)
             {
-                var project = new Project() 
+                var project = new Project()
                 {
                     ProjectName = dto.ProjectName,
-                    Clients     = dto.Clients,
-                    About       = dto.About,
-                    TechLead    = dto.TechLead
+                    Clients = dto.Clients,
+                    About = dto.About,
+                    TechLead = dto.TechLead
                 };
                 _projectRepository.Create(project);
                 await _projectRepository.SaveChangesAsync(cancellationToken);
@@ -111,7 +110,7 @@ namespace Intranet.Controllers
                     var userProject = new UserProject()
                     {
                         ProjectId = project.Id,
-                        UserId    = user.Id
+                        UserId = user.Id
                     };
                     _userProjectRepository.Create(userProject);
                     await _userProjectRepository.SaveChangesAsync(cancellationToken);

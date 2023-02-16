@@ -13,20 +13,20 @@ namespace Intranet.Controllers
     [Route("/api/[controller]/[action]")]
     public class UserProjectController : BaseController
     {
-        public IMapper                _mapper;
+        public IMapper _mapper;
         public IUserProjectRepository _userProjectRepository;
-        public IUserRepository        _userRepository;
-        public IProjectRepository     _projectRepository;
+        public IUserRepository _userRepository;
+        public IProjectRepository _projectRepository;
 
-        public UserProjectController(IMapper                mapper,
-                                     IUserProjectRepository userProjectRepository, 
-                                     IUserRepository        userRepository,
-                                     IProjectRepository     projectRepository)
+        public UserProjectController(IMapper mapper,
+                                     IUserProjectRepository userProjectRepository,
+                                     IUserRepository userRepository,
+                                     IProjectRepository projectRepository)
         {
-            _mapper                = mapper;
+            _mapper = mapper;
             _userProjectRepository = userProjectRepository;
-            _userRepository        = userRepository;
-            _projectRepository     = projectRepository;
+            _userRepository = userRepository;
+            _projectRepository = projectRepository;
         }
 
         [HttpGet]

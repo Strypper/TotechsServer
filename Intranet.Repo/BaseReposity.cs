@@ -1,7 +1,5 @@
 ﻿using Intranet.Contract;
 using Intranet.Entities;
-using Intranet.Entities.Database;
-using Intranet.Repo.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

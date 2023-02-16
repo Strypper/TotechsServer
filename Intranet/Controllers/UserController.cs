@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Intranet.Contract;
 using Intranet.DataObject;
-using Intranet.Entities.Database;
-using Intranet.Entities.Entities;
+using Intranet.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -166,35 +165,35 @@ namespace Intranet.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken = default)
         {
-            var user = await _userRepository.FindByIdAsync(id, cancellationToken);
-            if (user is null) return NotFound();
-            using var intranetTransaction = await _intranetContext.Database.BeginTransactionAsync();
-            foreach (var chatMessage in _chatMessageRepository.FindAll(cm => cm.User.Id == user.Id))
-            {
-                _chatMessageRepository.Delete(chatMessage);
-            }
+            //var user = await _userRepository.FindByIdAsync(id, cancellationToken);
+            //if (user is null) return NotFound();
+            //using var intranetTransaction = await _intranetContext.Database.BeginTransactionAsync();
+            //foreach (var chatMessage in _chatMessageRepository.FindAll(cm => cm.User.Id == user.Id))
+            //{
+            //    _chatMessageRepository.Delete(chatMessage);
+            //}
 
-            var conversationIdToDelete = new List<int>();
-            foreach (var userConversation in _userConversationRepository.FindAll(uc => uc.UserId == user.Id))
-            {
-                conversationIdToDelete.Add(userConversation.ConversationId);
-            }
+            //var conversationIdToDelete = new List<int>();
+            //foreach (var userConversation in _userConversationRepository.FindAll(uc => uc.UserId == user.Id))
+            //{
+            //    conversationIdToDelete.Add(userConversation.ConversationId);
+            //}
 
-            foreach (var conversationId in conversationIdToDelete)
-            {
-                var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
-                _conversationRepository.Delete(conversation);
-            }
-            foreach (var conversationId in conversationIdToDelete)
-            {
-                var userConversation = await _userConversationRepository
-                                                .FindAll(uc => uc.ConversationId == conversationId)
-                                                .FirstOrDefaultAsync(cancellationToken);
-                _userConversationRepository.Delete(userConversation);
-            }
-            _userRepository.Delete(user);
-            await _userRepository.SaveChangesAsync(cancellationToken);
-            await _intranetContext.Database.CommitTransactionAsync(cancellationToken);
+            //foreach (var conversationId in conversationIdToDelete)
+            //{
+            //    var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
+            //    _conversationRepository.Delete(conversation);
+            //}
+            //foreach (var conversationId in conversationIdToDelete)
+            //{
+            //    var userConversation = await _userConversationRepository
+            //                                    .FindAll(uc => uc.ConversationId == conversationId)
+            //                                    .FirstOrDefaultAsync(cancellationToken);
+            //    _userConversationRepository.Delete(userConversation);
+            //}
+            //_userRepository.Delete(user);
+            //await _userRepository.SaveChangesAsync(cancellationToken);
+            //await _intranetContext.Database.CommitTransactionAsync(cancellationToken);
             return NoContent();
         }
 

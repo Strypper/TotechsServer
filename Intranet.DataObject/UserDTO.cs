@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.DataObject
 {
-    public class UserDTO : BaseDTO<int>
+    public class UserDTO : BaseDTO<string>
     {
         public string Guid { get; set; }
         public string UserName { get; set; }

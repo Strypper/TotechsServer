@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Intranet.Contract;
 using Intranet.DataObject;
-using Intranet.Entities.Database;
+using Intranet.Entities;
 using Intranet.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +15,10 @@ namespace Intranet.Controllers
     [Route("/api/[controller]/[action]")]
     public class UserConversationController : BaseController
     {
-        public IMapper                     _mapper;
-        public IUserRepository             _userRepository;
-        public IntranetContext             _intranetContext;
-        public IConversationRepository     _conversationRepository;
+        public IMapper _mapper;
+        public IUserRepository _userRepository;
+        public IntranetContext _intranetContext;
+        public IConversationRepository _conversationRepository;
         public IUserConversationRepository _userConversationRepository;
 
         public UserConversationController(IMapper mapper,
@@ -27,10 +27,10 @@ namespace Intranet.Controllers
                                           IConversationRepository conversationRepository,
                                           IUserConversationRepository userConversationRepository)
         {
-            _mapper                     = mapper;
-            _userRepository             = userRepository;
-            _intranetContext            = intranetContext;
-            _conversationRepository     = conversationRepository;
+            _mapper = mapper;
+            _userRepository = userRepository;
+            _intranetContext = intranetContext;
+            _conversationRepository = conversationRepository;
             _userConversationRepository = userConversationRepository;
         }
 
@@ -64,20 +64,21 @@ namespace Intranet.Controllers
             //Find the current user
             var currentUser = await _userRepository.FindByIdAsync(dto.CurrentUserId, cancellationToken);
             //Find the target user
-            var targetUser  = await _userRepository.FindByIdAsync(dto.TargetUserId,  cancellationToken);
+            var targetUser = await _userRepository.FindByIdAsync(dto.TargetUserId, cancellationToken);
             //Check if the conversation of between these people
             //Get all the User-Conversation from current user
             var currentUserConversations = await _userConversationRepository.FindAll(ucr => ucr.UserId.Equals(dto.CurrentUserId)).Select(ucr => ucr.ConversationId).ToListAsync();
-            var targetUserConversations  = await _userConversationRepository.FindAll(ucr => ucr.UserId.Equals(dto.TargetUserId)).Select(ucr => ucr.ConversationId).ToListAsync();
+            var targetUserConversations = await _userConversationRepository.FindAll(ucr => ucr.UserId.Equals(dto.TargetUserId)).Select(ucr => ucr.ConversationId).ToListAsync();
             //If the conversation not exist
             if (currentUserConversations.Intersect(targetUserConversations).Any() == false)
             {
                 using var intranetTransaction = await _intranetContext.Database.BeginTransactionAsync();
                 // Users = new List<User>() { currentUser, targetUser }, 
-                var newConversation = new Conversation() { 
-                                                           LastInteractionTime = System.DateTime.Now,
-                                                           ChatMessages = new List<ChatMessage>()
-                                                         };
+                var newConversation = new Conversation()
+                {
+                    LastInteractionTime = System.DateTime.Now,
+                    ChatMessages = new List<ChatMessage>()
+                };
                 _conversationRepository.Create(newConversation);
                 await _conversationRepository.SaveChangesAsync(cancellationToken);
                 var currentUserConversation = new UserConversation()
@@ -102,8 +103,8 @@ namespace Intranet.Controllers
             else
             {
                 //If the conversation do exist send the existing conversation-id
-                var existingConversationId     = currentUserConversations.Intersect(targetUserConversations).First();
-                var existingConversation       = await _conversationRepository.FindByIdAsync(existingConversationId, cancellationToken);
+                var existingConversationId = currentUserConversations.Intersect(targetUserConversations).First();
+                var existingConversation = await _conversationRepository.FindByIdAsync(existingConversationId, cancellationToken);
                 var existingDirectConversation = _mapper.Map<ConversationDirectModeDTO>(existingConversation);
                 existingDirectConversation.Id = existingConversationId;
                 existingDirectConversation.Users.Add(_mapper.Map<UserDTO>(currentUser));

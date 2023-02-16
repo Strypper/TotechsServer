@@ -1,5 +1,5 @@
 ﻿using Intranet.Contract;
-using Intranet.Entities.Database;
+using Intranet.Entities;
 using Intranet.Entities.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;

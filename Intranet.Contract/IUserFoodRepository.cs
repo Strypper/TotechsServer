@@ -6,6 +6,6 @@ namespace Intranet.Contract
 {
     public interface IUserFoodRepository : IRepositoryBase<UserFood>
     {
-        Task<UserFood> FindByUserId(int userId, CancellationToken cancellationToken);
+        Task<UserFood> FindByUserId(string userId, CancellationToken cancellationToken);
     }
 }

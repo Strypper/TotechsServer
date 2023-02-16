@@ -45,7 +45,7 @@ namespace Intranet.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserSelectedFood(int userId, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetUserSelectedFood(string userId, CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
             if (user is null) return NotFound();
