@@ -1,8 +1,11 @@
 ﻿using Intranet.Contract;
 using Intranet.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,12 +25,16 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     #endregion
 
+
+
     public override IQueryable<User> FindAll(Expression<Func<User, bool>> predicate = null)
     {
         return _userManager.FindAll(predicate);
     }
 
     #region [Methods]
+    public Task<IdentityResult> CreateAccount(User user, string password)
+        => _userManager.CreateAsync(user, password);
     public Task<User> FindByGuid(string guid, CancellationToken cancellationToken = default)
     {
         return _userManager.FindByGuidAsync(guid);
@@ -47,5 +54,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         throw new System.NotImplementedException();
     }
+
+    public Task<IList<Claim>> GetClaimsAsync(User user)
+        => _userManager.GetClaimsAsync(user);
+
+    public Task<IList<string>> GetRolesAsync(User user)
+        => _userManager.GetRolesAsync(user)
     #endregion
 }

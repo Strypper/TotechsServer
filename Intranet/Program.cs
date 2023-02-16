@@ -98,7 +98,7 @@ builder.Services.AddIdentity<User, Role>(options =>
                     .AddUserManager<UserManager>()
                     .AddDefaultTokenProviders();
 
-
+builder.Services.AddTransient<IJWTTokenService, JWTTokenService>();
 builder.Services.AddTransient<IFoodRepository, FoodRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserFoodRepository, UserFoodRepository>();

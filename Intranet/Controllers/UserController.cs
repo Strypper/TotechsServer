@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,6 +18,7 @@ namespace Intranet.Controllers
         private IMapper _mapper;
         //private IMediaService               _mediaService;
         private IntranetContext _intranetContext;
+        private IJWTTokenService _jwtTokenService;
         private IUserRepository _userRepository;
         private IChatMessageRepository _chatMessageRepository;
         private IConversationRepository _conversationRepository;
@@ -27,6 +26,7 @@ namespace Intranet.Controllers
         public UserController(IMapper mapper,
                               //IMediaService               mediaService,
                               IntranetContext intranetContext,
+                              IJWTTokenService jwtTokenService,
                               IUserRepository userRepository,
                               IChatMessageRepository chatMessageRepository,
                               IConversationRepository conversationRepository,
@@ -35,6 +35,7 @@ namespace Intranet.Controllers
             _mapper = mapper;
             //_mediaService               = mediaService;
             _intranetContext = intranetContext;
+            _jwtTokenService = jwtTokenService;
             _userRepository = userRepository;
             _chatMessageRepository = chatMessageRepository;
             _conversationRepository = conversationRepository;
@@ -81,34 +82,27 @@ namespace Intranet.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(UserLogin loginInfo, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Login(UserLoginDTO userLoginDTO, CancellationToken cancellationToken = default)
         {
-            // Cast to ClaimsIdentity.
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
 
-            // Gets list of claims.
-            IEnumerable<Claim> claim = identity.Claims;
-
-            var types = claim.Select(x => x.Type).ToList();
-            var values = claim.Select(x => x.Value).ToList();
-            var guid = values.ElementAt(types.IndexOf("Guid"));
-
-            var user = await _userRepository.FindByUserName(loginInfo.UserName, cancellationToken);
+            var user = await _userRepository.FindByUserName(userLoginDTO.username, cancellationToken);
             if (user is null || user.IsDisable == true) return NotFound();
             return Ok(_mapper.Map<UserDTO>(user));
-
-
-            //var jwtConfig = new JwtTokenConfig();
-            //return Ok(await GenerateToken(user, jwtConfig,DateTime.Now.AddMinutes(5)));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserDTO dto, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Create(UserSignUpDTO dto, CancellationToken cancellationToken = default)
         {
-            var user = _mapper.Map<User>(dto);
-            _userRepository.Create(user);
-            await _userRepository.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction(nameof(Get), new { user.Id }, _mapper.Map<UserDTO>(user));
+            var user = new User()
+            {
+                UserName = dto.username,
+                Email = dto.email,
+                ProfilePic = dto.avatarurl,
+            };
+            var result = await _userRepository.CreateAccount(user, dto.password);
+            if (result.Succeeded)
+                return NoContent();
+            return Ok(result);
         }
 
         [HttpPost]

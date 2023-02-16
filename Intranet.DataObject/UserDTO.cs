@@ -24,9 +24,7 @@ namespace Intranet.DataObject
         public ICollection<SkillDTO>? Skills { get; set; } = Array.Empty<SkillDTO>();
     }
 
-    public class UserLogin
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
+    public record UserLoginDTO(string username, string password) { }
+
+    public record UserSignUpDTO(string username, string password, string firstname, string lastname, string email, string phonenumber, string avatarurl, string[]? roles) { }
 }
