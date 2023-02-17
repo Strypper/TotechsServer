@@ -1,13 +1,4 @@
-﻿using AutoMapper;
-using Intranet.Contract;
-using Intranet.DataObject;
-using Intranet.Entities.Entities;
-using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.SignalR;
 
 namespace Intranet.Hubs
 {
@@ -19,16 +10,16 @@ namespace Intranet.Hubs
         private IChatMessageRepository _chatMessageRepository;
         private IConversationRepository _conversationRepository;
 
-        public ChatHub(IMapper mapper, 
-                       IUserRepository userRepository, 
-                       IGroupChatRepository groupChatRepository, 
+        public ChatHub(IMapper mapper,
+                       IUserRepository userRepository,
+                       IGroupChatRepository groupChatRepository,
                        IChatMessageRepository chatMessageRepository,
                        IConversationRepository conversationRepository)
         {
-            _mapper                 = mapper;
-            _userRepository         = userRepository;
-            _groupChatRepository    = groupChatRepository;
-            _chatMessageRepository  = chatMessageRepository;
+            _mapper = mapper;
+            _userRepository = userRepository;
+            _groupChatRepository = groupChatRepository;
+            _chatMessageRepository = chatMessageRepository;
             _conversationRepository = conversationRepository;
         }
 
@@ -61,9 +52,9 @@ namespace Intranet.Hubs
         public async Task JoinGroup(int groupId, int userId)
         {
             CancellationToken token = new CancellationToken(default);
-            var user  = await _userRepository.FindByIdAsync(userId, token);
+            var user = await _userRepository.FindByIdAsync(userId, token);
             var group = await _groupChatRepository.FindByIdAsync(groupId, token);
-            await Groups.AddToGroupAsync(Context.ConnectionId , group.GroupName);
+            await Groups.AddToGroupAsync(Context.ConnectionId, group.GroupName);
         }
 
         public async Task ChatHubUserIndentity(string connectionId, int userId)
@@ -83,30 +74,32 @@ namespace Intranet.Hubs
         //    await Clients.All.SendAsync("UsersListChange", StaticUserList.SignalROnlineUsers);
         //}
 
-        public async Task SendMessage(string mess, 
-                                      DateTime sentTime,     
-                                      int conversationId, 
-                                      int fromUserId, 
+        public async Task SendMessage(string mess,
+                                      DateTime sentTime,
+                                      int conversationId,
+                                      int fromUserId,
                                       int toUserId)
         {
             CancellationToken cancellationToken = new CancellationToken(default);
             var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
-            if(conversation != null){
-                var fromUser     = await _userRepository.FindByIdAsync(fromUserId, cancellationToken);
-                var toUser       = await _userRepository.FindByIdAsync(toUserId, cancellationToken);
+            if (conversation != null)
+            {
+                var fromUser = await _userRepository.FindByIdAsync(fromUserId, cancellationToken);
+                var toUser = await _userRepository.FindByIdAsync(toUserId, cancellationToken);
 
                 //VietNam Time
                 //var VietNamZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
                 //var dt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
                 //var DateTimeInVietNamLocal = TimeZoneInfo.ConvertTime(dt, TimeZoneInfo.Utc, VietNamZone);
 
-                _chatMessageRepository.Create(new ChatMessage(){
-                    User           = fromUser,
+                _chatMessageRepository.Create(new ChatMessage()
+                {
+                    User = fromUser,
                     MessageContent = mess,
-                    Conversation   = conversation,
-                    SentTime       = sentTime
+                    Conversation = conversation,
+                    SentTime = sentTime
                 });
-                conversation.LastMessageContent  = mess;
+                conversation.LastMessageContent = mess;
                 conversation.LastInteractionTime = DateTime.UtcNow;
                 _conversationRepository.Update(conversation);
                 await _chatMessageRepository.SaveChangesAsync(cancellationToken);
@@ -118,7 +111,8 @@ namespace Intranet.Hubs
 
                 await Clients.Caller.SendAsync("ReceiveMessage", mess, sentTime, _mapper.Map<UserDTO>(fromUser));
             }
-            else{
+            else
+            {
                 System.Diagnostics.Debug.WriteLine("The conversation does not exist");
             }
         }

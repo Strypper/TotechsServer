@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace Intranet;
 
-namespace Intranet.Controllers
-{
-    [ApiController]
-    public class BaseController : ControllerBase
-    {
-    }
-}
+[Authorize(AuthenticationSchemes = "Bearer")]
+[ApiController]
+public class BaseController : ControllerBase { }

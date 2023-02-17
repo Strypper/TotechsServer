@@ -1,10 +1,9 @@
-﻿namespace Intranet.Entities.Entities
+﻿namespace Intranet.Entities;
+
+public class UserFood : BaseEntity<int>
 {
-    public class UserFood : BaseEntity<int>
-    {
-        public string UserId { get; set; }
-        public int FoodId { get; set; }
-        public virtual User User { get; set; }
-        public virtual Food Food { get; set; }
-    }
+    public string UserId { get; set; }
+    public int FoodId { get; set; }
+    public virtual User User { get; set; }
+    public virtual Food Food { get; set; }
 }

@@ -1,8 +1,7 @@
-﻿using Intranet.Entities.Entities;
+﻿using Intranet.Entities;
 
-namespace Intranet.Contract
+namespace Intranet.Contract;
+
+public interface IConversationRepository : IRepositoryBase<Conversation>
 {
-    public interface IConversationRepository : IRepositoryBase<Conversation>
-    {
-    }
 }

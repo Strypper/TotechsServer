@@ -1,11 +1,10 @@
-﻿using Intranet.Entities.Entities;
+﻿using Intranet.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Intranet.Contract
+namespace Intranet.Contract;
+
+public interface IUserProjectRepository : IRepositoryBase<UserProject>
 {
-    public interface IUserProjectRepository : IRepositoryBase<UserProject>
-    {
-        Task<UserProject> FindByUserId(string userId, CancellationToken cancellationToken);
-    }
+    Task<UserProject> FindByUserId(string userId, CancellationToken cancellationToken);
 }

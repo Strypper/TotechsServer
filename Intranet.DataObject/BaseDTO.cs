@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Intranet.DataObject;
 
-namespace Intranet.DataObject
+public class BaseDTO<T>
 {
-    public class BaseDTO<T>
-    {
-        public T Id { get; set; }
-    }
+    public T Id { get; set; }
 }

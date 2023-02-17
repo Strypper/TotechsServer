@@ -1,14 +1,13 @@
-namespace Intranet.Entities.Entities
-{
-    public class MeetingInfo : BaseEntity<int>
-    {
-        public string          Description     { get; set; }
-        public string          Location        { get; set; }
-        public ImportanceLevel ImportanceLevel { get; set; }
-    }
+namespace Intranet.Entities;
 
-    public enum ImportanceLevel
-    {
-        Chill, Medium, High, Extreme
-    }
+public class MeetingInfo : BaseEntity<int>
+{
+    public string Description { get; set; }
+    public string Location { get; set; }
+    public ImportanceLevel ImportanceLevel { get; set; }
+}
+
+public enum ImportanceLevel
+{
+    Chill, Medium, High, Extreme
 }

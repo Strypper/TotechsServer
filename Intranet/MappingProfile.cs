@@ -1,9 +1,4 @@
-﻿using AutoMapper;
-using Intranet.DataObject;
-using Intranet.Entities;
-using Intranet.Entities.Entities;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 
 namespace Intranet
 {

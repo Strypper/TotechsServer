@@ -1,27 +1,21 @@
-﻿using Intranet.Entities.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Intranet.Entities;
 
-namespace Intranet.DataObject
+namespace Intranet.DataObject;
+
+public class MediaAssetsDTO : BaseDTO<int>
 {
-    public class MediaAssetsDTO : BaseDTO<int>
-    {
-        public string? Title { get; set; } = string.Empty;
+    public string? Title { get; set; } = string.Empty;
 
-        public string? Description { get; set; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
 
-        public MediaAssestType MediaAssestType { get; set; }
-    }
+    public MediaAssestType MediaAssestType { get; set; }
+}
 
-    public class CreateMediaAssetsDTO
-    {
-        public string? Title { get; set; } = string.Empty;
+public class CreateMediaAssetsDTO
+{
+    public string? Title { get; set; } = string.Empty;
 
-        public string? Description { get; set; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
 
-        public MediaAssestType MediaAssestType { get; set; }
-    }
+    public MediaAssestType MediaAssestType { get; set; }
 }

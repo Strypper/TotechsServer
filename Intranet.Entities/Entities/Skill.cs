@@ -1,8 +1,7 @@
-﻿namespace Intranet.Entities.Entities
+﻿namespace Intranet.Entities;
+
+public class Skill : BaseEntity<int>
 {
-    public class Skill : BaseEntity<int>
-    {
-        public string Name { get; set; }
-        public double SkillValue { get; set; }
-    }
+    public string Name { get; set; }
+    public double SkillValue { get; set; }
 }

@@ -1,15 +1,10 @@
-﻿using Intranet.Entities.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Intranet.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Intranet.Contract
+namespace Intranet.Contract;
+
+public interface IMediaAssetsRepository : IRepositoryBase<MediaAssets>
 {
-    public interface IMediaAssetsRepository : IRepositoryBase<MediaAssets>
-    {
-        Task DeleteAll(CancellationToken cancellationToken);
-    }
+    Task DeleteAll(CancellationToken cancellationToken);
 }

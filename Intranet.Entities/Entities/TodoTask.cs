@@ -1,19 +1,18 @@
 using System;
 
-namespace Intranet.Entities.Entities
-{
-    public class TodoTask : BaseEntity<int>
-    {
-        public DateTime   DateCreated  { get; set; }
-        public string     Title        { get; set; }
-        public string     Description  { get; set; }
-        public string     ImageTaskUrl { get; set; }
-        public TaskStatus Status       { get; set; }
-        public User       Author       { get; set; }
-    }
+namespace Intranet.Entities;
 
-    public enum TaskStatus
-    {
-        Suggestion, Todo, Doing, Testing, Done
-    }
+public class TodoTask : BaseEntity<int>
+{
+    public DateTime DateCreated { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string ImageTaskUrl { get; set; }
+    public TaskStatus Status { get; set; }
+    public User Author { get; set; }
+}
+
+public enum TaskStatus
+{
+    Suggestion, Todo, Doing, Testing, Done
 }

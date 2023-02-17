@@ -1,8 +1,7 @@
-﻿using Intranet.Entities.Entities;
+﻿using Intranet.Entities;
 
-namespace Intranet.Contract
+namespace Intranet.Contract;
+
+public interface IProjectRepository : IRepositoryBase<Project>
 {
-    public interface IProjectRepository : IRepositoryBase<Project>
-    {
-    }
 }

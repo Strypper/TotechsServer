@@ -1,104 +1,93 @@
-﻿using AutoMapper;
-using Intranet.Contract;
-using Intranet.DataObject;
-using Intranet.Entities.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Intranet;
 
-namespace Intranet.Controllers
+[Route("/api/[controller]/[action]")]
+public class UserProjectController : BaseController
 {
-    [Route("/api/[controller]/[action]")]
-    public class UserProjectController : BaseController
+    public IMapper _mapper;
+    public IUserProjectRepository _userProjectRepository;
+    public IUserRepository _userRepository;
+    public IProjectRepository _projectRepository;
+
+    public UserProjectController(IMapper mapper,
+                                 IUserProjectRepository userProjectRepository,
+                                 IUserRepository userRepository,
+                                 IProjectRepository projectRepository)
     {
-        public IMapper _mapper;
-        public IUserProjectRepository _userProjectRepository;
-        public IUserRepository _userRepository;
-        public IProjectRepository _projectRepository;
+        _mapper = mapper;
+        _userProjectRepository = userProjectRepository;
+        _userRepository = userRepository;
+        _projectRepository = projectRepository;
+    }
 
-        public UserProjectController(IMapper mapper,
-                                     IUserProjectRepository userProjectRepository,
-                                     IUserRepository userRepository,
-                                     IProjectRepository projectRepository)
+    [HttpGet]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
+    {
+        var userProjects = await _userProjectRepository.FindAll().ToListAsync(cancellationToken);
+        return Ok(_mapper.Map<IEnumerable<UserProjectDTO>>(userProjects));
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
+    {
+        var userProject = await _userProjectRepository.FindByIdAsync(id, cancellationToken);
+        if (userProject is null) return NotFound();
+        return Ok(_mapper.Map<UserProjectDTO>(userProject));
+    }
+
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetProjectByUser(int userId, CancellationToken cancellationToken = default)
+    {
+        var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
+        if (user is null) return NotFound();
+        var userProjects = await _userProjectRepository.FindAll(ut => ut.User == user).ToListAsync();
+
+        var projects = new List<Project>();
+        foreach (var userProject in userProjects)
         {
-            _mapper = mapper;
-            _userProjectRepository = userProjectRepository;
-            _userRepository = userRepository;
-            _projectRepository = projectRepository;
+            projects.Add(userProject.Project);
         }
+        return Ok(_mapper.Map<IEnumerable<ProjectDTO>>(projects));
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateUpdateUserProjectDTO dto, CancellationToken cancellationToken = default)
+    {
+        var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+        if (user is null || user.IsDisable == true) return NotFound();
+        var project = await _projectRepository.FindByIdAsync(dto.ProjectId, cancellationToken);
+        var userProject = new UserProject() { User = user, Project = project };
+        if (await _userProjectRepository.FindByUserId(user.Id, cancellationToken) != null)
         {
-            var userProjects = await _userProjectRepository.FindAll().ToListAsync(cancellationToken);
-            return Ok(_mapper.Map<IEnumerable<UserProjectDTO>>(userProjects));
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
-        {
-            var userProject = await _userProjectRepository.FindByIdAsync(id, cancellationToken);
-            if (userProject is null) return NotFound();
-            return Ok(_mapper.Map<UserProjectDTO>(userProject));
-        }
-
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetProjectByUser(int userId, CancellationToken cancellationToken = default)
-        {
-            var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
-            if (user is null) return NotFound();
-            var userProjects = await _userProjectRepository.FindAll(ut => ut.User == user).ToListAsync();
-
-            var projects = new List<Project>();
-            foreach (var userProject in userProjects)
-            {
-                projects.Add(userProject.Project);
-            }
-            return Ok(_mapper.Map<IEnumerable<ProjectDTO>>(projects));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateUpdateUserProjectDTO dto, CancellationToken cancellationToken = default)
-        {
-            var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
-            if (user is null || user.IsDisable == true) return NotFound();
-            var project = await _projectRepository.FindByIdAsync(dto.ProjectId, cancellationToken);
-            var userProject = new UserProject() { User = user, Project = project };
-            if (await _userProjectRepository.FindByUserId(user.Id, cancellationToken) != null)
-            {
-                var existingUserProject = await _userProjectRepository.FindAll(uf => uf.User.Id.Equals(dto.UserId)).FirstOrDefaultAsync();
-                if (existingUserProject.ProjectId == dto.ProjectId)
-                    return BadRequest("This user and project are already created !!");
-                else _userProjectRepository.Create(userProject);
-            }
+            var existingUserProject = await _userProjectRepository.FindAll(uf => uf.User.Id.Equals(dto.UserId)).FirstOrDefaultAsync();
+            if (existingUserProject.ProjectId == dto.ProjectId)
+                return BadRequest("This user and project are already created !!");
             else _userProjectRepository.Create(userProject);
-            await _userProjectRepository.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction(nameof(Get), new { userProject.Id }, _mapper.Map<UserProjectDTO>(userProject));
         }
-        [HttpPut]
-        public async Task<IActionResult> Update(CreateUpdateUserProjectDTO dto, CancellationToken cancellationToken = default)
-        {
-            var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
-            if (user is null) return NotFound();
-            var userDTO = _mapper.Map<UserDTO>(user);
-            var food = await _projectRepository.FindByIdAsync(dto.ProjectId, cancellationToken);
-            if (food is null) return NotFound();
-            var projectDTO = _mapper.Map<ProjectDTO>(food);
-            var userProject = new UserProjectDTO() { User = userDTO, Project = projectDTO };
-            _userProjectRepository.Update(_mapper.Map<UserProject>(userProject));
-            await _userProjectRepository.SaveChangesAsync(cancellationToken);
-            return NoContent();
-        }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
-        {
-            var userProject = await _userProjectRepository.FindByIdAsync(id, cancellationToken);
-            if (userProject is null) return NotFound();
-            _userProjectRepository.Delete(userProject);
-            await _userProjectRepository.SaveChangesAsync(cancellationToken);
-            return NoContent();
-        }
+        else _userProjectRepository.Create(userProject);
+        await _userProjectRepository.SaveChangesAsync(cancellationToken);
+        return CreatedAtAction(nameof(Get), new { userProject.Id }, _mapper.Map<UserProjectDTO>(userProject));
+    }
+    [HttpPut]
+    public async Task<IActionResult> Update(CreateUpdateUserProjectDTO dto, CancellationToken cancellationToken = default)
+    {
+        var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+        if (user is null) return NotFound();
+        var userDTO = _mapper.Map<UserDTO>(user);
+        var food = await _projectRepository.FindByIdAsync(dto.ProjectId, cancellationToken);
+        if (food is null) return NotFound();
+        var projectDTO = _mapper.Map<ProjectDTO>(food);
+        var userProject = new UserProjectDTO() { User = userDTO, Project = projectDTO };
+        _userProjectRepository.Update(_mapper.Map<UserProject>(userProject));
+        await _userProjectRepository.SaveChangesAsync(cancellationToken);
+        return NoContent();
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
+    {
+        var userProject = await _userProjectRepository.FindByIdAsync(id, cancellationToken);
+        if (userProject is null) return NotFound();
+        _userProjectRepository.Delete(userProject);
+        await _userProjectRepository.SaveChangesAsync(cancellationToken);
+        return NoContent();
     }
 }

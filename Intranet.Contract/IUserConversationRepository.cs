@@ -1,4 +1,4 @@
-﻿using Intranet.Entities.Entities;
+﻿using Intranet.Entities;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

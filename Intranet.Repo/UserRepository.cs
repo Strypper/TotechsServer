@@ -25,19 +25,20 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     #endregion
 
-
-
+    #region [Overrides]
     public override IQueryable<User> FindAll(Expression<Func<User, bool>> predicate = null)
     {
         return _userManager.FindAll(predicate);
     }
+    #endregion
 
     #region [Methods]
     public Task<IdentityResult> CreateAccount(User user, string password)
         => _userManager.CreateAsync(user, password);
-    public Task<User> FindByGuid(string guid, CancellationToken cancellationToken = default)
+
+    public Task<User> FindByGuidAsync(string guid, CancellationToken cancellationToken = default)
     {
-        return _userManager.FindByGuidAsync(guid);
+        return _userManager.FindByGuidAsync(guid, cancellationToken);
     }
 
     public Task<User> FindBySignalRConnectionId(string connectionId, CancellationToken cancellationToken = default)
@@ -50,9 +51,9 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         throw new System.NotImplementedException();
     }
 
-    public Task<User> FindByUserName(string userName, CancellationToken cancellationToken = default)
+    public Task<User> FindByUserNameAsync(string userName, CancellationToken cancellationToken = default)
     {
-        throw new System.NotImplementedException();
+        return _userManager.FindByNameAsync(userName);
     }
 
     public Task<IList<Claim>> GetClaimsAsync(User user)

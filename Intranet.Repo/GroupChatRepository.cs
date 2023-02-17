@@ -1,11 +1,9 @@
 ﻿using Intranet.Contract;
 using Intranet.Entities;
-using Intranet.Entities.Entities;
 
-namespace Intranet.Repo
+namespace Intranet.Repo;
+
+public class GroupChatRepository : BaseRepository<GroupChat>, IGroupChatRepository
 {
-    public class GroupChatRepository : BaseRepository<GroupChat>, IGroupChatRepository
-    {
-        public GroupChatRepository(IntranetContext ic) : base(ic) { }
-    }
+    public GroupChatRepository(IntranetContext ic) : base(ic) { }
 }

@@ -28,8 +28,8 @@ public class UserManager : UserManager<User>
     {
     }
 
-    public async Task<User?> FindByGuidAsync(string guid)
-        => await Users.FirstOrDefaultAsync(u => u.Id == guid);
+    public async Task<User?> FindByGuidAsync(string guid, CancellationToken cancellationToken)
+        => await Users.FirstOrDefaultAsync(u => u.Id == guid, cancellationToken);
 
     public new async Task<User?> FindByNameAsync(string userName)
     {

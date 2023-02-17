@@ -40,7 +40,10 @@ public class JWTTokenService : IJWTTokenService
 
         var identity = new ClaimsIdentity(
             new GenericIdentity(user.UserName, JWTConstants.GenericIdentityType),
-            new[] { new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) }
+            new[] {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("guid", user.Id)
+                  }
                 .Union(roles.Select(role => new Claim(ClaimTypes.Role, role)))
                 .Union(claims)
             );

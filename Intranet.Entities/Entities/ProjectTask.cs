@@ -1,27 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Intranet.Entities.Entities
+namespace Intranet.Entities;
+
+public class ProjectTask : BaseEntity<int>
 {
-    public class ProjectTask : BaseEntity<int>
-    {
-        public string? Title { get; set; } = string.Empty;
+    public string? Title { get; set; } = string.Empty;
 
-        public string? Description { get; set; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
 
-        public DateTime CreatedDate { get; set; } = DateTime.MinValue;
+    public DateTime CreatedDate { get; set; } = DateTime.MinValue;
 
-        public User Author { get; set; }
+    public User Author { get; set; }
 
-        public DateTime? Deadline { get; set; } = DateTime.MaxValue;
+    public DateTime? Deadline { get; set; } = DateTime.MaxValue;
 
-        public Priority Priority { get; set; }
-    }
-
-    public enum FeatureTaskStatus { }
-
-    public enum TaskPriority { }
+    public Priority Priority { get; set; }
 }
+
+public enum FeatureTaskStatus { }
+
+public enum TaskPriority { }

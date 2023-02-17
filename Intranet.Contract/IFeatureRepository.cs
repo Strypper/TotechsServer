@@ -1,11 +1,10 @@
-﻿using Intranet.Entities.Entities;
+﻿using Intranet.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Intranet.Contract
+namespace Intranet.Contract;
+
+public interface IFeatureRepository : IRepositoryBase<Feature>
 {
-    public interface IFeatureRepository : IRepositoryBase<Feature>
-    {
-        Task DeleteAll(CancellationToken cancelationToken = default);
-    }
+    Task DeleteAll(CancellationToken cancelationToken = default);
 }
