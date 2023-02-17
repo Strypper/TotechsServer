@@ -59,6 +59,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         => _userManager.GetClaimsAsync(user);
 
     public Task<IList<string>> GetRolesAsync(User user)
-        => _userManager.GetRolesAsync(user)
+        => _userManager.GetRolesAsync(user);
     #endregion
 }
