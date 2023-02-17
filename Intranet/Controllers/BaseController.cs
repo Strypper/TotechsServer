@@ -1,5 +1,7 @@
-﻿namespace Intranet;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-[Authorize(AuthenticationSchemes = "Bearer")]
+namespace Intranet;
+
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
 public class BaseController : ControllerBase { }

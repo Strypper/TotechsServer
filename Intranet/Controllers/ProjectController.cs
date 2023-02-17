@@ -98,7 +98,7 @@ public class ProjectController : BaseController
                 var userProject = new UserProject()
                 {
                     ProjectId = project.Id,
-                    UserId = user.Id
+                    UserId = user.Guid
                 };
                 _userProjectRepository.Create(userProject);
                 await _userProjectRepository.SaveChangesAsync(cancellationToken);

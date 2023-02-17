@@ -41,6 +41,18 @@ public class UserController : BaseController
         return Ok(_mapper.Map<IEnumerable<UserDTO>>(users));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
+    {
+        var guid = HttpContext.User.FindFirst("guid")?.Value;
+        if (guid is null)
+            return BadRequest("We could not find user guid in your request");
+        var user = await _userRepository.FindByGuidAsync(guid, cancellationToken);
+        if (user is null)
+            return BadRequest("We couldn't find this user in our database");
+        return Ok(_mapper.Map<UserDTO>(user));
+    }
+
     [HttpGet("{singalRConnectionStringId}")]
     public async Task<IActionResult> GetUserBySingalRConnectionStringId(string singalRConnectionStringId, CancellationToken cancellationToken = default)
     {
@@ -102,7 +114,7 @@ public class UserController : BaseController
     [HttpPut]
     public async Task<IActionResult> Update(UserDTO dto, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(dto.Id, cancellationToken);
+        var user = await _userRepository.FindByIdAsync(dto.Guid, cancellationToken);
         if (user is null) return NotFound();
         _mapper.Map(dto, user);
         await _userRepository.SaveChangesAsync(cancellationToken);

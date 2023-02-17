@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Intranet.Hubs;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class MAUIslandHub : Hub
 {
     private IMapper _mapper;
@@ -39,9 +41,13 @@ public class MAUIslandHub : Hub
         await Clients.All.SendAsync("UserLogIn", _mapper.Map<UserDTO>(user));
     }
 
-    public async Task SendMessage(string message, string authorName, string avatarUrl)
+    public async Task SendMessage(string message)
     {
-        CancellationToken cancellationToken = new CancellationToken(default);
-        await Clients.All.SendAsync("ReceiveMessage", message, authorName, avatarUrl, DateTime.Now);
+        var guid = Context.User?.Claims?.First(c => c.Type == "guid")?.Value;
+        if (guid is null)
+            return;
+        var userInfo = await _userRepository.FindByGuidAsync(guid);
+
+        await Clients.All.SendAsync("ReceiveMessage", message, userInfo.UserName, userInfo.ProfilePic, DateTime.Now);
     }
 }

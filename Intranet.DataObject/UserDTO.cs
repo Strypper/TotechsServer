@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Intranet.DataObject;
 
-public class UserDTO : BaseDTO<string>
+public class UserDTO
 {
     public string Guid { get; set; }
     public string UserName { get; set; }
@@ -20,6 +20,7 @@ public class UserDTO : BaseDTO<string>
     public int? Enthusiastic { get; set; }
     public string? Relationship { get; set; }
     public string? SignalRConnectionId { get; set; }
+    public string? PhoneNumber { get; set; }
 
     public ICollection<SkillDTO>? Skills { get; set; } = Array.Empty<SkillDTO>();
 }

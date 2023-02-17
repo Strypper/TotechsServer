@@ -39,6 +39,7 @@ namespace Intranet
                 .ReverseMap();
 
             CreateMap<User, UserDTO>()
+                .ForMember(d => d.Guid, o => o.MapFrom(s => s.Id))
                 .ForMember(d => d.Skills, o => o.MapFrom(s => s.Skills == null ? null : JsonConvert.DeserializeObject<List<SkillDTO>>(s.Skills)));
 
             CreateMap<UserDTO, User>()

@@ -1,15 +1,11 @@
-using AutoMapper;
 using Azure.Storage;
 using Intranet;
 using Intranet.AppSettings;
-using Intranet.Contract;
-using Intranet.Entities;
 using Intranet.Hubs;
 using Intranet.Repo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,8 +25,6 @@ builder.Services.AddSingleton((provider) =>
 });
 builder.Services.Configure<JwtTokenConfig>(builder.Configuration.GetSection("JwtTokenConfig"));
 
-builder.Services.AddControllers();
-builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Intranet", Version = "v1" });
@@ -70,15 +64,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtTokenConfig:Key"]!)),
         ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 },
     };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+
+            // If the request is for our hub...
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/mauislandhub")))
+            {
+                // Read the token out of the query string
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
-builder.Services.AddAuthorization(config =>
-{
-    config.AddPolicy("IntranetBasicAccessPolicy", policy =>
-    {
-        policy.RequireClaim("IntranetPermission", "true");
-    });
-});
+builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 
 builder.Services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IntranetContext")!));

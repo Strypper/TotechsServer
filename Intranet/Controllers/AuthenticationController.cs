@@ -21,17 +21,6 @@ public class AuthenticationController : BaseController
     #endregion
 
     #region [GET]
-    [HttpGet]
-    public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
-    {
-        var guid = HttpContext.User.FindFirst("guid")?.Value;
-        if (guid is null)
-            return BadRequest("We could not find user guid in your request");
-        var user = await _userRepository.FindByGuidAsync(guid, cancellationToken);
-        if (user is null)
-            return BadRequest("We couldn't find this user in our database");
-        return Ok(_mapper.Map<UserDTO>(user));
-    }
     #endregion
 
     #region [POST]
