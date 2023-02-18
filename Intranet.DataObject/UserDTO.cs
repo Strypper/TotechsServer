@@ -27,4 +27,4 @@ public class UserDTO
 
 public record UserLoginDTO(string username, string password) { }
 
-public record UserSignUpDTO(string username, string password, string firstname, string lastname, string email, string phonenumber, string avatarurl, string[]? roles) { }
+public record UserSignUpDTO(string username, string password, string firstname, string lastname, string email, string phonenumber, string profilepic, string[]? roles) { }

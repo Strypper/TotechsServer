@@ -45,8 +45,7 @@ public class AuthenticationController : BaseController
         });
     }
 
-
-
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Register(UserSignUpDTO dto, CancellationToken cancellationToken = default)
     {
@@ -54,12 +53,12 @@ public class AuthenticationController : BaseController
         {
             UserName = dto.username,
             Email = dto.email,
-            ProfilePic = dto.avatarurl,
+            ProfilePic = dto.profilepic,
         };
         var result = await _userRepository.CreateAccount(user, dto.password);
         if (result.Succeeded)
-            return NoContent();
-        return BadRequest(result);
+            return Ok();
+        return BadRequest();
     }
     #endregion
 
