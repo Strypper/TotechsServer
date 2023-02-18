@@ -51,7 +51,7 @@ public class FoodControllerTests
         int id = 0;
 
         A.CallTo(() => _foodRepository.FindByIdAsync(id, CancellationToken.None))
-                                      .Returns(Task.FromResult<Food?>(null));
+                                      .Returns(Task.FromResult<Food>(null)); ;
 
         var controller = new FoodController(_mapper, _foodRepository, _userFoodRepository);
         #endregion
