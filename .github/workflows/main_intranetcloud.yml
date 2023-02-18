@@ -25,6 +25,9 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
+      - name: Test Controllers
+        run: dotnet test
+
       - name: dotnet publish
         run: dotnet publish ./Intranet/Intranet.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
