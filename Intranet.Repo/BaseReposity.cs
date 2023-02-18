@@ -20,7 +20,7 @@ public abstract class BaseRepository<T> : IRepositoryBase<T> where T : class
         _dbSet = RepositoryContext.Set<T>();
     }
 
-    public virtual IQueryable<T?> FindAll(Expression<Func<T, bool>>? predicate = null)
+    public virtual IQueryable<T> FindAll(Expression<Func<T, bool>>? predicate = null)
         => _dbSet.WhereIf(predicate != null, predicate!);
 
     public virtual async Task<T?> FindByIdAsync(int id, CancellationToken cancellationToken)
