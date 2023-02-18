@@ -5,21 +5,21 @@ namespace Intranet.DataObject;
 
 public class UserProjectDTO : BaseDTO<int>
 {
-    public UserDTO User { get; set; }
-    public ProjectDTO Project { get; set; }
+    public UserDTO User { get; set; } = default!;
+    public ProjectDTO Project { get; set; } = default!;
 }
 
 public class CreateUpdateUserProjectDTO
 {
-    public string UserId { get; set; }
+    public string UserId { get; set; } = default!;
     public int ProjectId { get; set; }
 }
 
 public class CreateProjectWithMultipleUsers : BaseDTO<int>
 {
     public ICollection<UserDTO> Members { get; set; } = new HashSet<UserDTO>();
-    public string ProjectName { get; set; }
-    public string Clients { get; set; }
-    public string About { get; set; }
+    public string ProjectName { get; set; } = default!;
+    public string Clients { get; set; } = default!;
+    public string About { get; set; } = default!;
     public int TechLead { get; set; }
 }

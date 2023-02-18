@@ -2,6 +2,6 @@
 
 public class SkillDTO : BaseDTO<int>
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
     public double SkillValue { get; set; }
 }

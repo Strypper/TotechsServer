@@ -5,8 +5,8 @@ namespace Intranet.DataObject;
 
 public class UserDTO
 {
-    public string Guid { get; set; }
-    public string UserName { get; set; }
+    public string Guid { get; set; } = default!;
+    public string UserName { get; set; } = default!;
     public string? Bio { get; set; }
     public string? Former { get; set; }
     public string? Hobby { get; set; }
