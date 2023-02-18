@@ -26,7 +26,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     #endregion
 
     #region [Overrides]
-    public override IQueryable<User?> FindAll(Expression<Func<User, bool>> predicate = null!)
+    public override IQueryable<User> FindAll(Expression<Func<User, bool>> predicate = null!)
        => _userManager.FindAll(predicate);
     #endregion
 

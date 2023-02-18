@@ -15,7 +15,7 @@ public class UserProjectRepository : BaseRepository<UserProject>, IUserProjectRe
     {
 
     }
-    public override IQueryable<UserProject?> FindAll(Expression<Func<UserProject, bool>>? predicate = null)
+    public override IQueryable<UserProject> FindAll(Expression<Func<UserProject, bool>>? predicate = null)
     => (predicate == null ? _dbSet.Where(x => true) : _dbSet.Where(predicate)).Include(t => t.Project).Include(u => u.User);
 
     public override async Task<UserProject?> FindByIdAsync(int userTeam, CancellationToken cancellationToken = default)
