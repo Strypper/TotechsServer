@@ -121,6 +121,17 @@ public class UserController : BaseController
         return NoContent();
     }
 
+    #region [DELETE]
+    [HttpDelete("{guid}")]
+    public async Task<IActionResult> DeleteByGuid(string guid, CancellationToken cancellationToken)
+    {
+        var userInfo = await _userRepository.FindByGuidAsync($"{guid}", cancellationToken);
+        if (userInfo is null) return NotFound();
+        await _userRepository.DeleteUser(userInfo);
+        return NoContent();
+    }
+    #endregion
+
     //[HttpPut]
     //public async Task<IActionResult> UpdatePassword(UserDTO dto, CancellationToken cancellationToken = default)
     //{

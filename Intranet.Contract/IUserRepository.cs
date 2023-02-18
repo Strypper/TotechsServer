@@ -16,4 +16,5 @@ public interface IUserRepository : IRepositoryBase<User>
     Task<User?> FindByGuidAsync(string guid, CancellationToken cancellationToken = default);
     Task<IList<string>> GetRolesAsync(User user);
     Task<IList<Claim>> GetClaimsAsync(User user);
+    Task DeleteUser(User user, CancellationToken cancelationToken = default);
 }

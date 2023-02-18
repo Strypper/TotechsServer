@@ -59,5 +59,8 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     public Task<IList<string>> GetRolesAsync(User user)
         => _userManager.GetRolesAsync(user);
+
+    public async Task DeleteUser(User user, CancellationToken cancelationToken = default)
+        => await _userManager.DeleteAsync(user);
     #endregion
 }

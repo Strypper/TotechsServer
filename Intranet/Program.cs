@@ -64,24 +64,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtTokenConfig:Key"]!)),
         ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 },
     };
-
-    //options.Events = new JwtBearerEvents
-    //{
-    //    OnMessageReceived = context =>
-    //    {
-    //        var accessToken = context.Request.Query["access_token"];
-
-    //        // If the request is for our hub...
-    //        var path = context.HttpContext.Request.Path;
-    //        if (!string.IsNullOrEmpty(accessToken) &&
-    //            (path.StartsWithSegments("/mauislandhub")))
-    //        {
-    //            // Read the token out of the query string
-    //            context.Token = accessToken;
-    //        }
-    //        return Task.CompletedTask;
-    //    }
-    //};
 });
 
 builder.Services.AddControllers();
@@ -92,12 +74,11 @@ builder.Services.AddDbContextPool<IntranetContext>(options => options.UseSqlServ
 
 builder.Services.AddIdentity<User, Role>(options =>
                         {
-                            options.Password.RequireDigit = false;
-                            options.Password.RequireLowercase = false;
-                            options.Password.RequireUppercase = false;
-                            options.Password.RequireNonAlphanumeric = false;
-                            options.Password.RequiredLength = 1;
-
+                            options.Password.RequireDigit = true;
+                            options.Password.RequireLowercase = true;
+                            options.Password.RequireUppercase = true;
+                            options.Password.RequireNonAlphanumeric = true;
+                            options.Password.RequiredLength = 6;
                             options.User.RequireUniqueEmail = true; //default false
                                                                     //options.SignIn.RequireConfirmedEmail = true;
                         })
