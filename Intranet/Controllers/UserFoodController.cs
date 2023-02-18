@@ -54,8 +54,11 @@ public class UserFoodController : BaseController
         if (await _userFoodRepository.FindByUserId(user.Id, cancellationToken) != null)
         {
             var existingUserFood = await _userFoodRepository.FindAll(uf => uf.User.Id.Equals(dto.UserId)).FirstOrDefaultAsync();
-            existingUserFood.FoodId = dto.FoodId;
-            _userFoodRepository.Update(existingUserFood);
+            if (existingUserFood is not null)
+            {
+                existingUserFood.FoodId = dto.FoodId;
+                _userFoodRepository.Update(existingUserFood);
+            }
         }
         else _userFoodRepository.Create(userFood);
         await _userFoodRepository.SaveChangesAsync(cancellationToken);

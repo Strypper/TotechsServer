@@ -54,33 +54,36 @@ public class ConversationController : BaseController
         {
             var targetUserId = await _userConversationRepository
                                         .FindAll(uc => uc.ConversationId == conversation.Id)
-                                        .Where(uc => uc.UserId != currentUser.Id)
+                                        .Where(uc => uc.UserId != currentUser!.Id)
                                         .Select(uc => uc.UserId).FirstOrDefaultAsync(cancellationToken);
-            var targetUser = await _userRepository.FindByIdAsync(targetUserId, cancellationToken);
-            var chatMessageList = new List<ChatMessageDTO>();
-            foreach (var chatMessage in conversation.ChatMessages)
+            if (targetUserId is not null)
             {
-                chatMessageList.Add(new ChatMessageDTO()
+                var targetUser = await _userRepository.FindByIdAsync(targetUserId, cancellationToken);
+                var chatMessageList = new List<ChatMessageDTO>();
+                foreach (var chatMessage in conversation.ChatMessages)
                 {
-                    Id = chatMessage.Id,
-                    User = _mapper.Map<UserDTO>(chatMessage.User),
-                    MessageContent = chatMessage.MessageContent,
-                    SentTime = chatMessage.SentTime
-                });
+                    chatMessageList.Add(new ChatMessageDTO()
+                    {
+                        Id = chatMessage.Id,
+                        User = _mapper.Map<UserDTO>(chatMessage.User),
+                        MessageContent = chatMessage.MessageContent,
+                        SentTime = chatMessage.SentTime
+                    });
+                }
+
+
+
+                var conversationDirectModeDTO = new ConversationDirectModeDTO()
+                {
+                    Id = conversation.Id,
+                    ChatMessages = chatMessageList,
+                    DateCreated = conversation.DateCreated,
+                    LastInteractionTime = conversation.LastInteractionTime,
+                    LastMessageContent = conversation.LastMessageContent,
+                    Users = new List<UserDTO>() { _mapper.Map<UserDTO>(currentUser), _mapper.Map<UserDTO>(targetUser) }
+                };
+                conversationDirectModeDTOList.Add(conversationDirectModeDTO);
             }
-
-
-
-            var conversationDirectModeDTO = new ConversationDirectModeDTO()
-            {
-                Id = conversation.Id,
-                ChatMessages = chatMessageList,
-                DateCreated = conversation.DateCreated,
-                LastInteractionTime = conversation.LastInteractionTime,
-                LastMessageContent = conversation.LastMessageContent,
-                Users = new List<UserDTO>() { _mapper.Map<UserDTO>(currentUser), _mapper.Map<UserDTO>(targetUser) }
-            };
-            conversationDirectModeDTOList.Add(conversationDirectModeDTO);
         }
         return Ok(conversationDirectModeDTOList);
     }

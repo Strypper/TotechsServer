@@ -10,9 +10,9 @@ namespace Intranet.Contract
     {
         IQueryable<T> FindAll(Expression<Func<T, bool>>? predicate = null);
 
-        Task<T> FindByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<T?> FindByIdAsync(int id, CancellationToken cancellationToken = default);
 
-        Task<T> FindByIdAsync(string id, CancellationToken cancellationToken = default);
+        Task<T?> FindByIdAsync(string id, CancellationToken cancellationToken = default);
 
         void Create(T entity);
 

@@ -7,7 +7,7 @@ namespace Intranet.Contract
 {
     public interface IUserConversationRepository : IRepositoryBase<UserConversation>
     {
-        Task<IEnumerable<UserConversation>> FindByUserId(string userId, CancellationToken cancellationToken);
-        Task<IEnumerable<UserConversation>> FindByConversationId(int conversationId, CancellationToken cancellationToken);
+        Task<IEnumerable<UserConversation?>> FindByUserId(string userId, CancellationToken cancellationToken);
+        Task<IEnumerable<UserConversation?>> FindByConversationId(int conversationId, CancellationToken cancellationToken);
     }
 }

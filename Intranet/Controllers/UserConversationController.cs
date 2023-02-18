@@ -71,13 +71,13 @@ public class UserConversationController : BaseController
             await _conversationRepository.SaveChangesAsync(cancellationToken);
             var currentUserConversation = new UserConversation()
             {
-                User = currentUser,
+                User = currentUser!,
                 Conversation = newConversation
             };
             _userConversationRepository.Create(currentUserConversation);
             var targerUserConversation = new UserConversation()
             {
-                User = targetUser,
+                User = targetUser!,
                 Conversation = newConversation
             };
             _userConversationRepository.Create(targerUserConversation);

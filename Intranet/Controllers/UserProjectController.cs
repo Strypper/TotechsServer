@@ -55,11 +55,11 @@ public class UserProjectController : BaseController
         var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
         if (user is null || user.IsDisable == true) return NotFound();
         var project = await _projectRepository.FindByIdAsync(dto.ProjectId, cancellationToken);
-        var userProject = new UserProject() { User = user, Project = project };
+        var userProject = new UserProject() { User = user, Project = project! };
         if (await _userProjectRepository.FindByUserId(user.Id, cancellationToken) != null)
         {
             var existingUserProject = await _userProjectRepository.FindAll(uf => uf.User.Id.Equals(dto.UserId)).FirstOrDefaultAsync();
-            if (existingUserProject.ProjectId == dto.ProjectId)
+            if (existingUserProject?.ProjectId == dto.ProjectId)
                 return BadRequest("This user and project are already created !!");
             else _userProjectRepository.Create(userProject);
         }

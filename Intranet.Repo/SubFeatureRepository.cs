@@ -15,6 +15,6 @@ public class SubFeatureRepository : BaseRepository<SubFeature>, ISubFeatureRepos
     public async Task DeleteAll(CancellationToken cancellationToken = default)
     {
         var subFeatures = await FindAll().ToListAsync(cancellationToken);
-        _dbSet.RemoveRange(subFeatures);
+        _dbSet.RemoveRange(subFeatures!);
     }
 }

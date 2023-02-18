@@ -13,6 +13,6 @@ public class FoodRepository : BaseRepository<Food>, IFoodRepository
     public async Task DeleteAll(CancellationToken cancellationToken = default)
     {
         var foods = await FindAll().ToListAsync(cancellationToken);
-        _dbSet.RemoveRange(foods);
+        _dbSet.RemoveRange(foods!);
     }
 }

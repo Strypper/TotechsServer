@@ -26,32 +26,30 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     #endregion
 
     #region [Overrides]
-    public override IQueryable<User> FindAll(Expression<Func<User, bool>> predicate = null)
-    {
-        return _userManager.FindAll(predicate);
-    }
+    public override IQueryable<User?> FindAll(Expression<Func<User, bool>> predicate = null!)
+       => _userManager.FindAll(predicate);
     #endregion
 
     #region [Methods]
     public Task<IdentityResult> CreateAccount(User user, string password)
         => _userManager.CreateAsync(user, password);
 
-    public Task<User> FindByGuidAsync(string guid, CancellationToken cancellationToken = default)
+    public Task<User?> FindByGuidAsync(string guid, CancellationToken cancellationToken = default)
     {
         return _userManager.FindByGuidAsync(guid, cancellationToken);
     }
 
-    public Task<User> FindBySignalRConnectionId(string connectionId, CancellationToken cancellationToken = default)
+    public Task<User?> FindBySignalRConnectionId(string connectionId, CancellationToken cancellationToken = default)
     {
         return _userManager.FindBySignalRConnectionIdAsync(connectionId, cancellationToken);
     }
 
-    public Task<User> FindByUserIdWithoutCancellationToken(int id)
+    public Task<User?> FindByUserIdWithoutCancellationToken(int id)
     {
         throw new System.NotImplementedException();
     }
 
-    public Task<User> FindByUserNameAsync(string userName, CancellationToken cancellationToken = default)
+    public Task<User?> FindByUserNameAsync(string userName, CancellationToken cancellationToken = default)
     {
         return _userManager.FindByNameAsync(userName);
     }

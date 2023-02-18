@@ -15,6 +15,6 @@ public class FeatureRepository : BaseRepository<Feature>, IFeatureRepository
     public async Task DeleteAll(CancellationToken cancellationToken = default)
     {
         var features = await FindAll().ToListAsync(cancellationToken);
-        _dbSet.RemoveRange(features);
+        _dbSet.RemoveRange(features!);
     }
 }

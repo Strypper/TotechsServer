@@ -24,16 +24,16 @@ public class MAUIslandHub : Hub
         await base.OnConnectedAsync();
     }
 
-    public override async Task OnDisconnectedAsync(Exception exception)
-    {
-        await base.OnDisconnectedAsync(exception);
-    }
+    //public override async Task OnDisconnectedAsync(Exception exception)
+    //{
+    //    await base.OnDisconnectedAsync(exception);
+    //}
 
     public async Task IdentifyUser(string connectionId, int userId)
     {
         CancellationToken cancellationToken = new CancellationToken(default);
         var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
-        user.SignalRConnectionId = connectionId;
+        user!.SignalRConnectionId = connectionId;
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync(cancellationToken);
         await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity",
@@ -48,6 +48,6 @@ public class MAUIslandHub : Hub
             return;
         var userInfo = await _userRepository.FindByGuidAsync(guid);
 
-        await Clients.All.SendAsync("ReceiveMessage", message, userInfo.UserName, userInfo.ProfilePic, DateTime.Now);
+        await Clients.All.SendAsync("ReceiveMessage", message, userInfo!.UserName, userInfo.ProfilePic, DateTime.Now);
     }
 }

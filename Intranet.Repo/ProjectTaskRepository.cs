@@ -15,6 +15,6 @@ public class ProjectTaskRepository : BaseRepository<ProjectTask>, IProjectTaskRe
     public async Task DeleteAll(CancellationToken cancellationToken = default)
     {
         var projectTasks = await FindAll().ToListAsync(cancellationToken);
-        _dbSet.RemoveRange(projectTasks);
+        _dbSet.RemoveRange(projectTasks!);
     }
 }

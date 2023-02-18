@@ -11,12 +11,12 @@ public class UserConversationRepository : BaseRepository<UserConversation>, IUse
 {
     public UserConversationRepository(IntranetContext ic) : base(ic) { }
 
-    public override async Task<UserConversation> FindByIdAsync(int userConversationId, CancellationToken cancellationToken = default)
+    public override async Task<UserConversation?> FindByIdAsync(int userConversationId, CancellationToken cancellationToken = default)
         => await FindAll(uc => uc.Id == userConversationId).FirstOrDefaultAsync(cancellationToken);
 
-    public async Task<IEnumerable<UserConversation>> FindByUserId(string userId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<UserConversation?>> FindByUserId(string userId, CancellationToken cancellationToken = default)
         => await FindAll(uc => uc.User.Id.Equals(userId)).ToListAsync(cancellationToken);
 
-    public async Task<IEnumerable<UserConversation>> FindByConversationId(int conversationId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<UserConversation?>> FindByConversationId(int conversationId, CancellationToken cancellationToken = default)
         => await FindAll(uc => uc.Conversation.Id == conversationId).ToListAsync(cancellationToken);
 }

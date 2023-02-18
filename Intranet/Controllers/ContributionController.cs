@@ -36,7 +36,7 @@ public class ContributionController : BaseController
     {
         var contribution = _mapper.Map<Contribution>(dto);
         var user = await _userRepository.FindByIdAsync(contribution.Contributor.Id, cancellationToken);
-        contribution.Contributor = user;
+        contribution.Contributor = user!;
         _contributionRepository.Create(contribution);
         await _contributionRepository.SaveChangesAsync(cancellationToken);
         return CreatedAtAction(nameof(Get), new { contribution.Id }, _mapper.Map<ContributionDTO>(contribution));
@@ -46,7 +46,7 @@ public class ContributionController : BaseController
     public async Task<IActionResult> UpdateApprove(ContributionDTO dto, CancellationToken cancellationToken = default)
     {
         var contribution = await _contributionRepository.FindByIdAsync(dto.Id, cancellationToken);
-        contribution.IsApproved = true;
+        contribution!.IsApproved = true;
         await _contributionRepository.SaveChangesAsync(cancellationToken);
         return NoContent();
     }

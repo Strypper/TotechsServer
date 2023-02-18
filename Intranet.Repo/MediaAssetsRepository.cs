@@ -15,6 +15,6 @@ public class MediaAssetsRepository : BaseRepository<MediaAssets>, IMediaAssetsRe
     public async Task DeleteAll(CancellationToken cancellationToken = default)
     {
         var mediaAssets = await FindAll().ToListAsync(cancellationToken);
-        _dbSet.RemoveRange(mediaAssets);
+        _dbSet.RemoveRange(mediaAssets!);
     }
 }

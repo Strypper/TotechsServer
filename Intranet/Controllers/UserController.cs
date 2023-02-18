@@ -82,33 +82,33 @@ public class UserController : BaseController
 
     #region [POST]
 
-    [HttpPost]
-    public async Task<IActionResult> UploadAvatar(string id, IFormFile avatar, CancellationToken cancellationToken = default)
-    {
-        //if (_mediaService.IsImage(avatar))
-        //{
-        //    var user = await _userRepository.FindByIdAsync(id, cancellationToken);
-        //    if(user is null)
-        //    {
-        //        return NotFound($"No User With Id {id} Found!");
-        //    }
-        //    using (Stream stream = avatar.OpenReadStream())
-        //    {
-        //        Tuple<bool, string> result = await _mediaService.UploadAvatarToStorage(stream, avatar.FileName);
-        //        var isUploaded = result.Item1;
-        //        var stringUrl = result.Item2;
-        //        if (isUploaded && !string.IsNullOrEmpty(stringUrl))
-        //        {
-        //            user.ProfilePic = stringUrl;
-        //            await _userRepository.SaveChangesAsync(cancellationToken);
+    //[HttpPost]
+    //public async Task<IActionResult> UploadAvatar(string id, IFormFile avatar, CancellationToken cancellationToken = default)
+    //{
+    //    if (_mediaService.IsImage(avatar))
+    //    {
+    //        var user = await _userRepository.FindByIdAsync(id, cancellationToken);
+    //        if (user is null)
+    //        {
+    //            return NotFound($"No User With Id {id} Found!");
+    //        }
+    //        using (Stream stream = avatar.OpenReadStream())
+    //        {
+    //            Tuple<bool, string> result = await _mediaService.UploadAvatarToStorage(stream, avatar.FileName);
+    //            var isUploaded = result.Item1;
+    //            var stringUrl = result.Item2;
+    //            if (isUploaded && !string.IsNullOrEmpty(stringUrl))
+    //            {
+    //                user.ProfilePic = stringUrl;
+    //                await _userRepository.SaveChangesAsync(cancellationToken);
 
-        //            return Ok(stringUrl);
-        //        }
-        //        else return BadRequest("Look like the image couldnt upload to the storage");
-        //    }
-        //}
-        return new UnsupportedMediaTypeResult();
-    }
+    //                return Ok(stringUrl);
+    //            }
+    //            else return BadRequest("Look like the image couldnt upload to the storage");
+    //        }
+    //    }
+    //    return new UnsupportedMediaTypeResult();
+    //}
     #endregion
 
     [HttpPut]
@@ -134,38 +134,38 @@ public class UserController : BaseController
     //    } else { return NotFound(); }
     //}
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken = default)
-    {
-        //var user = await _userRepository.FindByIdAsync(id, cancellationToken);
-        //if (user is null) return NotFound();
-        //using var intranetTransaction = await _intranetContext.Database.BeginTransactionAsync();
-        //foreach (var chatMessage in _chatMessageRepository.FindAll(cm => cm.User.Id == user.Id))
-        //{
-        //    _chatMessageRepository.Delete(chatMessage);
-        //}
+    //[HttpDelete("{id}")]
+    //public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken = default)
+    //{
+    //    var user = await _userRepository.FindByIdAsync(id, cancellationToken);
+    //    if (user is null) return NotFound();
+    //    using var intranetTransaction = await _intranetContext.Database.BeginTransactionAsync();
+    //    foreach (var chatMessage in _chatMessageRepository.FindAll(cm => cm.User.Id == user.Id))
+    //    {
+    //        _chatMessageRepository.Delete(chatMessage);
+    //    }
 
-        //var conversationIdToDelete = new List<int>();
-        //foreach (var userConversation in _userConversationRepository.FindAll(uc => uc.UserId == user.Id))
-        //{
-        //    conversationIdToDelete.Add(userConversation.ConversationId);
-        //}
+    //    var conversationIdToDelete = new List<int>();
+    //    foreach (var userConversation in _userConversationRepository.FindAll(uc => uc.UserId == user.Id))
+    //    {
+    //        conversationIdToDelete.Add(userConversation.ConversationId);
+    //    }
 
-        //foreach (var conversationId in conversationIdToDelete)
-        //{
-        //    var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
-        //    _conversationRepository.Delete(conversation);
-        //}
-        //foreach (var conversationId in conversationIdToDelete)
-        //{
-        //    var userConversation = await _userConversationRepository
-        //                                    .FindAll(uc => uc.ConversationId == conversationId)
-        //                                    .FirstOrDefaultAsync(cancellationToken);
-        //    _userConversationRepository.Delete(userConversation);
-        //}
-        //_userRepository.Delete(user);
-        //await _userRepository.SaveChangesAsync(cancellationToken);
-        //await _intranetContext.Database.CommitTransactionAsync(cancellationToken);
-        return NoContent();
-    }
+    //    foreach (var conversationId in conversationIdToDelete)
+    //    {
+    //        var conversation = await _conversationRepository.FindByIdAsync(conversationId, cancellationToken);
+    //        _conversationRepository.Delete(conversation);
+    //    }
+    //    foreach (var conversationId in conversationIdToDelete)
+    //    {
+    //        var userConversation = await _userConversationRepository
+    //                                        .FindAll(uc => uc.ConversationId == conversationId)
+    //                                        .FirstOrDefaultAsync(cancellationToken);
+    //        _userConversationRepository.Delete(userConversation);
+    //    }
+    //    _userRepository.Delete(user);
+    //    await _userRepository.SaveChangesAsync(cancellationToken);
+    //    await _intranetContext.Database.CommitTransactionAsync(cancellationToken);
+    //    return NoContent();
+    //}
 }
