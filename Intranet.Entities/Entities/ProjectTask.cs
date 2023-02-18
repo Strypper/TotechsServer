@@ -10,7 +10,7 @@ public class ProjectTask : BaseEntity<int>
 
     public DateTime CreatedDate { get; set; } = DateTime.MinValue;
 
-    public User Author { get; set; }
+    public User Author { get; set; } = default!;
 
     public DateTime? Deadline { get; set; } = DateTime.MaxValue;
 

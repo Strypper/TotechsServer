@@ -5,10 +5,10 @@ namespace Intranet.Entities;
 
 public class Role : IdentityRole
 {
-    public string RoleIcon { get; set; }
-    public string Summary { get; set; }
-    public string Mission { get; set; }
-    public string MainTasks { get; set; }
+    public string RoleIcon { get; set; } = default!;
+    public string Summary { get; set; } = default!;
+    public string Mission { get; set; } = default!;
+    public string MainTasks { get; set; } = default!;
 
     public ICollection<RoleLevel> RoleLevels { get; set; } = new HashSet<RoleLevel>();
     public virtual ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();

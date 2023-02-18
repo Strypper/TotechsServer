@@ -2,8 +2,8 @@ namespace Intranet.Entities;
 
 public class MeetingInfo : BaseEntity<int>
 {
-    public string Description { get; set; }
-    public string Location { get; set; }
+    public string Description { get; set; } = default!;
+    public string Location { get; set; } = default!;
     public ImportanceLevel ImportanceLevel { get; set; }
 }
 

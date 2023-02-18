@@ -6,19 +6,19 @@ namespace Intranet.Entities;
 public class IntranetContext : IdentityDbContext<User, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
 {
     public IntranetContext(DbContextOptions options) : base(options) { }
-    public DbSet<Food> Foods { get; set; }
-    public DbSet<Project> Projects { get; set; }
-    public DbSet<Conversation> Conversations { get; set; }
-    public DbSet<ChatMessage> ChatMessages { get; set; }
-    public DbSet<UserFood> UserFoods { get; set; }
-    public DbSet<RoleLevel> RoleLevels { get; set; }
-    public DbSet<UserProject> UserProjects { get; set; }
-    public DbSet<UserConversation> UserConversations { get; set; }
-    public DbSet<Contribution> Contributions { get; set; }
-    public DbSet<MeetingSchedule> MeetingSchedules { get; set; }
-    public DbSet<MeetingInfo> MeetingInfos { get; set; }
-    public DbSet<Attendance> Attendances { get; set; }
-    public DbSet<TodoTask> TodoTasks { get; set; }
+    public DbSet<Food> Foods { get; set; } = default!;
+    public DbSet<Project> Projects { get; set; } = default!;
+    public DbSet<Conversation> Conversations { get; set; } = default!;
+    public DbSet<ChatMessage> ChatMessages { get; set; } = default!;
+    public DbSet<UserFood> UserFoods { get; set; } = default!;
+    public DbSet<RoleLevel> RoleLevels { get; set; } = default!;
+    public DbSet<UserProject> UserProjects { get; set; } = default!;
+    public DbSet<UserConversation> UserConversations { get; set; } = default!;
+    public DbSet<Contribution> Contributions { get; set; } = default!;
+    public DbSet<MeetingSchedule> MeetingSchedules { get; set; } = default!;
+    public DbSet<MeetingInfo> MeetingInfos { get; set; } = default!;
+    public DbSet<Attendance> Attendances { get; set; } = default!;
+    public DbSet<TodoTask> TodoTasks { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

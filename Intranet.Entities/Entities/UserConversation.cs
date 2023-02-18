@@ -5,10 +5,10 @@ namespace Intranet.Entities;
 public class UserConversation : BaseEntity<int>
 {
     public int ConversationId { get; set; }
-    public virtual Conversation Conversation { get; set; }
+    public virtual Conversation Conversation { get; set; } = default!;
 
-    public string UserId { get; set; }
-    public virtual User User { get; set; }
+    public string UserId { get; set; } = default!;
+    public virtual User User { get; set; } = default!;
 
     public bool IsMute { get; set; }
 
