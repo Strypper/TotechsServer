@@ -114,10 +114,10 @@ public class UserController : BaseController
     [HttpPut]
     public async Task<IActionResult> Update(UserDTO dto, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(dto.Guid, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(dto.Guid, cancellationToken);
         if (user is null) return NotFound();
         _mapper.Map(dto, user);
-        await _userRepository.SaveChangesAsync(cancellationToken);
+        await _userRepository.UpdateUser(user, cancellationToken);
         return NoContent();
     }
 

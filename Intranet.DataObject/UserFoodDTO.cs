@@ -8,6 +8,6 @@ public class UserFoodDTO : BaseDTO<int>
 
 public class CreateUpdateUserFoodDTO
 {
-    public string UserId { get; set; } = default!;
+    public string UserGuid { get; set; } = default!;
     public int FoodId { get; set; }
 }

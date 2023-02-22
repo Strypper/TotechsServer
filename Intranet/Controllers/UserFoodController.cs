@@ -35,25 +35,25 @@ public class UserFoodController : BaseController
     }
 
     [HttpGet("{userId}")]
-    public async Task<IActionResult> GetUserSelectedFood(string userId, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetUserSelectedFood(string userGuid, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(userGuid, cancellationToken);
         if (user is null) return NotFound();
-        var userSelectedFood = await _userFoodRepository.FindByUserId(userId, cancellationToken);
+        var userSelectedFood = await _userFoodRepository.FindByUserId(userGuid, cancellationToken);
         return Ok(_mapper.Map<UserFoodDTO>(userSelectedFood));
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateUpdateUserFoodDTO dto, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(dto.UserGuid, cancellationToken);
         if (user is null || user.IsDisable == true) return NotFound();
         var food = await _foodRepository.FindByIdAsync(dto.FoodId, cancellationToken);
         if (food is null || food.IsUnavailable == true) return NotFound();
         var userFood = new UserFood() { User = user, Food = food };
         if (await _userFoodRepository.FindByUserId(user.Id, cancellationToken) != null)
         {
-            var existingUserFood = await _userFoodRepository.FindAll(uf => uf.User.Id.Equals(dto.UserId)).FirstOrDefaultAsync();
+            var existingUserFood = await _userFoodRepository.FindAll(uf => uf.User.Id.Equals(dto.UserGuid)).FirstOrDefaultAsync();
             if (existingUserFood is not null)
             {
                 existingUserFood.FoodId = dto.FoodId;
@@ -67,7 +67,7 @@ public class UserFoodController : BaseController
     [HttpPut]
     public async Task<IActionResult> Update(CreateUpdateUserFoodDTO dto, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(dto.UserGuid, cancellationToken);
         if (user is null) return NotFound();
         var userDTO = _mapper.Map<UserDTO>(user);
         var food = await _foodRepository.FindByIdAsync(dto.FoodId, cancellationToken);

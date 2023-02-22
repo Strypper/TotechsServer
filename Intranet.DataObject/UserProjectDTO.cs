@@ -11,7 +11,7 @@ public class UserProjectDTO : BaseDTO<int>
 
 public class CreateUpdateUserProjectDTO
 {
-    public string UserId { get; set; } = default!;
+    public string UserGuid { get; set; } = default!;
     public int ProjectId { get; set; }
 }
 

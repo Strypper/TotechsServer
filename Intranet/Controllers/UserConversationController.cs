@@ -38,11 +38,11 @@ public class UserConversationController : BaseController
     }
 
     [HttpGet("{userId}")]
-    public async Task<IActionResult> GetUserConversationByUserId(string userId, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetUserConversationByUserId(string userGuid, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(userGuid, cancellationToken);
         if (user is null) return NotFound();
-        var userConversations = await _userConversationRepository.FindAll(uc => uc.UserId.Equals(userId)).ToListAsync(cancellationToken);
+        var userConversations = await _userConversationRepository.FindAll(uc => uc.UserId.Equals(userGuid)).ToListAsync(cancellationToken);
         return Ok(_mapper.Map<IEnumerable<UserConversationDTO>>(userConversations));
     }
 
@@ -50,12 +50,12 @@ public class UserConversationController : BaseController
     public async Task<IActionResult> Create(CreateUpdateUserConversationDTO dto, CancellationToken cancellationToken = default)
     {
         //Find the current user
-        var currentUser = await _userRepository.FindByIdAsync(dto.CurrentUserId, cancellationToken);
+        var currentUser = await _userRepository.FindByGuidAsync(dto.CurrentUserGuid, cancellationToken);
         //Find the target user
-        var targetUser = await _userRepository.FindByIdAsync(dto.TargetUserId, cancellationToken);
+        var targetUser = await _userRepository.FindByGuidAsync(dto.TargetUserId, cancellationToken);
         //Check if the conversation of between these people
         //Get all the User-Conversation from current user
-        var currentUserConversations = await _userConversationRepository.FindAll(ucr => ucr.UserId.Equals(dto.CurrentUserId)).Select(ucr => ucr.ConversationId).ToListAsync();
+        var currentUserConversations = await _userConversationRepository.FindAll(ucr => ucr.UserId.Equals(dto.CurrentUserGuid)).Select(ucr => ucr.ConversationId).ToListAsync();
         var targetUserConversations = await _userConversationRepository.FindAll(ucr => ucr.UserId.Equals(dto.TargetUserId)).Select(ucr => ucr.ConversationId).ToListAsync();
         //If the conversation not exist
         if (currentUserConversations.Intersect(targetUserConversations).Any() == false)

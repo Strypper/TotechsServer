@@ -74,7 +74,7 @@ public class FoodControllerTests
         var foodDTO = A.Fake<FoodDTO>();
 
         A.CallTo(() => _mapper.Map<Food>(foodDTO)).Returns(food);
-        A.CallTo(() => _foodRepository.Create(food));
+        A.CallTo(() => _foodRepository.CreateAsync(food, CancellationToken.None));
 
         var controller = new FoodController(_mapper, _foodRepository, _userFoodRepository);
         #endregion

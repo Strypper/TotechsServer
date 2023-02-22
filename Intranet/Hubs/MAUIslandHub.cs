@@ -29,13 +29,12 @@ public class MAUIslandHub : Hub
     //    await base.OnDisconnectedAsync(exception);
     //}
 
-    public async Task IdentifyUser(string connectionId, int userId)
+    public async Task IdentifyUser(string connectionId, string userId)
     {
         CancellationToken cancellationToken = new CancellationToken(default);
-        var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(userId, cancellationToken);
         user!.SignalRConnectionId = connectionId;
-        _userRepository.Update(user);
-        await _userRepository.SaveChangesAsync(cancellationToken);
+        await _userRepository.UpdateUser(user, cancellationToken);
         await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity",
                                                      _mapper.Map<UserDTO>(user));
         await Clients.All.SendAsync("UserLogIn", _mapper.Map<UserDTO>(user));

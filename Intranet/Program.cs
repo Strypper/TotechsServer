@@ -51,20 +51,20 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.TokenValidationParameters = new TokenValidationParameters
+    .AddJwtBearer(options =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = false,
-        ValidateLifetime = false,
-        ValidIssuer = builder.Configuration["JwtTokenConfig:Issuer"],
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtTokenConfig:Key"]!)),
-        ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 },
-    };
-});
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = false,
+            ValidateLifetime = false,
+            ValidIssuer = builder.Configuration["JwtTokenConfig:Issuer"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtTokenConfig:Key"]!)),
+            ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 },
+        };
+    });
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
@@ -86,6 +86,12 @@ builder.Services.AddIdentity<User, Role>(options =>
                 .AddUserManager<UserManager>()
                 .AddDefaultTokenProviders();
 
+builder.Services.AddSingleton<StorageSharedKeyCredential>((provider) =>
+{
+    var config = provider.GetRequiredService<IOptionsMonitor<AzureStorageConfig>>().CurrentValue;
+    return new StorageSharedKeyCredential(config.AccountName, config.AccountKey);
+});
+
 builder.Services.AddTransient<IJWTTokenService, JWTTokenService>();
 builder.Services.AddTransient<IFoodRepository, FoodRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
@@ -93,6 +99,7 @@ builder.Services.AddTransient<IUserFoodRepository, UserFoodRepository>();
 builder.Services.AddTransient<IGroupChatRepository, GroupChatRepository>();
 builder.Services.AddTransient<IChatMessageRepository, ChatMessageRepository>();
 builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
+builder.Services.AddTransient<IMediaService, AzureBlobStorageMediaService>();
 builder.Services.AddTransient<IUserProjectRepository, UserProjectRepository>();
 builder.Services.AddTransient<IConversationRepository, ConversationRepository>();
 builder.Services.AddTransient<IContributionRepository, ContributionRepository>();
@@ -100,21 +107,16 @@ builder.Services.AddTransient<IUserConversationRepository, UserConversationRepos
 
 
 
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new MappingProfile());
-});
+var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
 
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

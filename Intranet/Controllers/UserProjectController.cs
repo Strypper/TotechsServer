@@ -35,9 +35,9 @@ public class UserProjectController : BaseController
     }
 
     [HttpGet("{userId}")]
-    public async Task<IActionResult> GetProjectByUser(int userId, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetProjectByUser(string userGuid, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(userId, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(userGuid, cancellationToken);
         if (user is null) return NotFound();
         var userProjects = await _userProjectRepository.FindAll(ut => ut.User == user).ToListAsync();
 
@@ -52,13 +52,13 @@ public class UserProjectController : BaseController
     [HttpPost]
     public async Task<IActionResult> Create(CreateUpdateUserProjectDTO dto, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(dto.UserGuid, cancellationToken);
         if (user is null || user.IsDisable == true) return NotFound();
         var project = await _projectRepository.FindByIdAsync(dto.ProjectId, cancellationToken);
         var userProject = new UserProject() { User = user, Project = project! };
         if (await _userProjectRepository.FindByUserId(user.Id, cancellationToken) != null)
         {
-            var existingUserProject = await _userProjectRepository.FindAll(uf => uf.User.Id.Equals(dto.UserId)).FirstOrDefaultAsync();
+            var existingUserProject = await _userProjectRepository.FindAll(uf => uf.User.Id.Equals(dto.UserGuid)).FirstOrDefaultAsync();
             if (existingUserProject?.ProjectId == dto.ProjectId)
                 return BadRequest("This user and project are already created !!");
             else _userProjectRepository.Create(userProject);
@@ -70,7 +70,7 @@ public class UserProjectController : BaseController
     [HttpPut]
     public async Task<IActionResult> Update(CreateUpdateUserProjectDTO dto, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.FindByIdAsync(dto.UserId, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(dto.UserGuid, cancellationToken);
         if (user is null) return NotFound();
         var userDTO = _mapper.Map<UserDTO>(user);
         var food = await _projectRepository.FindByIdAsync(dto.ProjectId, cancellationToken);

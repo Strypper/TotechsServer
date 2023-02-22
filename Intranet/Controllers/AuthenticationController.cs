@@ -1,22 +1,24 @@
 ﻿namespace Intranet;
 
-[Route("/api/[controller]/[action]")]
 public class AuthenticationController : BaseController
 {
     #region [Fields]
     private IMapper _mapper;
     private readonly IJWTTokenService _jwtTokenService;
     private readonly IUserRepository _userRepository;
+    private readonly IMediaService _mediaService;
     #endregion
 
     #region [CTor]
     public AuthenticationController(IMapper mapper,
                                     IJWTTokenService jwtTokenService,
-                                    IUserRepository userRepository)
+                                    IUserRepository userRepository,
+                                    IMediaService mediaService)
     {
         _mapper = mapper;
         _jwtTokenService = jwtTokenService;
         _userRepository = userRepository;
+        _mediaService = mediaService;
     }
     #endregion
 
@@ -47,17 +49,34 @@ public class AuthenticationController : BaseController
 
     [AllowAnonymous]
     [HttpPost]
-    public async Task<IActionResult> Register(UserSignUpDTO dto, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Register([FromForm] UserSignUpDTO dto, CancellationToken cancellationToken = default)
     {
         var user = new User()
         {
             UserName = dto.username,
-            Email = dto.email,
-            ProfilePic = dto.profilepic,
+            Email = dto.email
         };
         var result = await _userRepository.CreateAccount(user, dto.password);
         if (result.Succeeded)
-            return Ok();
+        {
+            if (dto.avatarfile is null) return Ok();
+            if (_mediaService.IsImage(dto.avatarfile))
+            {
+                using (Stream stream = dto.avatarfile.OpenReadStream())
+                {
+                    Tuple<bool, string> uploadresults = await _mediaService.UploadAvatarToStorage(stream, dto.avatarfile.FileName);
+                    var isUploaded = uploadresults.Item1;
+                    var stringUrl = uploadresults.Item2;
+                    if (isUploaded && !string.IsNullOrEmpty(stringUrl))
+                    {
+                        user.ProfilePic = stringUrl;
+                        await _userRepository.UpdateUser(user, cancellationToken);
+                        return Ok();
+                    }
+                    else return BadRequest("Look like the image couldnt upload to the storage, but your account have created successfully");
+                }
+            }
+        }
         return BadRequest();
     }
     #endregion

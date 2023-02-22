@@ -36,10 +36,10 @@ public class ConversationController : BaseController
     }
 
     [HttpGet("{userId}/{pageIndex}")]
-    public async Task<IActionResult> GetByUserIdDirectMode(string userId, int pageIndex, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetByUserIdDirectMode(string userGuid, int pageIndex, CancellationToken cancellationToken)
     {
-        var currentUser = await _userRepository.FindByIdAsync(userId, cancellationToken);
-        var userConverastions = await _userConversationRepository.FindAll(uc => uc.UserId.Equals(userId))
+        var currentUser = await _userRepository.FindByGuidAsync(userGuid, cancellationToken);
+        var userConverastions = await _userConversationRepository.FindAll(uc => uc.UserId.Equals(userGuid))
                                                                  .ToListAsync(cancellationToken);
         //Find all the conversationId based on the userConversations
         var conversationIds = userConverastions.Select(userConverastions => userConverastions.ConversationId);
@@ -58,7 +58,7 @@ public class ConversationController : BaseController
                                         .Select(uc => uc.UserId).FirstOrDefaultAsync(cancellationToken);
             if (targetUserId is not null)
             {
-                var targetUser = await _userRepository.FindByIdAsync(targetUserId, cancellationToken);
+                var targetUser = await _userRepository.FindByGuidAsync(targetUserId, cancellationToken);
                 var chatMessageList = new List<ChatMessageDTO>();
                 foreach (var chatMessage in conversation.ChatMessages)
                 {
@@ -91,8 +91,8 @@ public class ConversationController : BaseController
     [HttpPost]
     public async Task<IActionResult> Create(CreateConversationDTO dto, CancellationToken cancellationToken = default)
     {
-        var currentUser = await _userRepository.FindByIdAsync(dto.CurrentUserId, cancellationToken);
-        var targerUser = await _userRepository.FindByIdAsync(dto.TargerUserId, cancellationToken);
+        var currentUser = await _userRepository.FindByGuidAsync(dto.CurrentUserGuid, cancellationToken);
+        var targerUser = await _userRepository.FindByGuidAsync(dto.TargerUserGuid, cancellationToken);
 
 
         var conversation = new Conversation();

@@ -14,8 +14,8 @@ public class ConversationDTO : BaseDTO<int>
 public class CreateConversationDTO
 {
     public string? MessageContent { get; set; }
-    public int CurrentUserId { get; set; }
-    public int TargerUserId { get; set; }
+    public string CurrentUserGuid { get; set; } = String.Empty;
+    public string TargerUserGuid { get; set; } = String.Empty;
 }
 
 public class ConversationDirectModeDTO : ConversationDTO

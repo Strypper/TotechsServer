@@ -1,77 +1,57 @@
 ﻿using Azure.Storage;
 using Azure.Storage.Blobs;
-using Intranet.AppSettings;
-using Intranet.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Intranet.Services
+namespace Intranet;
+
+public class AzureBlobStorageMediaService : IMediaService
 {
-    public class AzureBlobStorageMediaService : IMediaService
+    private readonly IOptionsMonitor<AzureStorageConfig> _storageConfig;
+    private readonly StorageSharedKeyCredential _storageSharedKeyCredential;
+    public AzureBlobStorageMediaService(IOptionsMonitor<AzureStorageConfig> azureStorageConfig,
+                                        StorageSharedKeyCredential storageSharedKeyCredential)
     {
-        private readonly IOptionsMonitor<AzureStorageConfig> _storageConfig;
-        private StorageSharedKeyCredential _storageCredentials;
-        public AzureBlobStorageMediaService(IOptionsMonitor<AzureStorageConfig> azureStorageConfig,
-                                             StorageSharedKeyCredential storageCredentials)
+        _storageConfig = azureStorageConfig;
+        _storageSharedKeyCredential = storageSharedKeyCredential;
+    }
+
+    public Task<List<string>> GetThumbNailUrls()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool IsImage(IFormFile file)
+    {
+        if (file.ContentType.Contains("image"))
         {
-            _storageConfig = azureStorageConfig;
-            _storageCredentials = storageCredentials;
+            return true;
         }
 
-        public Task<List<string>> GetThumbNailUrls()
-        {
-            throw new NotImplementedException();
-        }
+        string[] formats = new string[] { ".jpg", ".png", ".gif", ".jpeg" };
 
-        public bool IsImage(IFormFile file)
-        {
-            if (file.ContentType.Contains("image"))
-            {
-                return true;
-            }
+        return formats.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
+    }
 
-            string[] formats = new string[] { ".jpg", ".png", ".gif", ".jpeg" };
+    public async Task<Tuple<bool, string>> UploadAvatarToStorage(Stream fileStream,
+                                                                 string fileName)
+    {
+        var blobUri = new Uri("https://" +
+                              _storageConfig.CurrentValue.AccountName +
+                              ".blob.core.windows.net/" +
+                              _storageConfig.CurrentValue.AvatarContainer
+                              + "/" + fileName);
+        // Create the blob client.
+        var blobClient = new BlobClient(blobUri, _storageSharedKeyCredential);
 
-            return formats.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
-        }
+        // Upload the file
+        await blobClient.UploadAsync(fileStream);
 
-        public async Task<Tuple<bool, string>> UploadFileToStorage(Stream fileStream,
-                                                                   string fileName)
-        {
-            var blobUri = new Uri("https://" +
-                                  _storageConfig.CurrentValue.AccountName +
-                                  ".blob.core.windows.net/" +
-                                  _storageConfig.CurrentValue.ImageContainer +
-                                  "/" + fileName);
-            // Create the blob client.
-            var blobClient = new BlobClient(blobUri, _storageCredentials);
+        return new Tuple<bool, string>(await Task.FromResult(true), blobClient.Uri.AbsoluteUri);
+    }
 
-            // Upload the file
-            await blobClient.UploadAsync(fileStream);
-
-            return new Tuple<bool, string>(await Task.FromResult(true), blobClient.Uri.AbsoluteUri);
-        }
-
-        public async Task<Tuple<bool, string>> UploadAvatarToStorage(Stream fileStream,
-                                                                     string fileName)
-        {
-            var blobUri = new Uri("https://" +
-                                  _storageConfig.CurrentValue.AccountName +
-                                  ".blob.core.windows.net/" +
-                                  _storageConfig.CurrentValue.ImageContainer
-                                  + "/" + fileName);
-            // Create the blob client.
-            var blobClient = new BlobClient(blobUri, _storageCredentials);
-
-            // Upload the file
-            await blobClient.UploadAsync(fileStream);
-
-            return new Tuple<bool, string>(await Task.FromResult(true), blobClient.Uri.AbsoluteUri);
-        }
+    public Task<Tuple<bool, string>> UploadFileToStorage(Stream fileStream, string fileName)
+    {
+        throw new NotImplementedException();
     }
 }

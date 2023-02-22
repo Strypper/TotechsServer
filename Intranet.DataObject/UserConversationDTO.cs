@@ -7,6 +7,6 @@ public class UserConversationDTO : BaseDTO<int>
 }
 public class CreateUpdateUserConversationDTO
 {
-    public string CurrentUserId { get; set; } = default!;
+    public string CurrentUserGuid { get; set; } = default!;
     public string TargetUserId { get; set; } = default!;
 }

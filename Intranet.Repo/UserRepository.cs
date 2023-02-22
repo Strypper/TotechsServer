@@ -11,23 +11,18 @@ using System.Threading.Tasks;
 
 namespace Intranet.Repo;
 
-public class UserRepository : BaseRepository<User>, IUserRepository
+public class UserRepository : IUserRepository
 {
     #region [Fields]
     private readonly UserManager _userManager;
     #endregion
 
     #region [CTor]
-    public UserRepository(IntranetContext repositoryContext, UserManager userManager) : base(repositoryContext)
+    public UserRepository(UserManager userManager)
     {
         _userManager = userManager;
     }
 
-    #endregion
-
-    #region [Overrides]
-    public override IQueryable<User> FindAll(Expression<Func<User, bool>>? predicate = null!)
-       => _userManager.FindAll(predicate);
     #endregion
 
     #region [Methods]
@@ -35,14 +30,10 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         => _userManager.CreateAsync(user, password);
 
     public Task<User?> FindByGuidAsync(string guid, CancellationToken cancellationToken = default)
-    {
-        return _userManager.FindByGuidAsync(guid, cancellationToken);
-    }
+        => _userManager.FindByGuidAsync(guid, cancellationToken);
 
     public Task<User?> FindBySignalRConnectionId(string connectionId, CancellationToken cancellationToken = default)
-    {
-        return _userManager.FindBySignalRConnectionIdAsync(connectionId, cancellationToken);
-    }
+        => _userManager.FindBySignalRConnectionIdAsync(connectionId, cancellationToken);
 
     public Task<User?> FindByUserIdWithoutCancellationToken(int id)
     {
@@ -62,5 +53,15 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     public async Task DeleteUser(User user, CancellationToken cancelationToken = default)
         => await _userManager.DeleteAsync(user);
+
+    public async Task UpdateUser(User user, CancellationToken cancellationToken = default)
+        => await _userManager.UpdateAsync(user);
+
+    public IQueryable<User> FindAll(Expression<Func<User, bool>>? predicate = null)
+        => _userManager.FindAll(predicate!);
+
+    #region [Pending]
+
+    #endregion
     #endregion
 }

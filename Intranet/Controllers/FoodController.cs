@@ -46,7 +46,7 @@ public class FoodController : BaseController
     public async Task<IActionResult> Create(FoodDTO dto, CancellationToken cancellationToken = default)
     {
         var food = _mapper.Map<Food>(dto);
-        _foodRepository.Create(food);
+        await _foodRepository.CreateAsync(food, cancellationToken);
         await _foodRepository.SaveChangesAsync(cancellationToken);
         return CreatedAtAction(nameof(Get), new { food.Id }, _mapper.Map<FoodDTO>(food));
     }

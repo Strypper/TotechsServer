@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 
 namespace Intranet.DataObject;
@@ -25,6 +26,16 @@ public class UserDTO
     public ICollection<SkillDTO>? Skills { get; set; } = Array.Empty<SkillDTO>();
 }
 
-public record UserLoginDTO(string username, string password) { }
+public record UserLoginDTO(string username,
+                           string password)
+{ }
 
-public record UserSignUpDTO(string username, string password, string firstname, string lastname, string email, string phonenumber, string profilepic, string[]? roles) { }
+public record UserSignUpDTO(string username,
+                            string password,
+                            string firstname,
+                            string lastname,
+                            string email,
+                            string phonenumber,
+                            string[]? roles,
+                            IFormFile? avatarfile)
+{ }

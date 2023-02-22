@@ -37,19 +37,15 @@ public abstract class BaseRepository<T> : IRepositoryBase<T> where T : class
     }
 
     public void Create(T entity)
-    {
-        _dbSet.Add(entity);
-    }
+      => _dbSet.Add(entity);
     public void Update(T entity)
-    {
-        _dbSet.Update(entity);
-    }
+      => _dbSet.Update(entity);
     public void Delete(T entity)
-    {
-        _dbSet.Remove(entity);
-    }
+      => _dbSet.Remove(entity);
+
+    public async Task CreateAsync(T entity, CancellationToken cancellationToken)
+        => await _dbSet.AddAsync(entity, cancellationToken);
 
     public Task SaveChangesAsync(CancellationToken cancellationToken)
         => RepositoryContext.SaveChangesAsync(cancellationToken);
-
 }

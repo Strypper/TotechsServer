@@ -35,7 +35,7 @@ public class ContributionController : BaseController
     public async Task<IActionResult> Create(ContributionDTO dto, CancellationToken cancellationToken = default)
     {
         var contribution = _mapper.Map<Contribution>(dto);
-        var user = await _userRepository.FindByIdAsync(contribution.Contributor.Id, cancellationToken);
+        var user = await _userRepository.FindByGuidAsync(contribution.Contributor.Id, cancellationToken);
         contribution.Contributor = user!;
         _contributionRepository.Create(contribution);
         await _contributionRepository.SaveChangesAsync(cancellationToken);
