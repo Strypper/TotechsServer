@@ -40,7 +40,7 @@ public class UserManager : UserManager<User>
     }
 
     public async Task<User?> FindBySignalRConnectionIdAsync(string signalRConnectionId, CancellationToken cancellationToken)
-    => await Users.FirstOrDefaultAsync(u => u.SignalRConnectionId == signalRConnectionId, cancellationToken);
+        => await Users.FirstOrDefaultAsync(u => u.SignalRConnectionId == signalRConnectionId, cancellationToken);
 
     public async Task<User?> FindByPhoneNumberAsync(string phoneNumber)
         => await Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);

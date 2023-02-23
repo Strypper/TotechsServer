@@ -6,47 +6,81 @@ namespace Intranet.Hubs;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class MAUIslandHub : Hub
 {
-    private IMapper _mapper;
-    private IUserRepository _userRepository;
+    #region [Services]
+    private readonly IMapper _mapper;
+    private readonly IUserRepository _userRepository;
+    private readonly IConversationRepository _conversationRepository;
+    #endregion
+
+    #region [CTor]
 
     public MAUIslandHub(
                         IMapper mapper,
-                        IUserRepository userRepository
+                        IUserRepository userRepository,
+                        IConversationRepository conversationRepository
                        )
     {
         _mapper = mapper;
         _userRepository = userRepository;
+        _conversationRepository = conversationRepository;
     }
+
+    #endregion
+
+    #region [Overrides]
 
     public override async Task OnConnectedAsync()
     {
-        await Clients.All.SendAsync("ReceiveMessage", $"Welcome {Context.ConnectionId}");
+        CancellationToken cancellationToken = new CancellationToken(default);
+
+        var guid = Context.User?.Claims?.First(c => c.Type == "guid")?.Value;
+        var loginUser = await _userRepository.FindByGuidAsync(guid!, cancellationToken);
+        loginUser!.SignalRConnectionId = Context.ConnectionId;
+        await _userRepository.UpdateUser(loginUser, cancellationToken);
+
+        await Clients.All.SendAsync("MAUIslandHub", $"Welcome {loginUser!.UserName}");
         await base.OnConnectedAsync();
     }
 
-    //public override async Task OnDisconnectedAsync(Exception exception)
-    //{
-    //    await base.OnDisconnectedAsync(exception);
-    //}
-
-    public async Task IdentifyUser(string connectionId, string userId)
+    public override async Task OnDisconnectedAsync(Exception exception)
     {
         CancellationToken cancellationToken = new CancellationToken(default);
-        var user = await _userRepository.FindByGuidAsync(userId, cancellationToken);
-        user!.SignalRConnectionId = connectionId;
-        await _userRepository.UpdateUser(user, cancellationToken);
-        await Clients.Client(connectionId).SendAsync("ChatHubUserIndentity",
-                                                     _mapper.Map<UserDTO>(user));
-        await Clients.All.SendAsync("UserLogIn", _mapper.Map<UserDTO>(user));
-    }
 
+        var connectionId = Context.ConnectionId;
+        var logoffUser = await _userRepository.FindBySignalRConnectionId(connectionId, cancellationToken);
+        logoffUser!.SignalRConnectionId = string.Empty;
+        await _userRepository.UpdateUser(logoffUser, cancellationToken);
+
+
+        await Clients.All.SendAsync("MAUIslandHub", $"{logoffUser.UserName} Logoff");
+        await base.OnDisconnectedAsync(exception);
+    }
+    #endregion
+
+    #region [Channels]
     public async Task SendMessage(string message)
     {
-        var guid = Context.User?.Claims?.First(c => c.Type == "guid")?.Value;
-        if (guid is null)
-            return;
-        var userInfo = await _userRepository.FindByGuidAsync(guid);
+        CancellationToken cancellationToken = new CancellationToken(default);
+
+        var signalRConnectionId = Context.ConnectionId;
+
+        var userInfo = await _userRepository.FindBySignalRConnectionId(signalRConnectionId, cancellationToken);
+
+        var mauislandLobby = await _conversationRepository.FindByNameAsync("MAUIslandLobby", cancellationToken);
+
+        var chatMessage = new ChatMessage()
+        {
+            User = userInfo!,
+            MessageContent = message,
+            SentTime = DateTime.UtcNow,
+        };
+
+        mauislandLobby!.ChatMessages.Add(chatMessage);
+
+        await _conversationRepository.SaveChangesAsync(cancellationToken);
 
         await Clients.All.SendAsync("ReceiveMessage", message, userInfo!.UserName, userInfo.ProfilePic, DateTime.Now);
     }
+    #endregion
+
 }

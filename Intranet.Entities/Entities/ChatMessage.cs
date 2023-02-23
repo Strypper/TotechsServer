@@ -8,5 +8,5 @@ public class ChatMessage : BaseEntity<int>
     public string MessageContent { get; set; } = default!;
     public DateTime SentTime { get; set; }
 
-    public virtual Conversation Conversation { get; set; } = default!;
+    public int ConversationId { get; set; }
 }

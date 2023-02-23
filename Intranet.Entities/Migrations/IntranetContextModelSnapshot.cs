@@ -22,7 +22,7 @@ namespace Intranet.Entities.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Intranet.Entities.Entities.Attendance", b =>
+            modelBuilder.Entity("Intranet.Entities.Attendance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,10 +54,10 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("MeetingScheduleId");
 
-                    b.ToTable("Attendances");
+                    b.ToTable("Attendances", (string)null);
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.ChatMessage", b =>
+            modelBuilder.Entity("Intranet.Entities.ChatMessage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,10 +84,10 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatMessages");
+                    b.ToTable("ChatMessages", (string)null);
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.Contribution", b =>
+            modelBuilder.Entity("Intranet.Entities.Contribution", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,10 +114,10 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("ContributorId");
 
-                    b.ToTable("Contributions");
+                    b.ToTable("Contributions", (string)null);
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.Conversation", b =>
+            modelBuilder.Entity("Intranet.Entities.Conversation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -135,12 +135,16 @@ namespace Intranet.Entities.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Conversations");
+                    b.ToTable("Conversations", (string)null);
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.Food", b =>
+            modelBuilder.Entity("Intranet.Entities.Food", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,10 +174,10 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Foods");
+                    b.ToTable("Foods", (string)null);
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.MeetingInfo", b =>
+            modelBuilder.Entity("Intranet.Entities.MeetingInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,10 +198,10 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MeetingInfos");
+                    b.ToTable("MeetingInfos", (string)null);
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.MeetingSchedule", b =>
+            modelBuilder.Entity("Intranet.Entities.MeetingSchedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -223,10 +227,10 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("PlannerId");
 
-                    b.ToTable("MeetingSchedules");
+                    b.ToTable("MeetingSchedules", (string)null);
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.Project", b =>
+            modelBuilder.Entity("Intranet.Entities.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -276,126 +280,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("Intranet.Entities.Entities.TodoTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageTaskUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MeetingScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("MeetingScheduleId");
-
-                    b.ToTable("TodoTasks");
-                });
-
-            modelBuilder.Entity("Intranet.Entities.Entities.UserConversation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ConversationId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsMute")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConversationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserConversations", (string)null);
-                });
-
-            modelBuilder.Entity("Intranet.Entities.Entities.UserFood", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("FoodId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FoodId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserFoods", (string)null);
-                });
-
-            modelBuilder.Entity("Intranet.Entities.Entities.UserProject", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserProjects", (string)null);
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.Role", b =>
@@ -471,7 +356,48 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleLevels");
+                    b.ToTable("RoleLevels", (string)null);
+                });
+
+            modelBuilder.Entity("Intranet.Entities.TodoTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageTaskUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MeetingScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("MeetingScheduleId");
+
+                    b.ToTable("TodoTasks", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.User", b =>
@@ -571,6 +497,84 @@ namespace Intranet.Entities.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Intranet.Entities.UserConversation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsMute")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserConversations", (string)null);
+                });
+
+            modelBuilder.Entity("Intranet.Entities.UserFood", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FoodId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFoods", (string)null);
+                });
+
+            modelBuilder.Entity("Intranet.Entities.UserProject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserProjects", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.UserRole", b =>
@@ -692,22 +696,22 @@ namespace Intranet.Entities.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.Attendance", b =>
+            modelBuilder.Entity("Intranet.Entities.Attendance", b =>
                 {
                     b.HasOne("Intranet.Entities.User", "AttendanceInfo")
                         .WithMany()
                         .HasForeignKey("AttendanceInfoId");
 
-                    b.HasOne("Intranet.Entities.Entities.MeetingSchedule", null)
+                    b.HasOne("Intranet.Entities.MeetingSchedule", null)
                         .WithMany("Attendances")
                         .HasForeignKey("MeetingScheduleId");
 
                     b.Navigation("AttendanceInfo");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.ChatMessage", b =>
+            modelBuilder.Entity("Intranet.Entities.ChatMessage", b =>
                 {
-                    b.HasOne("Intranet.Entities.Entities.Conversation", "Conversation")
+                    b.HasOne("Intranet.Entities.Conversation", "Conversation")
                         .WithMany("ChatMessages")
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -722,7 +726,7 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.Contribution", b =>
+            modelBuilder.Entity("Intranet.Entities.Contribution", b =>
                 {
                     b.HasOne("Intranet.Entities.User", "Contributor")
                         .WithMany()
@@ -731,9 +735,9 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("Contributor");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.MeetingSchedule", b =>
+            modelBuilder.Entity("Intranet.Entities.MeetingSchedule", b =>
                 {
-                    b.HasOne("Intranet.Entities.Entities.MeetingInfo", "MeetingInfo")
+                    b.HasOne("Intranet.Entities.MeetingInfo", "MeetingInfo")
                         .WithMany()
                         .HasForeignKey("MeetingInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -748,22 +752,29 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("Planner");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.TodoTask", b =>
+            modelBuilder.Entity("Intranet.Entities.RoleLevel", b =>
+                {
+                    b.HasOne("Intranet.Entities.Role", null)
+                        .WithMany("RoleLevels")
+                        .HasForeignKey("RoleId");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.TodoTask", b =>
                 {
                     b.HasOne("Intranet.Entities.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Intranet.Entities.Entities.MeetingSchedule", null)
+                    b.HasOne("Intranet.Entities.MeetingSchedule", null)
                         .WithMany("MustDoneTask")
                         .HasForeignKey("MeetingScheduleId");
 
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.UserConversation", b =>
+            modelBuilder.Entity("Intranet.Entities.UserConversation", b =>
                 {
-                    b.HasOne("Intranet.Entities.Entities.Conversation", "Conversation")
+                    b.HasOne("Intranet.Entities.Conversation", "Conversation")
                         .WithMany()
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -780,9 +791,9 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.UserFood", b =>
+            modelBuilder.Entity("Intranet.Entities.UserFood", b =>
                 {
-                    b.HasOne("Intranet.Entities.Entities.Food", "Food")
+                    b.HasOne("Intranet.Entities.Food", "Food")
                         .WithMany()
                         .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -799,9 +810,9 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.UserProject", b =>
+            modelBuilder.Entity("Intranet.Entities.UserProject", b =>
                 {
-                    b.HasOne("Intranet.Entities.Entities.Project", "Project")
+                    b.HasOne("Intranet.Entities.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -816,13 +827,6 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Intranet.Entities.RoleLevel", b =>
-                {
-                    b.HasOne("Intranet.Entities.Role", null)
-                        .WithMany("RoleLevels")
-                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("Intranet.Entities.UserRole", b =>
@@ -888,12 +892,12 @@ namespace Intranet.Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.Conversation", b =>
+            modelBuilder.Entity("Intranet.Entities.Conversation", b =>
                 {
                     b.Navigation("ChatMessages");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.Entities.MeetingSchedule", b =>
+            modelBuilder.Entity("Intranet.Entities.MeetingSchedule", b =>
                 {
                     b.Navigation("Attendances");
 

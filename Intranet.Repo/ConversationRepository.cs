@@ -17,6 +17,11 @@ public class ConversationRepository : BaseRepository<Conversation>, IConversatio
                     .Take(10)
                 .FirstOrDefaultAsync(cancellationToken);
 
+    public async Task<Conversation?> FindByNameAsync(string name, CancellationToken cancellationToken = default)
+        => await _dbSet.Include(conversation => conversation!.ChatMessages)
+                            .ThenInclude(chatMessage => chatMessage.User)
+                        .Take(10).FirstOrDefaultAsync(x => x.Name == name!, cancellationToken);
+
     //public async Task<Conversation> FindConversationAsync(List<User> users)
     //{
     //    var query        = _dbSet.AsQueryable()
