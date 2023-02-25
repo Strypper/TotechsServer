@@ -7,13 +7,16 @@ namespace Intranet;
 public class UserController : BaseController
 {
     private IMapper _mapper;
+
     //private IMediaService               _mediaService;
     private IntranetContext _intranetContext;
+
     private IJWTTokenService _jwtTokenService;
     private IUserRepository _userRepository;
     private IChatMessageRepository _chatMessageRepository;
     private IConversationRepository _conversationRepository;
     private IUserConversationRepository _userConversationRepository;
+
     public UserController(IMapper mapper,
                           //IMediaService               mediaService,
                           IntranetContext intranetContext,
@@ -34,6 +37,7 @@ public class UserController : BaseController
     }
 
     #region [GET]
+
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
     {
@@ -60,7 +64,6 @@ public class UserController : BaseController
         {
             var user = await _userRepository.FindBySignalRConnectionId(singalRConnectionStringId);
             return Ok(_mapper.Map<UserDTO>(user));
-
         }
         else return NotFound();
     }
@@ -72,17 +75,15 @@ public class UserController : BaseController
         {
             var user = await _userRepository.FindByGuidAsync(guid, cancellationToken);
             return Ok(_mapper.Map<UserDTO>(user));
-
         }
         else return NotFound();
     }
 
-    #endregion
-
+    #endregion [GET]
 
     #region [POST]
 
-    #endregion
+    #endregion [POST]
 
     [HttpPut]
     public async Task<IActionResult> Update(UserDTO dto, CancellationToken cancellationToken = default)
@@ -96,7 +97,21 @@ public class UserController : BaseController
 
     [HttpPut]
     [AllowAnonymous]
-    public async Task<IActionResult> UploadTestImage([FromForm] TestUploadFileDTO dto, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> TestUpload1(IFormFile file, CancellationToken cancellationToken = default)
+    {
+        return Ok();
+    }
+
+    [HttpPut]
+    [AllowAnonymous]
+    public async Task<IActionResult> TestUpload2([FromForm] TestUploadFileDTO2 dto, CancellationToken cancellationToken = default)
+    {
+        return Ok();
+    }
+
+    [HttpPut]
+    [AllowAnonymous]
+    public async Task<IActionResult> TestUpload3([FromForm] TestUploadFileDTO3 dto, CancellationToken cancellationToken = default)
     {
         return Ok();
     }
@@ -130,6 +145,7 @@ public class UserController : BaseController
     //}
 
     #region [DELETE]
+
     [HttpDelete("{guid}")]
     public async Task<IActionResult> DeleteByGuid(string guid, CancellationToken cancellationToken)
     {
@@ -138,7 +154,8 @@ public class UserController : BaseController
         await _userRepository.DeleteUser(userInfo);
         return NoContent();
     }
-    #endregion
+
+    #endregion [DELETE]
 
     //[HttpPut]
     //public async Task<IActionResult> UpdatePassword(UserDTO dto, CancellationToken cancellationToken = default)
