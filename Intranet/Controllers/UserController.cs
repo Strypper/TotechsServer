@@ -82,6 +82,25 @@ public class UserController : BaseController
 
     #region [POST]
 
+    #endregion
+
+    [HttpPut]
+    public async Task<IActionResult> Update(UserDTO dto, CancellationToken cancellationToken = default)
+    {
+        var user = await _userRepository.FindByGuidAsync(dto.Guid, cancellationToken);
+        if (user is null) return NotFound();
+        _mapper.Map(dto, user);
+        await _userRepository.UpdateUser(user, cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPut]
+    [AllowAnonymous]
+    public async Task<IActionResult> UploadTestImage(TestUploadFileDTO dto, CancellationToken cancellationToken = default)
+    {
+        return Ok();
+    }
+
     //[HttpPost]
     //public async Task<IActionResult> UploadAvatar(string id, IFormFile avatar, CancellationToken cancellationToken = default)
     //{
@@ -109,17 +128,6 @@ public class UserController : BaseController
     //    }
     //    return new UnsupportedMediaTypeResult();
     //}
-    #endregion
-
-    [HttpPut]
-    public async Task<IActionResult> Update(UserDTO dto, CancellationToken cancellationToken = default)
-    {
-        var user = await _userRepository.FindByGuidAsync(dto.Guid, cancellationToken);
-        if (user is null) return NotFound();
-        _mapper.Map(dto, user);
-        await _userRepository.UpdateUser(user, cancellationToken);
-        return NoContent();
-    }
 
     #region [DELETE]
     [HttpDelete("{guid}")]

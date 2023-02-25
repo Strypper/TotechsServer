@@ -91,6 +91,7 @@ public class ConversationController : BaseController
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetLobbyRecentChatMessages(CancellationToken cancellationToken = default)
     {
         var mauislandLobby = await _conversationRepository.FindByNameAsync("MAUIslandLobby", cancellationToken);
