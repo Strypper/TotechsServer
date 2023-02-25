@@ -96,7 +96,7 @@ public class UserController : BaseController
 
     [HttpPut]
     [AllowAnonymous]
-    public async Task<IActionResult> UploadTestImage(TestUploadFileDTO dto, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UploadTestImage([FromForm] TestUploadFileDTO dto, CancellationToken cancellationToken = default)
     {
         return Ok();
     }
