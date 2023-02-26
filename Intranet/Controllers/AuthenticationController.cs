@@ -82,10 +82,6 @@ public class AuthenticationController : BaseController
     #endregion
 
     #region [PUT]
-
-    #endregion
-
-    #region [DELETE]
-
+    //Forgot password
     #endregion
 }
