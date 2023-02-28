@@ -79,8 +79,7 @@ builder.Services.AddIdentity<User, Role>(options =>
                             options.Password.RequireUppercase = true;
                             options.Password.RequireNonAlphanumeric = true;
                             options.Password.RequiredLength = 6;
-                            options.User.RequireUniqueEmail = true; //default false
-                                                                    //options.SignIn.RequireConfirmedEmail = true;
+                            options.User.RequireUniqueEmail = true;
                         })
                 .AddEntityFrameworkStores<IntranetContext>()
                 .AddUserManager<UserManager>()

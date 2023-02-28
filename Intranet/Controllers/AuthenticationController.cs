@@ -59,8 +59,7 @@ public class AuthenticationController : BaseController
         var result = await _userRepository.CreateAccount(user, dto.password);
         if (result.Succeeded)
         {
-            if (dto.avatarfile is null) return Ok();
-            if (_mediaService.IsImage(dto.avatarfile))
+            if (dto.avatarfile is not null && _mediaService.IsImage(dto.avatarfile))
             {
                 using (Stream stream = dto.avatarfile.OpenReadStream())
                 {
@@ -76,6 +75,7 @@ public class AuthenticationController : BaseController
                     else return BadRequest("Look like the image couldnt upload to the storage, but your account have created successfully");
                 }
             }
+            else return Ok();
         }
         return BadRequest();
     }
