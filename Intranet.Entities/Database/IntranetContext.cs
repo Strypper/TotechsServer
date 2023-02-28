@@ -49,6 +49,11 @@ public class IntranetContext : IdentityDbContext<User, Role, string, IdentityUse
             entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
             entity.HasOne(e => e.Conversation).WithMany().HasForeignKey(e => e.ConversationId);
         });
+
+        builder.Entity<ChatMessage>()
+               .HasOne(c => c.User)
+               .WithMany(u => u.ChatMessages)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }
 

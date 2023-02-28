@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace Intranet.Entities;
 public class User : IdentityUser
@@ -15,6 +16,8 @@ public class User : IdentityUser
     public string? Relationship { get; set; }
     public string? SignalRConnectionId { get; set; }
     public bool IsDeleted { get; set; }
+
+    public ICollection<ChatMessage> ChatMessages { get; set; }
 
 }
 
