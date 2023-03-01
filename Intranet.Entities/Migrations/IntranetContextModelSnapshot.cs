@@ -54,7 +54,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("MeetingScheduleId");
 
-                    b.ToTable("Attendances");
+                    b.ToTable("Attendances", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.ChatMessage", b =>
@@ -85,7 +85,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatMessages");
+                    b.ToTable("ChatMessages", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.Contribution", b =>
@@ -115,7 +115,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("ContributorId");
 
-                    b.ToTable("Contributions");
+                    b.ToTable("Contributions", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.Conversation", b =>
@@ -142,7 +142,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversations");
+                    b.ToTable("Conversations", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.Food", b =>
@@ -175,7 +175,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Foods");
+                    b.ToTable("Foods", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.MeetingInfo", b =>
@@ -199,7 +199,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MeetingInfos");
+                    b.ToTable("MeetingInfos", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.MeetingSchedule", b =>
@@ -228,7 +228,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("PlannerId");
 
-                    b.ToTable("MeetingSchedules");
+                    b.ToTable("MeetingSchedules", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.Project", b =>
@@ -281,7 +281,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.Role", b =>
@@ -357,7 +357,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleLevels");
+                    b.ToTable("RoleLevels", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.TodoTask", b =>
@@ -398,7 +398,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("MeetingScheduleId");
 
-                    b.ToTable("TodoTasks");
+                    b.ToTable("TodoTasks", (string)null);
                 });
 
             modelBuilder.Entity("Intranet.Entities.User", b =>
