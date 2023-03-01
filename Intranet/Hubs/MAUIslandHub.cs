@@ -35,10 +35,15 @@ public class MAUIslandHub : Hub
 
         var guid = Context.User?.Claims?.First(c => c.Type == "guid")?.Value;
         var loginUser = await _userRepository.FindByGuidAsync(guid!, cancellationToken);
-        loginUser!.SignalRConnectionId = Context.ConnectionId;
-        await _userRepository.UpdateUser(loginUser, cancellationToken);
+        if (loginUser is not null)
+        {
+            loginUser!.SignalRConnectionId = Context.ConnectionId;
+            await _userRepository.UpdateUser(loginUser, cancellationToken);
+            await Clients.All.SendAsync("MAUIslandHub", $"Welcome {loginUser!.UserName}");
+        }
 
-        await Clients.All.SendAsync("MAUIslandHub", $"Welcome {loginUser!.UserName}");
+        await Clients.All.SendAsync("MAUIslandHub", $"Welcome Tourist");
+
         await base.OnConnectedAsync();
     }
 
@@ -79,7 +84,11 @@ public class MAUIslandHub : Hub
 
         await _conversationRepository.SaveChangesAsync(cancellationToken);
 
-        await Clients.All.SendAsync("ReceiveMessage", message, userInfo!.UserName, userInfo.ProfilePic, DateTime.Now);
+        await Clients.All.SendAsync("ReceiveMessage",
+                                    message,
+                                    userInfo!.UserName,
+                                    userInfo.ProfilePic ?? "https://i.imgur.com/deS4147.png",
+                                    DateTime.Now);
     }
     #endregion
 
