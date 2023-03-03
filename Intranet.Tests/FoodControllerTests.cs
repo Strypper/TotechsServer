@@ -5,13 +5,13 @@ namespace Intranet.Tests;
 
 public class FoodControllerTests
 {
-    #region [Services]
+    #region [ Services ]
     private readonly IMapper _mapper;
     private readonly IFoodRepository _foodRepository;
     private readonly IUserFoodRepository _userFoodRepository;
     #endregion
 
-    #region [CTor]
+    #region [ CTor ]
     public FoodControllerTests()
     {
         _mapper = A.Fake<IMapper>();
@@ -24,7 +24,7 @@ public class FoodControllerTests
     [Fact]
     public async Task FoodController_GetAll_ReturnOk()
     {
-        #region[Arrange]
+        #region[ Arrange ]
         var foods = A.Fake<IEFMock<Food>>();
         var foodsDTO = A.Fake<IEnumerable<FoodDTO>>();
 
@@ -34,11 +34,11 @@ public class FoodControllerTests
         var controller = new FoodController(_mapper, _foodRepository, _userFoodRepository);
         #endregion
 
-        #region[Act]
+        #region[ Act ]
         var result = await controller.GetAll();
         #endregion
 
-        #region[Assert]
+        #region[ Assert ]
         result.Should().NotBeNull();
         result.Should().BeOfType(typeof(OkObjectResult));
         #endregion
@@ -47,7 +47,7 @@ public class FoodControllerTests
     [Fact]
     public async Task FoodController_Get_ReturnNotFound()
     {
-        #region [Arrange]
+        #region [ Arrange ]
         int id = 0;
 
         A.CallTo(() => _foodRepository.FindByIdAsync(id, CancellationToken.None))
@@ -56,11 +56,11 @@ public class FoodControllerTests
         var controller = new FoodController(_mapper, _foodRepository, _userFoodRepository);
         #endregion
 
-        #region [Act]
+        #region [ Act ]
         var result = await controller.Get(id);
         #endregion
 
-        #region [Assert]
+        #region [ Assert ]
         result.Should().NotBeNull();
         result.Should().BeOfType(typeof(NotFoundResult));
         #endregion
@@ -69,7 +69,7 @@ public class FoodControllerTests
     [Fact]
     public async Task FoodController_CreateFood_ReturnCreatedAtActionResult()
     {
-        #region[Arrange]
+        #region[ Arrange ]
         var food = A.Fake<Food>();
         var foodDTO = A.Fake<FoodDTO>();
 
@@ -79,11 +79,11 @@ public class FoodControllerTests
         var controller = new FoodController(_mapper, _foodRepository, _userFoodRepository);
         #endregion
 
-        #region[Act]
+        #region[ Act ]
         var result = await controller.Create(foodDTO);
         #endregion
 
-        #region[Assert]
+        #region[ Assert ]
         result.Should().NotBeNull();
         result.Should().BeOfType<CreatedAtActionResult>();
         #endregion
