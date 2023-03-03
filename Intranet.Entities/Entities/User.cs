@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Intranet.Entities;
 public class User : IdentityUser
 {
-    public string? ProfilePic { get; set; }
+    public string? ProfilePic { get; set; } = "https://i.imgur.com/deS4147.png";
     public string? CardPic { get; set; }
     public string? Bio { get; set; }
     public string? Former { get; set; }
