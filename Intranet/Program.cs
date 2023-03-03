@@ -16,7 +16,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.Configure<AzureStorageConfig>(builder.Configuration.GetSection("AzureStorageConfig")!);
 builder.Services.AddSingleton((provider) =>
 {
@@ -69,7 +68,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
-
 builder.Services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IntranetContext")!));
 
 builder.Services.AddIdentity<User, Role>(options =>
@@ -104,8 +102,6 @@ builder.Services.AddTransient<IConversationRepository, ConversationRepository>()
 builder.Services.AddTransient<IContributionRepository, ContributionRepository>();
 builder.Services.AddTransient<IUserConversationRepository, UserConversationRepository>();
 
-
-
 var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
 
 IMapper mapper = mapperConfig.CreateMapper();
@@ -139,6 +135,14 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHub<MAUIslandHub>("/mauislandhub");
 });
 
-app.MapFallbackToFile("index.html");
+app.UseSpa(spa =>
+{
+#if DEBUG
+    spa.Options.StartupTimeout = TimeSpan.FromSeconds(180);
+    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+#else
+    app.UseSpaStaticFiles();
+#endif
+});
 
 app.Run();
