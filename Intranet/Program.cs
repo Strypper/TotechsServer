@@ -139,4 +139,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHub<MAUIslandHub>("/mauislandhub");
 });
 
+app.MapFallbackToFile("index.html");
+
 app.Run();
