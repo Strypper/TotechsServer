@@ -10,6 +10,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\policy.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\policy.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.13.1" />
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Collection" Version="8.0.0" />
