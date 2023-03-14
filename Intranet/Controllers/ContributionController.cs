@@ -21,6 +21,7 @@ public class ContributionController : BaseController
         var contributions = await _contributionRepository.FindAll().Include(contribution => contribution.Contributor).ToListAsync(cancellationToken);
         return Ok(_mapper.Map<IEnumerable<ContributionDTO>>(contributions));
     }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id, CancellationToken cancellationToken = default)
     {
