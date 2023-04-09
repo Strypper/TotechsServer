@@ -1,6 +1,5 @@
 using Azure.Storage;
 using Intranet;
-using Intranet.AppSettings;
 using Intranet.Hubs;
 using Intranet.Repo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,13 +15,13 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<JwtTokenConfig>(builder.Configuration.GetSection("JwtTokenConfig")!);
 builder.Services.Configure<AzureStorageConfig>(builder.Configuration.GetSection("AzureStorageConfig")!);
 builder.Services.AddSingleton((provider) =>
 {
     var config = provider.GetRequiredService<IOptionsMonitor<AzureStorageConfig>>().CurrentValue;
     return new StorageSharedKeyCredential(config.AccountName, config.AccountKey);
 });
-builder.Services.Configure<JwtTokenConfig>(builder.Configuration.GetSection("JwtTokenConfig"));
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -68,7 +67,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
-builder.Services.AddDbContextPool<IntranetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IntranetContext")!));
+builder.Services.AddDbContext<IntranetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IntranetContext")));
 
 builder.Services.AddIdentity<User, Role>(options =>
                         {

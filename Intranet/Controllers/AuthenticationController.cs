@@ -2,14 +2,14 @@
 
 public class AuthenticationController : BaseController
 {
-    #region [Fields]
+    #region [ Fields ]
     private IMapper _mapper;
     private readonly IJWTTokenService _jwtTokenService;
     private readonly IUserRepository _userRepository;
     private readonly IMediaService _mediaService;
     #endregion
 
-    #region [CTor]
+    #region [ CTor ]
     public AuthenticationController(IMapper mapper,
                                     IJWTTokenService jwtTokenService,
                                     IUserRepository userRepository,
@@ -22,10 +22,7 @@ public class AuthenticationController : BaseController
     }
     #endregion
 
-    #region [GET]
-    #endregion
-
-    #region [POST]
+    #region [ POST ]
     [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Login(UserLoginDTO userLoginDTO, CancellationToken cancellationToken = default)
@@ -79,9 +76,9 @@ public class AuthenticationController : BaseController
         }
         return BadRequest();
     }
-    #endregion
+    #endregion [ POST ]
 
-    #region [PUT]
+    #region [ PUT ]
     //Forgot password
-    #endregion
+    #endregion [ PUT ]
 }

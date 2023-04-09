@@ -1,15 +1,9 @@
-﻿using Intranet.AppSettings;
-using Intranet.Contract;
-using Intranet.Entities;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Intranet;
 
@@ -22,11 +16,10 @@ public class JWTTokenService : IJWTTokenService
 
     #region [CTor]
     public JWTTokenService(IUserRepository userRepository,
-                           IOptionsMonitor<JwtTokenConfig> tokenConfigOptionsAccessor)
+                           IOptionsMonitor<JwtTokenConfig> tokenConfig)
     {
         _userRepository = userRepository;
-        _tokenConfig = tokenConfigOptionsAccessor.CurrentValue;
-
+        _tokenConfig = tokenConfig.CurrentValue;
     }
     #endregion
 
@@ -48,13 +41,13 @@ public class JWTTokenService : IJWTTokenService
                 .Union(claims)
             );
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenConfig.Key));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("54653216554114442313244544"));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var securityToken = handler.CreateToken(new SecurityTokenDescriptor
         {
             Issuer = _tokenConfig.Issuer,
-            Audience = "mauisland",
+            Audience = _tokenConfig.Audience,
             SigningCredentials = creds,
             Subject = identity,
             Expires = DateTime.UtcNow.AddDays(1)

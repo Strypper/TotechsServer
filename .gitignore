@@ -342,3 +342,4 @@ ASALocalRun/
 healthchecksdb
 
 wwwroot/
+/Intranet/appsettings.Development.json

@@ -21,18 +21,14 @@ public class ContributionControllerTest
         fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList().ForEach(b => fixture.Behaviors.Remove(b));
         fixture.Behaviors.Add(new OmitOnRecursionBehavior());
 
-        var mockMapper = new Mock<IMapper>();
-        var mockContribution = new Mock<IContributionRepository>();
-        var mockUser = new Mock<IUserRepository>();
-
         _fixture = fixture;
-        _mockMapper = mockMapper;
-        _mockContribution = mockContribution;
-        _mockUser = mockUser;
+        _mockMapper = new();
+        _mockContribution = new();
+        _mockUser = new();
     }
-    #endregion
+    #endregion [ CTor ]
 
-    #region [ Methods -  ]
+    #region [ Methods ]
     [Fact]
     public async Task GetAll_ShouldReturn200Ok()
     {
