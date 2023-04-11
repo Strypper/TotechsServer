@@ -54,7 +54,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("MeetingScheduleId");
 
-                    b.ToTable("Attendances", (string)null);
+                    b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("Intranet.Entities.ChatMessage", b =>
@@ -85,7 +85,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatMessages", (string)null);
+                    b.ToTable("ChatMessages");
                 });
 
             modelBuilder.Entity("Intranet.Entities.Contribution", b =>
@@ -115,7 +115,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("ContributorId");
 
-                    b.ToTable("Contributions", (string)null);
+                    b.ToTable("Contributions");
                 });
 
             modelBuilder.Entity("Intranet.Entities.Conversation", b =>
@@ -142,7 +142,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversations", (string)null);
+                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("Intranet.Entities.Food", b =>
@@ -175,7 +175,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Foods", (string)null);
+                    b.ToTable("Foods");
                 });
 
             modelBuilder.Entity("Intranet.Entities.MeetingInfo", b =>
@@ -199,7 +199,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MeetingInfos", (string)null);
+                    b.ToTable("MeetingInfos");
                 });
 
             modelBuilder.Entity("Intranet.Entities.MeetingSchedule", b =>
@@ -228,7 +228,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("PlannerId");
 
-                    b.ToTable("MeetingSchedules", (string)null);
+                    b.ToTable("MeetingSchedules");
                 });
 
             modelBuilder.Entity("Intranet.Entities.Project", b =>
@@ -281,7 +281,62 @@ namespace Intranet.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.QA", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Detail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QAs");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.QAComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAnswered")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QAId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QAId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("QAComments");
                 });
 
             modelBuilder.Entity("Intranet.Entities.Role", b =>
@@ -357,7 +412,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleLevels", (string)null);
+                    b.ToTable("RoleLevels");
                 });
 
             modelBuilder.Entity("Intranet.Entities.TodoTask", b =>
@@ -398,7 +453,7 @@ namespace Intranet.Entities.Migrations
 
                     b.HasIndex("MeetingScheduleId");
 
-                    b.ToTable("TodoTasks", (string)null);
+                    b.ToTable("TodoTasks");
                 });
 
             modelBuilder.Entity("Intranet.Entities.User", b =>
@@ -578,6 +633,33 @@ namespace Intranet.Entities.Migrations
                     b.ToTable("UserProjects", (string)null);
                 });
 
+            modelBuilder.Entity("Intranet.Entities.UserQA", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsAuthor")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QAId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QAId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserQA", (string)null);
+                });
+
             modelBuilder.Entity("Intranet.Entities.UserRole", b =>
                 {
                     b.Property<string>("UserId")
@@ -589,19 +671,9 @@ namespace Intranet.Entities.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
@@ -753,6 +825,25 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("Planner");
                 });
 
+            modelBuilder.Entity("Intranet.Entities.QAComment", b =>
+                {
+                    b.HasOne("Intranet.Entities.QA", "QA")
+                        .WithMany()
+                        .HasForeignKey("QAId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Intranet.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("QA");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Intranet.Entities.RoleLevel", b =>
                 {
                     b.HasOne("Intranet.Entities.Role", null)
@@ -830,27 +921,38 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.UserRole", b =>
+            modelBuilder.Entity("Intranet.Entities.UserQA", b =>
                 {
-                    b.HasOne("Intranet.Entities.Role", null)
+                    b.HasOne("Intranet.Entities.QA", "QA")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Intranet.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1");
-
-                    b.HasOne("Intranet.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("QAId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Intranet.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("QA");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.UserRole", b =>
+                {
+                    b.HasOne("Intranet.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Intranet.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
 
@@ -915,6 +1017,8 @@ namespace Intranet.Entities.Migrations
             modelBuilder.Entity("Intranet.Entities.User", b =>
                 {
                     b.Navigation("ChatMessages");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

@@ -100,6 +100,8 @@ builder.Services.AddTransient<IUserProjectRepository, UserProjectRepository>();
 builder.Services.AddTransient<IConversationRepository, ConversationRepository>();
 builder.Services.AddTransient<IContributionRepository, ContributionRepository>();
 builder.Services.AddTransient<IUserConversationRepository, UserConversationRepository>();
+builder.Services.AddTransient<IQARepository, QARepository>();
+builder.Services.AddTransient<IUserQARepository, UserQARepository>();
 
 var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
 
@@ -134,14 +136,14 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHub<MAUIslandHub>("/mauislandhub");
 });
 
-app.UseSpa(spa =>
-{
-#if DEBUG
-    spa.Options.StartupTimeout = TimeSpan.FromSeconds(180);
-    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
-#else
-    app.UseSpaStaticFiles();
-#endif
-});
+//app.UseSpa(spa =>
+//{
+//#if DEBUG
+//    spa.Options.StartupTimeout = TimeSpan.FromSeconds(180);
+//    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+//#else
+//    app.UseSpaStaticFiles();
+//#endif
+//});
 
 app.Run();

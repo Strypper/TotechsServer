@@ -19,6 +19,9 @@ public class IntranetContext : IdentityDbContext<User, Role, string, IdentityUse
     public DbSet<MeetingInfo> MeetingInfos { get; set; } = default!;
     public DbSet<Attendance> Attendances { get; set; } = default!;
     public DbSet<TodoTask> TodoTasks { get; set; } = default!;
+    public DbSet<QA> QAs { get; set; } = default!;
+    public DbSet<QAComment> QAComments { get; set; } = default!;
+    public DbSet<UserQA> UserQAs { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -34,6 +37,26 @@ public class IntranetContext : IdentityDbContext<User, Role, string, IdentityUse
             entity.ToTable("UserFoods");
             entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
             entity.HasOne(e => e.Food).WithMany().HasForeignKey(e => e.FoodId);
+        });
+
+        builder.Entity<UserQA>(entity =>
+        {
+            entity.ToTable("UserQA");
+            entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
+            entity.HasOne(e => e.QA).WithMany().HasForeignKey(e => e.QAId);
+        });
+
+        builder.Entity<QAComment>(entity =>
+        {
+            entity.HasOne(e => e.QA).WithMany().HasForeignKey(e => e.QAId);
+        });
+
+        base.OnModelCreating(builder);
+
+        builder.Entity<UserRole>(entity =>
+        {
+            entity.HasOne(ur => ur.Role).WithMany(r => r!.UserRoles).HasForeignKey(ur => ur.RoleId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(ur => ur.User).WithMany(u => u!.UserRoles).HasForeignKey(ur => ur.UserId).IsRequired().OnDelete(DeleteBehavior.Cascade);
         });
 
         builder.Entity<UserProject>(entity =>
@@ -56,4 +79,3 @@ public class IntranetContext : IdentityDbContext<User, Role, string, IdentityUse
                .OnDelete(DeleteBehavior.Cascade);
     }
 }
-

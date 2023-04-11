@@ -90,7 +90,6 @@ public class FoodController : BaseController
     #endregion
 
     #region [DELETE]
-
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
     {
@@ -107,6 +106,5 @@ public class FoodController : BaseController
         await _foodRepository.SaveChangesAsync(cancellationToken);
         return NoContent();
     }
-
     #endregion
 }

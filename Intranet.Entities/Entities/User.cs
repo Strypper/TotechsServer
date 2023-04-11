@@ -21,5 +21,7 @@ public class User : IdentityUser
     [System.Text.Json.Serialization.JsonIgnore]
     public virtual ICollection<ChatMessage> ChatMessages { get; set; } = new HashSet<ChatMessage>();
 
+    public virtual ICollection<UserRole> UserRoles { get; } = new HashSet<UserRole>();
+
 }
 
