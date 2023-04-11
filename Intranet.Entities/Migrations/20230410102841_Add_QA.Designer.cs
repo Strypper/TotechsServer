@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intranet.Entities.Migrations
 {
     [DbContext(typeof(IntranetContext))]
-    [Migration("20230223041907_Conversation_AddName")]
-    partial class Conversation_AddName
+    [Migration("20230410102841_Add_QA")]
+    partial class Add_QA
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,6 +78,7 @@ namespace Intranet.Entities.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -283,6 +284,61 @@ namespace Intranet.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.QA", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Detail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QAs");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.QAComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAnswered")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QAId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QAId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("QAComments");
                 });
 
             modelBuilder.Entity("Intranet.Entities.Role", b =>
@@ -579,6 +635,33 @@ namespace Intranet.Entities.Migrations
                     b.ToTable("UserProjects", (string)null);
                 });
 
+            modelBuilder.Entity("Intranet.Entities.UserQA", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsAuthor")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QAId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QAId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserQA", (string)null);
+                });
+
             modelBuilder.Entity("Intranet.Entities.UserRole", b =>
                 {
                     b.Property<string>("UserId")
@@ -590,19 +673,9 @@ namespace Intranet.Entities.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
@@ -713,17 +786,17 @@ namespace Intranet.Entities.Migrations
 
             modelBuilder.Entity("Intranet.Entities.ChatMessage", b =>
                 {
-                    b.HasOne("Intranet.Entities.Conversation", "Conversation")
+                    b.HasOne("Intranet.Entities.Conversation", null)
                         .WithMany("ChatMessages")
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Intranet.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Conversation");
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -752,6 +825,25 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("MeetingInfo");
 
                     b.Navigation("Planner");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.QAComment", b =>
+                {
+                    b.HasOne("Intranet.Entities.QA", "QA")
+                        .WithMany()
+                        .HasForeignKey("QAId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Intranet.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("QA");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Intranet.Entities.RoleLevel", b =>
@@ -831,27 +923,38 @@ namespace Intranet.Entities.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Intranet.Entities.UserRole", b =>
+            modelBuilder.Entity("Intranet.Entities.UserQA", b =>
                 {
-                    b.HasOne("Intranet.Entities.Role", null)
+                    b.HasOne("Intranet.Entities.QA", "QA")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Intranet.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1");
-
-                    b.HasOne("Intranet.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("QAId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Intranet.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("QA");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.UserRole", b =>
+                {
+                    b.HasOne("Intranet.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Intranet.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
 
@@ -909,6 +1012,13 @@ namespace Intranet.Entities.Migrations
             modelBuilder.Entity("Intranet.Entities.Role", b =>
                 {
                     b.Navigation("RoleLevels");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Intranet.Entities.User", b =>
+                {
+                    b.Navigation("ChatMessages");
 
                     b.Navigation("UserRoles");
                 });
