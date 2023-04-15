@@ -176,7 +176,7 @@ export const PrivacyPage: React.FC = () => {
         You acknowledge that you have read this Policy and agree to all its terms and conditions. By accessing and using the Mobile Application and
         Services and submitting your information you agree to be bound by this Policy. If you do not agree to abide by the terms of this Policy, you
         are not authorized to access or use the Mobile Application and Services. This privacy policy was created with the help of{' '}
-        <a href="https://www.websitepolicies.com" target="_blank" rel="nofollow">
+        <a href="https://www.websitepolicies.com" target="_blank" rel="nofollow noreferrer">
           WebsitePolicies
         </a>
         .
