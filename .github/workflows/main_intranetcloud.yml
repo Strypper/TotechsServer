@@ -16,6 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Build React with Node.js 19.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.x
+      
+      - run: yarn install
+        working-directory: ./Intranet.React
+
+      - run: yarn build
+        working-directory: ./Intranet.React
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:

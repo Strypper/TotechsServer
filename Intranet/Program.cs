@@ -15,6 +15,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var isDevelopment = builder.Environment.IsDevelopment();
+
 builder.Services.Configure<JwtTokenConfig>(builder.Configuration.GetSection("JwtTokenConfig")!);
 builder.Services.Configure<AzureStorageConfig>(builder.Configuration.GetSection("AzureStorageConfig")!);
 builder.Services.AddSingleton((provider) =>
@@ -108,9 +110,17 @@ var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfil
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
+if (!isDevelopment)
+{
+    builder.Services.AddSpaStaticFiles(config =>
+    {
+        config.RootPath = "wwwroot";
+    });
+}
+
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+if (!isDevelopment)
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
@@ -136,14 +146,17 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHub<MAUIslandHub>("/mauislandhub");
 });
 
-//app.UseSpa(spa =>
-//{
-//#if DEBUG
-//    spa.Options.StartupTimeout = TimeSpan.FromSeconds(180);
-//    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
-//#else
-//    app.UseSpaStaticFiles();
-//#endif
-//});
+app.UseSpa(spa =>
+{
+    if (isDevelopment)
+    {
+        spa.Options.StartupTimeout = TimeSpan.FromSeconds(180);
+        spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+    }
+    else
+    {
+        app.UseSpaStaticFiles();
+    }
+});
 
 app.Run();
