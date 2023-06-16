@@ -1,9 +1,86 @@
-<mxfile host="app.diagrams.net" modified="2023-06-16T06:17:13.772Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.9" version="21.4.0" etag="Av1qKPOO4PsIQ07sd5aD" type="github">
+<mxfile host="app.diagrams.net" modified="2023-06-16T07:03:08.852Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.9" etag="wsAVgbwZYeVINwkSEC71" version="21.4.0" type="github">
   <diagram name="Page-1" id="4pcfPLNiBZ4M8x1j_PbY">
-    <mxGraphModel>
+    <mxGraphModel dx="2110" dy="720" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-28" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-220" y="570" width="1020" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-7" value="" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#FFFFFF;fillColor=#FFFFFF;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry width="1020" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-4" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://symbols.getvecta.com/stencil_28/61_sql-database-generic.90b41636a8.png;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="240" y="137.5" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-2" value="Azure SQL SERVER Data Provider" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#2d6abc;fillColor=#2d6abc;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="215" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-3" value="Azure Cosmo Cassandra Data Provider" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="370" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-5" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://devblogs.microsoft.com/cosmosdb/wp-content/uploads/sites/52/2020/05/Apache_Cassandra-Logo.wine_.png;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="370" y="132.5" width="142.5" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-8" value="Reddit Data Provider" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6F0000;fillColor=#a20025;fontColor=#ffffff;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="535" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-10" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://hanselmanblogcontent.azureedge.net/Windows-Live-Writer/ef572a4c3e50_13F7B/redis_logo_a83f44f3-708d-4fad-aa6e-6eb0d6f82001.png;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="550.23" y="140" width="94.77" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-11" value="&lt;h1&gt;Data providers&lt;/h1&gt;&lt;p&gt;This layer contains all the services that help READ and WRITE data from data sources&amp;nbsp;&lt;/p&gt;&lt;p&gt;Responsibilities&lt;/p&gt;&lt;p&gt;&amp;nbsp; 1. READ and WRITE data&lt;/p&gt;&lt;p&gt;&amp;nbsp; &amp;nbsp;2. Migrations&lt;/p&gt;&lt;p&gt;Consumptions&lt;/p&gt;&lt;p&gt;&amp;nbsp; &amp;nbsp;1. Business Core&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;fontColor=#000000;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="690" y="20" width="310" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-12" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://sue.eu/wp-content/uploads/sites/6/2022/07/elastic-logo-920x920-sue-v02.png;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="65" y="110" width="130" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-13" value="Elastic Search Data Provider" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#2d6abc;fillColor=#2d6abc;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-28">
+          <mxGeometry x="70" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-29" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-220" y="240" width="1020" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-14" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-29">
+          <mxGeometry width="1020" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-15" value="&lt;h1&gt;Business Core&lt;/h1&gt;&lt;p&gt;This layer contains classes that reflect the core business and stuffs that need to store in the database&lt;/p&gt;&lt;p&gt;Responsibilities&lt;/p&gt;&lt;p&gt;&amp;nbsp; 1. Classes represent core logic&amp;nbsp;&lt;/p&gt;&lt;p&gt;Consumptions - None&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;fontColor=#FFFFFF;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-29">
+          <mxGeometry x="680" y="36.5" width="310" height="187" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-16" value="Business 1" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-29">
+          <mxGeometry x="130" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="O3HGnQ7L2UwCkJS6AWYP-29" source="O3HGnQ7L2UwCkJS6AWYP-17" target="O3HGnQ7L2UwCkJS6AWYP-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-17" value="Class" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-29">
+          <mxGeometry x="60" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="O3HGnQ7L2UwCkJS6AWYP-29" source="O3HGnQ7L2UwCkJS6AWYP-18" target="O3HGnQ7L2UwCkJS6AWYP-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-18" value="Enum" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-29">
+          <mxGeometry x="210" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-21" value="Business 2" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-29">
+          <mxGeometry x="440" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="O3HGnQ7L2UwCkJS6AWYP-29" source="O3HGnQ7L2UwCkJS6AWYP-22" target="O3HGnQ7L2UwCkJS6AWYP-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-22" value="Class" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-29">
+          <mxGeometry x="370" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="O3HGnQ7L2UwCkJS6AWYP-29" source="O3HGnQ7L2UwCkJS6AWYP-23" target="O3HGnQ7L2UwCkJS6AWYP-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-23" value="Enum" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="O3HGnQ7L2UwCkJS6AWYP-29">
+          <mxGeometry x="520" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O3HGnQ7L2UwCkJS6AWYP-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="O3HGnQ7L2UwCkJS6AWYP-14" target="O3HGnQ7L2UwCkJS6AWYP-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
